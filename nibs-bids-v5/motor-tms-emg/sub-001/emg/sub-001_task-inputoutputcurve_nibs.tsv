@@ -1,0 +1,5 @@
+trial_type	tms_intensity_mso	tms_pos_centre	tms_pos_ydir	tms_pulse_shape	tms_pulse_direction
+TMS90	54	LeftM1	45	Monophasic	PA
+TMS100	60	LeftM1	45	Monophasic	PA
+TMS110	66	LeftM1	45	Monophasic	PA
+TMS120	72	LeftM1	45	Monophasic	PA
