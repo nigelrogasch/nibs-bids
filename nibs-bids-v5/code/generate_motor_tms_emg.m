@@ -31,7 +31,7 @@ data.sex.Levels.M = 'male';
 data.sex.Levels.F = 'female';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,'participants.json'];
@@ -115,7 +115,7 @@ data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to p
 data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'nibs',filesep,id,'_',taskname,'_nibs.json'];
@@ -178,7 +178,7 @@ data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to p
 data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'nibs',filesep,id,'_',taskname,'_nibs.json'];
@@ -241,7 +241,7 @@ data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to p
 data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'nibs',filesep,id,'_',taskname,'_nibs.json'];
@@ -277,7 +277,7 @@ data.PowerLineFrequency = 50;
 dataSoftwareFilters = 'n/a';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_emg.json'];
@@ -343,7 +343,7 @@ data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to p
 data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.json'];
@@ -374,7 +374,7 @@ data.trial_type.Levels.TMS110 = 'TMS at 110% RMT';
 data.trial_type.Levels.TMS120 = 'TMS at 120% RMT';
 
 % Convert the structure to JSON format
-jsonData = jsonencode(data);
+jsonData = jsonencode(data, 'PrettyPrint', true);
 
 % Define the filename
 filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_events.json'];

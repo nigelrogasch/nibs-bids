@@ -1,1 +1,12 @@
-{"trial_type":{"LongName":"Stimulation type","Description":"Different stimulation intensity conditions provided for input-output curve.","Levels":{"TMS90":"TMS at 90% RMT","TMS100":"TMS at 100% RMT","TMS110":"TMS at 110% RMT","TMS120":"TMS at 120% RMT"}}}
+{
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "Different stimulation intensity conditions provided for input-output curve.",
+    "Levels": {
+      "TMS90": "TMS at 90% RMT",
+      "TMS100": "TMS at 100% RMT",
+      "TMS110": "TMS at 110% RMT",
+      "TMS120": "TMS at 120% RMT"
+    }
+  }
+}
