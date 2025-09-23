@@ -88,7 +88,7 @@ data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
-data.CoilDeails.SerialNumber = '4150-00';
+data.CoilDetails.SerialNumber = '4150-00';
 
 data.tms_rmt.LongName = 'TMS Resting Motor Threshold';
 data.tms_rmt.Description = 'Lowest stimulation intensity required to evoke at least 5 out of 10 MEPs with a peak-to-peak amplitude > 0.05 mV, described as a percentage of maximum stimulator output (MSO).';
@@ -151,7 +151,7 @@ data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
-data.CoilDeails.SerialNumber = '4150-00';
+data.CoilDetails.SerialNumber = '4150-00';
 
 data.tms_amt.LongName = 'TMS Active Motor Threshold';
 data.tms_amt.Description = 'Lowest stimulation intensity required to evoke at least 5 out of 10 MEPs with a peak-to-peak amplitude > 0.2 mV during a light muscle contraction (about 10% of maximum voluntary contraction), described as a percentage of maximum stimulator output (MSO).';
@@ -214,7 +214,7 @@ data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
-data.CoilDeails.SerialNumber = '4150-00';
+data.CoilDetails.SerialNumber = '4150-00';
 
 data.tms_s1mV.LongName = 'TMS intensity to evoke MEP of 1 mV';
 data.tms_s1mV.Description = 'Lowest stimulation intensity required to evoke at a mean MEP with a peak-to-peak amplitude about 1 mV at rest over 5 trials, described as a percentage of maximum stimulator output (MSO).';
@@ -309,7 +309,7 @@ data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
-data.CoilDeails.SerialNumber = '4150-00';
+data.CoilDetails.SerialNumber = '4150-00';
 
 data.trial_type.LongName = 'Stimulation type';
 data.trial_type.Description = 'Different stimulation intensity conditions provided for input-output curve.';
@@ -469,7 +469,7 @@ data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
-data.CoilDeails.SerialNumber = '4150-00';
+data.CoilDetails.SerialNumber = '4150-00';
 
 data.trial_type.LongName = 'Stimulation type';
 data.trial_type.Description = 'Single and paired pulses for SICI protocol.';

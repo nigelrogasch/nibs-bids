@@ -5,9 +5,7 @@
   "ManufacturerModelName": "BiStim^2",
   "ManufacturerSerialNumber": "3234-00",
   "CoilDetails": {
-    "ModelName": "D70"
-  },
-  "CoilDeails": {
+    "ModelName": "D70",
     "SerialNumber": "4150-00"
   },
   "trial_type": {
