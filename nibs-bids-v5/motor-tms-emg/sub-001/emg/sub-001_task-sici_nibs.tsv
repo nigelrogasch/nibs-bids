@@ -1,0 +1,3 @@
+trial_type	tms_intensity_mso	tms_intensity_mso_con	tms_pos_centre	tms_pos_ydir	tms_pulse_shape	tms_pulse_direction
+single	72	n/a	LeftM1	45	Monophasic	PA
+paired	72	42	LeftM1	45	Monophasic	PA

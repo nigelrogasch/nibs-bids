@@ -304,7 +304,7 @@ data = struct();
 
 % fields
 data.NIBSType = 'TMS';
-data.NIBSDescription = 'Stimulation intensity to evoke MEP of 1 mV.';
+data.NIBSDescription = 'Input-output curve.';
 data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
@@ -352,9 +352,35 @@ filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.json'];
 writejson(filename, jsonData);
 
 % Generate _events.tsv
-onset = {1.2; 6.5; 11.3; 16.9};
-duration = {0;0;0;0};
-trial_type = {'TMS90';'TMS100';'TMS110';'TMS120'};
+
+% Parameters
+n = 40;                % Number of values
+mean_interval = 5;     % Mean interval between values
+jitter_percent = 0.10; % 10% jitter
+
+% Generate jittered intervals
+min_interval = mean_interval * (1 - jitter_percent);
+max_interval = mean_interval * (1 + jitter_percent);
+intervals = min_interval + (max_interval - min_interval) * rand(1, n-1);
+
+% Generate the vector from cumulative sum of intervals
+vec = [0, cumsum(intervals)];
+
+onset = num2cell(vec');
+duration = num2cell(zeros(n,1));
+
+% Original trial types
+trial_type = {'TMS90'; 'TMS100'; 'TMS110'; 'TMS120'};
+
+% Number of repetitions per type
+reps_per_type = 10;
+
+% Expand to 40 elements (10 of each)
+expanded_types = repmat(trial_type, reps_per_type, 1);
+
+% Randomize the order
+shuffled_types = expanded_types(randperm(numel(expanded_types)));
+trial_type = shuffled_types;
 
 % Write table
 T = table(onset,duration,trial_type, 'VariableNames', {'onset','duration','trial_type'});
@@ -372,6 +398,166 @@ data.trial_type.Levels.TMS90 = 'TMS at 90% RMT';
 data.trial_type.Levels.TMS100 = 'TMS at 100% RMT';
 data.trial_type.Levels.TMS110 = 'TMS at 110% RMT';
 data.trial_type.Levels.TMS120 = 'TMS at 120% RMT';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_events.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+%% SICI
+
+% Task name
+taskname = 'task-sici';
+
+% Empty data file
+outputName = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_emg.mat'];
+save(outputName);
+
+% Data file .json
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.TaskName = 'EMG during SICI.';
+data.TaskDescription = 'EMG recorded from right first dorsal interosseus muscle while participants hand was at rest during TMS SICI.';
+data.Manufacturer = 'SickEMG products';
+data.ManufacturerModelName = 'Cool^2';
+data.ManufacturerSerialNumber = '3234-00';
+data.EMGChannelCount = 1;
+data.EMGreference = 'single electrode placed on carpal joint';
+data.EMGground = 'wrist strap';
+data.SamplingFrequency = 2000;
+data.PowerLineFrequency = 50;
+dataSoftwareFilters = 'n/a';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_emg.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+% _nibs.tsv
+trial_type = {'single';'paired'};
+tms_intensity_mso = {72;72};
+tms_intensity_mso_con = {'n/a';42};
+tms_pos_centre = {'LeftM1';'LeftM1'};
+tms_pos_ydir = {'45';'45'};
+tms_pulse_shape = {'Monophasic';'Monophasic'};
+tms_pulse_direction = {'PA';'PA'};
+
+% Write table
+T = table(trial_type,tms_intensity_mso,tms_intensity_mso_con, tms_pos_centre,tms_pos_ydir,tms_pulse_shape, tms_pulse_direction, 'VariableNames', {'trial_type','tms_intensity_mso','tms_intensity_mso_con', 'tms_pos_centre','tms_pos_ydir','tms_pulse_shape','tms_pulse_direction'});
+outputName = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.tsv'];
+writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
+
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.NIBSType = 'TMS';
+data.NIBSDescription = 'SICI';
+data.Manufacturer = 'Magstim';
+data.ManufacturerModelName = 'BiStim^2';
+data.ManufacturerSerialNumber = '3234-00';
+data.CoilDetails.ModelName = 'D70';
+data.CoilDeails.SerialNumber = '4150-00';
+
+data.trial_type.LongName = 'Stimulation type';
+data.trial_type.Description = 'Single and paired pulses for SICI protocol.';
+data.trial_type.Levels.single = 'Single pulse test stimulus';
+data.trial_type.Levels.paired = 'Paired pulse test stimulus; ISI = 2ms, conditioning pulse intensity = 80% AMT';
+
+data.tms_intensity_mso.LongName = 'TMS intensity of test stimulus';
+data.tms_intensity_mso.Description = 'TMS intensity, described as a percentage of maximum stimulator output (MSO).';
+data.tms_intensity_mso.Units = 'percent';
+
+data.tms_intensity_mso_con.LongName = 'TMS intensity of conditioning stimulus';
+data.tms_intensity_mso_con.Description = 'TMS intensity, described as a percentage of maximum stimulator output (MSO).';
+data.tms_intensity_mso_con.Units = 'percent';
+
+data.tms_pos_centre.LongName = 'Position of the centre of the TMS coil.';
+data.tms_pos_centre.Description = 'TMS Coil Position Relative to underlying anatomy.';
+data.tms_pos_centre.Levels.LeftM1 = 'Coil center positioned over Left M1 (primary motor cortex).';
+
+data.tms_pos_ydir.LongName = 'TMS Coil Handle Direction';
+data.tms_pos_ydir.Description = 'The angular direction of the TMS coil handle relative to the midline with handle pointing to posterior.';
+data.tms_pos_ydir.Units = 'degrees';
+
+data.tms_pulse_shape.LongName = 'Shape of the TMS pulse';
+data.tms_pulse_shape.Description = 'Shape of the TMS pulse.';
+data.tms_pulse_shape.Levels.Monophasic = 'Monophasic pulse shape';
+data.tms_pulse_shape.Levels.Biphasic = 'Biphasic pulse shape';
+
+data.tms_pulse_direction.LongName = 'Direction of the TMS pulse';
+data.tms_pulse_direction.Description = 'Direction of the TMS pulse in the underlying cortex.';
+data.tms_pulse_direction.Levels.PA = 'Posterior to anterior';
+data.tms_pulse_direction.Levels.AP = 'Anterior to posterior';
+data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to posterior';
+data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+% Generate _events.tsv
+
+% Parameters
+n = 20;                % Number of values
+mean_interval = 5;     % Mean interval between values
+jitter_percent = 0.10; % 10% jitter
+
+% Generate jittered intervals
+min_interval = mean_interval * (1 - jitter_percent);
+max_interval = mean_interval * (1 + jitter_percent);
+intervals = min_interval + (max_interval - min_interval) * rand(1, n-1);
+
+% Generate the vector from cumulative sum of intervals
+vec = [0, cumsum(intervals)];
+
+onset = num2cell(vec');
+duration = num2cell(zeros(n,1));
+
+% Original trial types
+trial_type = {'single'; 'paired'};
+
+% Number of repetitions per type
+reps_per_type = 10;
+
+% Expand to 40 elements (10 of each)
+expanded_types = repmat(trial_type, reps_per_type, 1);
+
+% Randomize the order
+shuffled_types = expanded_types(randperm(numel(expanded_types)));
+trial_type = shuffled_types;
+
+% Write table
+T = table(onset,duration,trial_type, 'VariableNames', {'onset','duration','trial_type'});
+outputName = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_events.tsv'];
+writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
+
+% Write .json file for _events.tsv
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.trial_type.LongName = 'Stimulation type';
+data.trial_type.Description = 'Single and paired pulses for SICI protocol.';
+data.trial_type.Levels.single = 'Single pulse test stimulus';
+data.trial_type.Levels.paired = 'Paired pulse test stimulus; ISI = 2ms, conditioning pulse intensity = 80% AMT';
 
 % Convert the structure to JSON format
 jsonData = jsonencode(data, 'PrettyPrint', true);

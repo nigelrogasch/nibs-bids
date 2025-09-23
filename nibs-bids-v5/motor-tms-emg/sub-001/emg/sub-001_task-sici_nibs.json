@@ -1,6 +1,6 @@
 {
   "NIBSType": "TMS",
-  "NIBSDescription": "Input-output curve.",
+  "NIBSDescription": "SICI",
   "Manufacturer": "Magstim",
   "ManufacturerModelName": "BiStim^2",
   "ManufacturerSerialNumber": "3234-00",
@@ -12,16 +12,19 @@
   },
   "trial_type": {
     "LongName": "Stimulation type",
-    "Description": "Different stimulation intensity conditions provided for input-output curve.",
+    "Description": "Single and paired pulses for SICI protocol.",
     "Levels": {
-      "TMS90": "TMS at 90% RMT",
-      "TMS100": "TMS at 100% RMT",
-      "TMS110": "TMS at 110% RMT",
-      "TMS120": "TMS at 120% RMT"
+      "single": "Single pulse test stimulus",
+      "paired": "Paired pulse test stimulus; ISI = 2ms, conditioning pulse intensity = 80% AMT"
     }
   },
   "tms_intensity_mso": {
-    "LongName": "TMS intensity",
+    "LongName": "TMS intensity of test stimulus",
+    "Description": "TMS intensity, described as a percentage of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
+  "tms_intensity_mso_con": {
+    "LongName": "TMS intensity of conditioning stimulus",
     "Description": "TMS intensity, described as a percentage of maximum stimulator output (MSO).",
     "Units": "percent"
   },
