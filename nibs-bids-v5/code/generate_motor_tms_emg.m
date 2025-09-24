@@ -6,6 +6,63 @@ filePath = 'G:\My Drive\Science\Projects\projects\2024_NIBS-BIDS\repository\nibs
 % Participants
 id = 'sub-001';
 
+%% Generate dataset_description.json
+
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+% List of field
+data.Name = 'Example dataset: motor TMS-EMG experiment';
+data.BIDSVersion = '1.11.0';
+data.DatasetType = 'raw';
+data.Licence = 'CC0';
+data.Authors = ['Nigel Rogasch'];
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,'dataset_description.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+%% Generate README.md
+
+% Define the markdown content
+md_content = {
+    '# Example data set: motor TMS-EMG'
+    ''
+    ['This data set provides an example of formatting using a proposed ' ...
+    'nibs-bidsv5 standard.']
+    ''
+    '## Experiment details'
+    'The experiment involves collecting TMS-EMG data from and individual.'
+    '5 protocols are performed: RMT, AMT, S1mV, input-output curve, and SICI.'
+    ['TMS is given over left primary motor cortex, and EMG is recorded from ' ...
+    'right first dorsal interosseus muscle.']
+    ''
+    '## Notes'
+    'The EMG data files are empty and do not correspond to BIDS data types.'
+    'They are included for demonstration purposes only.'
+    ''
+};
+
+% Define the output file name
+filename = [filePath,'README.md'];
+
+% Open the file for writing
+fid = fopen(filename, 'w');
+
+% Write each line to the file
+for i = 1:length(md_content)
+    fprintf(fid, '%s\n', md_content{i});
+end
+
+% Close the file
+fclose(fid);
+
 %% Generate participants.tsv
 
 % List of inputs
