@@ -1,0 +1,46 @@
+{
+  "NIBSType": "TMS",
+  "NIBSDescription": "Resting motor threshold",
+  "Manufacturer": "Magstim",
+  "ManufacturerModelName": "BiStim^2",
+  "ManufacturerSerialNumber": "3234-00",
+  "CoilDetails": {
+    "ModelName": "D70",
+    "SerialNumber": "4150-00"
+  },
+  "tms_rmt": {
+    "LongName": "TMS Resting Motor Threshold",
+    "Description": "Lowest stimulation intensity required to evoke at least 5 out of 10 MEPs with a peak-to-peak amplitude > 0.05 mV, described as a percentage of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
+  "tms_pos_centre": {
+    "LongName": "Position of the centre of the TMS coil.",
+    "Description": "TMS Coil Position Relative to underlying anatomy.",
+    "Levels": {
+      "LeftM1": "Coil center positioned over Left M1 (primary motor cortex)."
+    }
+  },
+  "tms_pos_ydir": {
+    "LongName": "TMS Coil Handle Direction",
+    "Description": "The angular direction of the TMS coil handle relative to the midline with handle pointing to posterior.",
+    "Units": "degrees"
+  },
+  "tms_pulse_shape": {
+    "LongName": "Shape of the TMS pulse",
+    "Description": "Shape of the TMS pulse.",
+    "Levels": {
+      "Monophasic": "Monophasic pulse shape",
+      "Biphasic": "Biphasic pulse shape"
+    }
+  },
+  "tms_pulse_direction": {
+    "LongName": "Direction of the TMS pulse",
+    "Description": "Direction of the TMS pulse in the underlying cortex.",
+    "Levels": {
+      "PA": "Posterior to anterior",
+      "AP": "Anterior to posterior",
+      "PAAP": "Posterior to anterior then anterior to posterior",
+      "APPA": "Anterior to posterior then posterior to anterior"
+    }
+  }
+}
