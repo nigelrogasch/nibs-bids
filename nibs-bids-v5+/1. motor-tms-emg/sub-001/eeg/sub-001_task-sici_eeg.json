@@ -1,0 +1,11 @@
+{
+  "TaskName": "EMG during SICI.",
+  "TaskDescription": "EMG recorded from right first dorsal interosseus muscle while participants hand was at rest during TMS SICI.",
+  "Manufacturer":"Brain Products",
+  "ManufacturerModelName": "BrainAmp_DC",
+  "EMGChannelCount": 1,
+  "EMGreference": "first dorsal interosseous muscle",
+  "EMGground": "wrist strap",
+  "SamplingFrequency": 2000,
+  "PowerLineFrequency": 50
+}
