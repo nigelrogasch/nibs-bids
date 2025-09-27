@@ -1,11 +1,11 @@
 {
-  "TaskName": "Active motor threshold",
+  "TaskName": "Online prefrontal TMS-EEG experiment",
   "Instructions": "",
-  "TaskDescription": "Searching for a Active motor threshold in the motor cortex",
+  "TaskDescription": "Online prefrontal TMS-EEG experiment. Single pulse TEPs (120% RMT) - 100 trials ",
   "SoftwareVersion": "",
   "Manufacturer": "MagVenture",
   "ManufacturersModelName": "MagProX100 MAGOPTION",
-  "TrackingSystemName": "n/a",
+  "TrackingSystemName": "Localite",
   
   "CoilSet": [
   {
@@ -75,8 +75,8 @@
   "ProtocolName": {
     "Description": "(when using sequence stimulation) The sequence timing mode unique name. (e.g. sici,lici,custom, etc)"
   },
-  "InterDoublePulseInterval": {
-    "Description": "IDPI - The duration between the beginning of the first pulse to the beginning of the second pulse in twin or dual stimulation mode",
+  "InterStimulusInterval": {
+    "Description": "ISI - The duration between the beginning of the first pulse to the beginning of the second pulse in twin or dual stimulation mode",
     "Units": "msec"
   },
   "InterPulseInterval": {
