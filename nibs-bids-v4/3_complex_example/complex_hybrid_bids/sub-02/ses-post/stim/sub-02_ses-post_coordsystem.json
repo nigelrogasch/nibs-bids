@@ -1,0 +1,7 @@
+{
+  "IntendedFor": [
+    "bids::sub-02/ses-post/anat/sub-02_ses-post_T1w.nii.gz"
+  ],
+  "CoordinateSystem": "Head-RAS",
+  "CoordinateUnits": "mm"
+}

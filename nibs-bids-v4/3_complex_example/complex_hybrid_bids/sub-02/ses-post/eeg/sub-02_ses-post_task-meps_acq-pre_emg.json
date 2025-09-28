@@ -1,0 +1,7 @@
+{
+  "TaskName": "meps",
+  "SamplingFrequency": 5000,
+  "PowerLineFrequency": 60,
+  "RecordingType": "continuous",
+  "Manufacturer": "BrainVision"
+}

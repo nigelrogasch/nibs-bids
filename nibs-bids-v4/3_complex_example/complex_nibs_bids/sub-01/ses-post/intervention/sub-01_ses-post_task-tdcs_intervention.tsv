@@ -1,0 +1,2 @@
+intervention_type	StimType	pattern	tes_electrode1_label	tes_electrode1_pos_centre	tes_electrode1_current	tes_electrode2_label	tes_electrode2_pos_centre	tes_electrode2_current	duration_s	ramp_up_s	ramp_down_s	electrode_size_mm
+nibs	tES	tDCS	anode	C3	0.002	cathode	Fp2	-0.002	1200	30	30	50x70

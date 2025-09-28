@@ -1,0 +1,9 @@
+filename	acq_time
+anat/sub-02_ses-pre_T1w.nii.gz	2025-10-01T09:00:00
+func/sub-02_ses-pre_task-rest_run-01_bold.nii.gz	2025-10-01T09:15:00
+dwi/sub-02_ses-pre_dwi.nii.gz	2025-10-01T09:30:00
+eeg/sub-02_ses-pre_task-meps_acq-pre_eeg.vhdr	2025-10-01T10:00:00
+eeg/sub-02_ses-pre_task-meps_acq-pre_emg.vhdr	2025-10-01T10:00:30
+intervention/sub-02_ses-pre_task-tdcs_intervention.tsv	2025-10-01T10:10:00
+eeg/sub-02_ses-pre_task-meps_acq-post_eeg.vhdr	2025-10-01T10:35:00
+eeg/sub-02_ses-pre_task-meps_acq-post_emg.vhdr	2025-10-01T10:35:30

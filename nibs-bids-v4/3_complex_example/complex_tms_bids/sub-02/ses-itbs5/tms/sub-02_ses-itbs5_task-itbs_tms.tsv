@@ -1,0 +1,2 @@
+StimulusMode	MarkerID	TrainOn_s	TrainOff_s	Bursts	PulsesPerBurst	IntraBurstHz	BurstRateHz	TotalPulses	FirstPulseAmplitudeRMT
+iTBS	M1	2	8	200	3	50	5	600	90

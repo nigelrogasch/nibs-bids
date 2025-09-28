@@ -1,0 +1,8 @@
+filename	acq_time
+eeg/sub-02_ses-post_task-meps_acq-pre_eeg.vhdr	2025-10-20T09:30:00
+eeg/sub-02_ses-post_task-meps_acq-pre_emg.vhdr	2025-10-20T09:30:30
+tms/sub-02_ses-post_task-meps_acq-pre_tms.tsv	2025-10-20T09:31:00
+tes/sub-02_ses-post_task-tdcs_tes.tsv	2025-10-20T09:40:00
+eeg/sub-02_ses-post_task-meps_acq-post_eeg.vhdr	2025-10-20T10:05:00
+eeg/sub-02_ses-post_task-meps_acq-post_emg.vhdr	2025-10-20T10:05:30
+tms/sub-02_ses-post_task-meps_acq-post_tms.tsv	2025-10-20T10:06:00

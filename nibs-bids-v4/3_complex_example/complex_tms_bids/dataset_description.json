@@ -1,0 +1,9 @@
+{
+  "Name": "Complex Pre/tDCS/Post + iTBS Course (TMS-BIDS)",
+  "BIDSVersion": "1.10.0",
+  "DatasetType": "raw",
+  "License": "CC-BY-4.0",
+  "Authors": [
+    "Your Lab"
+  ]
+}

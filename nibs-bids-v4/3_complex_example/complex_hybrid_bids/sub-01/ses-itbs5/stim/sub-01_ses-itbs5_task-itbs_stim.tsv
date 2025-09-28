@@ -1,0 +1,2 @@
+StimID	StimType	Onset	Duration	pattern	bursts	pulses_per_burst	intraburst_freq_hz	burst_rate_hz	train_on_s	train_off_s	total_pulses	tms_intensity_rmt_pct	MarkerID
+ses-itbs5_itbs	TMS	2025-10-11T09:00:00	600	iTBS	200	3	50	5	2	8	600	90	M1

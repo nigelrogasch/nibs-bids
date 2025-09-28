@@ -1,0 +1,6 @@
+filename	acq_time
+eeg/sub-01_ses-post_task-meps_acq-pre_eeg.vhdr	2025-10-20T09:30:00
+eeg/sub-01_ses-post_task-meps_acq-pre_emg.vhdr	2025-10-20T09:30:30
+intervention/sub-01_ses-post_task-tdcs_intervention.tsv	2025-10-20T09:40:00
+eeg/sub-01_ses-post_task-meps_acq-post_eeg.vhdr	2025-10-20T10:05:00
+eeg/sub-01_ses-post_task-meps_acq-post_emg.vhdr	2025-10-20T10:05:30

@@ -1,0 +1,2 @@
+StimulusMode	Electrode1Label	Electrode1Pos	Electrode1CurrentA	Electrode2Label	Electrode2Pos	Electrode2CurrentA	Duration_s	RampUp_s	RampDown_s	ElectrodeSize_mm
+tDCS	anode	C3	0.002	cathode	Fp2	-0.002	1200	30	30	50x70
