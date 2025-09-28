@@ -1,0 +1,2 @@
+CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	InterPulseInterval	BurstPulseNumber	PulseRate	TrainPulses	RepetitionRate	TrainNumber	InterTrainInterval	MarkerID	StimStepCount	FirstPulseAmplitude	FirstPulseAmplitudeRMT	StimValidation	Timestamp
+manual	coil_1	single	normal	monophasic	iTBS	20	3	50	10	5	20	8000	marker1	1	40	70	good	2025-06-01T15:00:00Z

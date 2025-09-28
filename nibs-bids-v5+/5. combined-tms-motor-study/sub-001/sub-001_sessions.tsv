@@ -1,0 +1,5 @@
+session_id	acq_time	description
+ses-mri	2025-06-15T13:45:30	"MRI session"
+ses-01	2025-06-16T12:00:00	"cTBS (Offline)"	
+ses-02	2025-06-17T17:30:30	"Mixed SICI, ICF, SP, Single Pulse"
+ses-03	2025-06-18T10:30:30	"Repeat SICI, ICF, SP, Single Pulse with new parameters"
