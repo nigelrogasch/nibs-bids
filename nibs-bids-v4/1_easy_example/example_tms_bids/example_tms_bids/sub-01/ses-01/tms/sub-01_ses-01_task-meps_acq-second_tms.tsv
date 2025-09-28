@@ -1,0 +1,11 @@
+CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	MarkerID	StimStepCount	FirstPulseAmplitude	FirstPulseAmplitudeRMT	MotorResponse	Latency	ResponseChannelName	ResponseChannelType	Status	Timestamp
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	400	24.0	EMG1	emg	good	2025-09-26T10:45:00Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	402	24.0	EMG1	emg	good	2025-09-26T10:45:02Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	404	24.0	EMG1	emg	good	2025-09-26T10:45:04Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	406	24.0	EMG1	emg	good	2025-09-26T10:45:06Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	408	24.0	EMG1	emg	good	2025-09-26T10:45:08Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	410	24.0	EMG1	emg	good	2025-09-26T10:45:10Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	412	24.0	EMG1	emg	good	2025-09-26T10:45:12Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	414	24.0	EMG1	emg	good	2025-09-26T10:45:14Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	416	24.0	EMG1	emg	good	2025-09-26T10:45:16Z
+manual	1	single	normal	monophasic	simpleMEP	M1	1	55	110	418	24.0	EMG1	emg	good	2025-09-26T10:45:18Z

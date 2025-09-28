@@ -1,0 +1,10 @@
+{
+  "trial_type": {
+    "Levels": {
+      "TMS": "Single TMS pulse"
+    }
+  },
+  "stim_ref": {
+    "Description": "BIDS URI pointing to stim row by #id"
+  }
+}

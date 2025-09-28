@@ -1,0 +1,3 @@
+name	type	units	sampling_frequency	status	status_description
+EEG1	EEG	uV	5000	good	
+EMG1	EMG	uV	5000	good

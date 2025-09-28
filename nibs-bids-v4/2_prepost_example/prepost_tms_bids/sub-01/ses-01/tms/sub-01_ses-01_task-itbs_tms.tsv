@@ -1,0 +1,2 @@
+CoilDriver	CoilID	StimulusMode	ProtocolName	MarkerID	TrainOn_s	TrainOff_s	Bursts	PulsesPerBurst	IntraBurstHz	BurstRateHz	TotalPulses	FirstPulseAmplitude	FirstPulseAmplitudeRMT
+manual	1	iTBS	iTBS600	M1	2	8	200	3	50	5	600	42	70

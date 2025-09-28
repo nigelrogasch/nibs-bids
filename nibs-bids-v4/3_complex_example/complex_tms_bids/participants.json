@@ -1,0 +1,19 @@
+{
+  "age": {
+    "Units": "years"
+  },
+  "sex": {
+    "Levels": {
+      "M": "male",
+      "F": "female",
+      "O": "other"
+    }
+  },
+  "diagnosis": {
+    "Description": "Clinical status",
+    "Levels": {
+      "AlzheimersDisease": "AD",
+      "CognitivelyNormal": "CN"
+    }
+  }
+}

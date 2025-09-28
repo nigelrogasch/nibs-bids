@@ -1,0 +1,2 @@
+StimID	StimType	Onset	Duration	pattern	tes_electrode1_label	tes_electrode1_pos_centre	tes_electrode1_current	tes_electrode2_label	tes_electrode2_pos_centre	tes_electrode2_current	ramp_up_s	ramp_down_s	electrode_size_mm
+tdcs_002	tES	2025-10-20T09:40:00	1200	tDCS	anode	C3	0.002	cathode	Fp2	-0.002	30	30	50x70
