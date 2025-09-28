@@ -1,0 +1,48 @@
+{
+  "TaskName": "meps",
+  "TaskDescription": "Single-pulse TMS to left M1 during EMG to elicit MEPs (10 pulses).",
+  "Manufacturer": "Magstim",
+  "ManufacturersModelName": "BiStim2",
+  "CoilSet": [
+    {
+      "CoilID": "1",
+      "CoilType": "Figure-8",
+      "CoilShape": "figure-of-eight",
+      "CoilCooling": "air",
+      "CoilDiameter": {
+        "Value": 70,
+        "Units": "mm"
+      }
+    }
+  ],
+  "CoilDriver": {
+    "Levels": {
+      "manual": "Hand-held",
+      "fixed": "Mounted",
+      "cobot": "Collaborative robot",
+      "robot": "Industrial robot"
+    }
+  },
+  "StimulusMode": {
+    "Levels": {
+      "single": "Single pulse"
+    }
+  },
+  "Waveform": {
+    "Levels": {
+      "monophasic": "Monophasic pulse"
+    }
+  },
+  "FirstPulseAmplitude": {
+    "Units": "%"
+  },
+  "FirstPulseAmplitudeRMT": {
+    "Units": "%"
+  },
+  "MotorResponse": {
+    "Units": "uV"
+  },
+  "Latency": {
+    "Units": "ms"
+  }
+}

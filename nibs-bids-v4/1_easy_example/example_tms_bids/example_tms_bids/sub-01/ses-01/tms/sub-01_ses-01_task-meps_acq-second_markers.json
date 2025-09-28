@@ -1,0 +1,53 @@
+{
+  "MarkerID": {
+    "Description": "Identifier of stimulation site"
+  },
+  "target_x": {
+    "Units": "mm"
+  },
+  "target_y": {
+    "Units": "mm"
+  },
+  "target_z": {
+    "Units": "mm"
+  },
+  "entry_x": {
+    "Units": "mm"
+  },
+  "entry_y": {
+    "Units": "mm"
+  },
+  "entry_z": {
+    "Units": "mm"
+  },
+  "coil_x": {
+    "Units": "mm"
+  },
+  "coil_y": {
+    "Units": "mm"
+  },
+  "coil_z": {
+    "Units": "mm"
+  },
+  "normal_x": {
+    "Description": "Coil normal unit vector (x)"
+  },
+  "normal_y": {
+    "Description": "Coil normal unit vector (y)"
+  },
+  "normal_z": {
+    "Description": "Coil normal unit vector (z)"
+  },
+  "direction_x": {
+    "Description": "Coil handle direction unit vector (x)"
+  },
+  "direction_y": {
+    "Description": "Coil handle direction unit vector (y)"
+  },
+  "direction_z": {
+    "Description": "Coil handle direction unit vector (z)"
+  },
+  "Timestamp": {
+    "Description": "ISO 8601 timestamp of localization"
+  }
+}

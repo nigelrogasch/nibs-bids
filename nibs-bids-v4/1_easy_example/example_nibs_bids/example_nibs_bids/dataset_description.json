@@ -1,0 +1,9 @@
+{
+  "Name": "Example TMS-EMG with Neuronavigation (NIBS-BIDS)",
+  "BIDSVersion": "1.10.0",
+  "DatasetType": "raw",
+  "License": "CC-BY-4.0",
+  "Authors": [
+    "Your Lab"
+  ]
+}

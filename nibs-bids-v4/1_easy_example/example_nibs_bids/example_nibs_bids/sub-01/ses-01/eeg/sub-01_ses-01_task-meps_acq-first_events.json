@@ -1,0 +1,62 @@
+{
+  "NIBSDetails": {
+    "NIBSType": "TMS",
+    "NIBSDescription": "Single-pulse TMS over left M1 during EMG recording to elicit MEPs.",
+    "Manufacturer": "Magstim",
+    "ManufactureModelName": "BiStim^2",
+    "ManufacturerSerialNumber": "XXXX-XX",
+    "CoilDetails": {
+      "Coil 1": {
+        "ModelName": "D70",
+        "SerialNumber": "YYYY-YY"
+      }
+    }
+  },
+  "NeuronavigationDetails": {
+    "Manufacturer": "Brainsight",
+    "ManufactureModelName": "Brainsight TMS",
+    "SoftwareVersions": "2.x",
+    "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_ses-01_T1w.nii.gz",
+    "NeuronavigationCoordinateSystem": "Other",
+    "NeuronavigationCoordinateUnits": "mm",
+    "NeuronavigationCoordinateSystemDescription": "Head-referenced RAS; origin per local neuronavigation workflow."
+  },
+  "onset": {
+    "LongName": "Event Onset",
+    "Description": "Time from the start of the EMG recording when the TMS pulse occurred.",
+    "Units": "seconds"
+  },
+  "duration": {
+    "LongName": "Event Duration",
+    "Description": "Duration of the event.",
+    "Units": "seconds"
+  },
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Levels": {
+      "TMS": "Single TMS pulse"
+    }
+  },
+  "tms_rmt": {
+    "LongName": "Resting Motor Threshold",
+    "Description": "Percent of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
+  "tms_intensity_mso": {
+    "LongName": "TMS Stimulation Intensity",
+    "Description": "Intensity of the TMS pulse as a percentage of MSO.",
+    "Units": "percent"
+  },
+  "tms_pos_centre_x": {
+    "LongName": "TMS Coil Centre X",
+    "Units": "millimeters"
+  },
+  "tms_pos_centre_y": {
+    "LongName": "TMS Coil Centre Y",
+    "Units": "millimeters"
+  },
+  "tms_pos_centre_z": {
+    "LongName": "TMS Coil Centre Z",
+    "Units": "millimeters"
+  }
+}

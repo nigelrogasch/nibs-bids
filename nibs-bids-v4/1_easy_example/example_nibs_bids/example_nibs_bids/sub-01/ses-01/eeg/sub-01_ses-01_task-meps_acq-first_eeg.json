@@ -1,0 +1,19 @@
+{
+  "TaskName": "meps",
+  "SamplingFrequency": 5000,
+  "PowerLineFrequency": 60,
+  "EEGReference": "Ref electrode on forearm",
+  "RecordingType": "continuous",
+  "Manufacturer": "BrainVision",
+  "HardwareFilters": {
+    "Highpass": {
+      "CutoffHz": 10
+    },
+    "Lowpass": {
+      "CutoffHz": 1000
+    },
+    "Notch": {
+      "Hz": 60
+    }
+  }
+}
