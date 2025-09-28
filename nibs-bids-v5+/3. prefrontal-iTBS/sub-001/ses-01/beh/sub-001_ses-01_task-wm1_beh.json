@@ -1,0 +1,58 @@
+{
+  "TaskName":"Pre working memory task ",
+  "Instructions":"Text of the instructions given to participants before the recording",
+  "TaskDescription":"Pre working memory task ",
+
+  "trial": {
+	  "Description": "Indicator of the type of trial"
+  },
+  "stimulus":{
+	  "Description": "type of participant's responce",
+	  "Levels": {
+		  "A": "description",
+		  "B": "description",
+		  "C": "description",
+		  "D": "description"
+	  }
+  }, 
+  "response":{
+	  "Description": "type of participant's responce",
+	  "Levels": {
+		  "A": "description",
+		  "B": "description",
+		  "C": "description",
+		  "D": "description"
+	  }
+  }, 
+  "accuracy":{
+	  "Description": "accuracy"
+  }, 
+  "response_time":{
+	  "Description": "reaction time/decision time"
+  }, 
+   
+  "Software":"PsychoPy",
+  "SoftwareVersion":"2024.1.4",
+  
+  
+
+  "Hardware": {
+	  "Monitor": {
+		  "Model":"",
+		  "Diagonal":"",
+		  "Resolution":"",
+		  "Refresh Rate":""
+		  },
+	  
+	  "Keyboard": {
+		  "Model":"",
+		  "InterfaceType":"PS/2"
+		  },
+	  
+	  "HumanInterfaceDevice": {
+		  "Model":"",
+		  "Type":""
+		  }
+		  }
+
+}

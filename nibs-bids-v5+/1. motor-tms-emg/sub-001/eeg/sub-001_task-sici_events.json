@@ -1,0 +1,10 @@
+{
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "Single and paired pulses for SICI protocol.",
+    "Levels": {
+      "single_pulse": "Single pulse test stimulus",
+      "dual_pulse": "Paired pulse test stimulus; ISI = 2ms, conditioning pulse intensity = 80% AMT"
+    }
+  }
+}
