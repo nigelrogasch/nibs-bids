@@ -1,0 +1,11 @@
+CoilDriver	CoilID	StimulusMode	Waveform	ProtocolName	MarkerID	FirstPulseAmplitude	FirstPulseAmplitudeRMT	ResponseChannelName	ResponseChannelType
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg
+manual	1	single	monophasic	simpleMEP	M1	55	110	EMG1	emg

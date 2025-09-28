@@ -1,0 +1,18 @@
+{
+  "TaskName": "meps",
+  "SamplingFrequency": 5000,
+  "PowerLineFrequency": 60,
+  "RecordingType": "continuous",
+  "Manufacturer": "BrainVision",
+  "HardwareFilters": {
+    "Highpass": {
+      "CutoffHz": 0.1
+    },
+    "Lowpass": {
+      "CutoffHz": 1000
+    },
+    "Notch": {
+      "Hz": 60
+    }
+  }
+}

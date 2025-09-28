@@ -1,0 +1,11 @@
+StimID	StimType	Onset	Duration	tms_rmt	tms_intensity_mso	tms_pos_centre_x	tms_pos_centre_y	tms_pos_centre_z	MarkerID	IntendedFor
+post_p01	TMS	2025-09-26T10:46:00Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p02	TMS	2025-09-26T10:46:02Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p03	TMS	2025-09-26T10:46:04Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p04	TMS	2025-09-26T10:46:06Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p05	TMS	2025-09-26T10:46:08Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p06	TMS	2025-09-26T10:46:10Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p07	TMS	2025-09-26T10:46:12Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p08	TMS	2025-09-26T10:46:14Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p09	TMS	2025-09-26T10:46:16Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']
+post_p10	TMS	2025-09-26T10:46:18Z	0	60	55	-99	99	99	M1	['bids::sub-01/ses-01/eeg/sub-01_ses-01_task-meps_acq-post_eeg.vhdr']

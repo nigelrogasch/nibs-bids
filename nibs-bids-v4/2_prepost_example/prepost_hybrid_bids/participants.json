@@ -1,0 +1,12 @@
+{
+  "age": {
+    "Units": "years"
+  },
+  "sex": {
+    "Levels": {
+      "M": "male",
+      "F": "female",
+      "O": "other"
+    }
+  }
+}
