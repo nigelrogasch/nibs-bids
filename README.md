@@ -46,3 +46,12 @@ During the decision-making task, the following data are collected simultaneously
 * Intensity: 110% of RMT
 * Total Pulses: 60 (10 pulses per block, 6 blocks total)
 * Neuronavigation: Yes, coil position recorded for each pulse
+
+### 5. (TMS-BIDS team): Combined TMS Motor Study — Mixed Online/Offline Stimulation
+This example demonstrates a realistic multi-session experiment combining both offline and online transcranial magnetic stimulation (TMS) protocols targeting the motor cortex and parietal regions.
+
+* Session 1 (Offline): Continuous Theta Burst Stimulation (cTBS) applied to the parietal cortex (600 pulses, no concurrent recording).
+
+* Session 2 (Online): Mixed TMS protocols including Single Pulse, Short-Interval Intracortical Inhibition (SICI), Intracortical Facilitation (ICF), and Silent Period (SP) — applied during EMG/EEG recording over the motor cortex.
+
+* Session 3 (Online): Repetition of session 2 to assess test–retest reliability.
