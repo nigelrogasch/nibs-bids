@@ -1,0 +1,24 @@
+{
+  "TaskName":"Multimodal TMS Experiment During Product Preference Decision-Making",
+  "InstitutionName":"Institute for Cognitive Neuroscience, National Research University 'Higher School of Economics'",
+  "TaskDescription":"In this neuro-marketing study, participants evaluate product preferences (Brand A vs Brand B) while undergoing brain stimulation.",
+  "Instructions":"Your task is to detect images when they appear for the 2nd time, only then press the response button with your right/left hand (counterbalanced across subjects)",
+
+  "Manufacturer":"NIRx",
+  "ManufacturersModelName":"NIRScout X+",
+  "SamplingFrequency":3.906250,
+  "NIRSChannelCount":56,
+  "NIRSSourceOptodeCount":16,
+  "NIRSDetectorOptodeCount":16,
+  
+  "SourceType":"LASER",
+  "DetectorType":"APD",
+  
+  "SoftwareVersions":"NIRStar 15.3",
+  "NIRSPlacementScheme": "10-20",
+  "CapManufacturer":"EasyCap",
+  "CapManufacturersModelName":"CMA-64",
+  "TriggerChannelCount": 1,
+  "SoftwareFilters": "n/a",
+  "RecordingType":"continuous"
+}

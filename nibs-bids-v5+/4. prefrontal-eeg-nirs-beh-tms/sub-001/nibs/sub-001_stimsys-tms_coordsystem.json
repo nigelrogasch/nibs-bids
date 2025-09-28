@@ -1,0 +1,22 @@
+
+{
+  "ImageData": "NIFTI",
+  "IntendedFor": "bids::sub-001/anat/sub-01_T1w.nii.gz",
+  
+  "AnatomicalLandmarkCoordinateSystem": "Individual",
+  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
+  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction. Coordinate origin (between the ears).",
+  "AnatomicalLandmarkCoordinates": {
+	  "NAS":[9.76823213,-0.11917776,-1.87417223],
+	  "LPA":[-0.29274026,6.88415084,0.70120923],
+	  "RPA":[-0.99183277,-6.70128616,0.08443862]},
+  "AnatomicalLandmarkCoordinatesDescription":"NAS - nasion, LPA - left preauricular point, RPA - right preauricular point",
+  "DigitizedHeadPoints": "n/a",
+  "DigitizedHeadPointsNumber": "600",
+  "DigitizedHeadPointsDescription": "The array of digital head points were collected during co-registration procedure in Localite software",
+  "DigitizedHeadPointsUnits": "n/a",  
+
+  "RmsDeviation": " {RMS:[1.1],NAS:[0.7],LPA:[1.2],RPA:[1.5]}",
+  "RmsDeviationUnits": "mm",
+  "RmsDeviationDescription": " RMS (Root Mean Square error)"
+}
