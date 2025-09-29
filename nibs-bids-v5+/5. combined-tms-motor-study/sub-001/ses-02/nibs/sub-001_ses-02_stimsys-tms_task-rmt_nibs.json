@@ -1,11 +1,11 @@
 {
-  "TaskName": "Online Motor Task, second session",
+  "TaskName": "RMT",
   "Instructions": "",
-  "TaskDescription": "Online Motor Task",
+  "TaskDescription": "RMT",
   "SoftwareVersion": "",
   "Manufacturer": "MagVenture",
   "ManufacturersModelName": "MagProX100 MAGOPTION",
-  "TrackingSystemName": "Localite",
+  "TrackingSystemName": "n/a",
   
   "CoilSet": [
   {
@@ -75,8 +75,8 @@
   "ProtocolName": {
     "Description": "(when using sequence stimulation) The sequence timing mode unique name. (e.g. sici,lici,custom, etc)"
   },
-  "InterStimulusInterval": {
-    "Description": "ISI - The duration between the beginning of the first pulse to the beginning of the second pulse in twin or dual stimulation mode",
+  "InterDoublePulseInterval": {
+    "Description": "IDPI - The duration between the beginning of the first pulse to the beginning of the second pulse in twin or dual stimulation mode",
     "Units": "msec"
   },
   "InterPulseInterval": {
