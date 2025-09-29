@@ -50,8 +50,12 @@ During the decision-making task, the following data are collected simultaneously
 ### 5. (TMS-BIDS team): Combined TMS Motor Study — Mixed Online/Offline Stimulation
 This example demonstrates a realistic multi-session experiment combining both offline and online transcranial magnetic stimulation (TMS) protocols targeting the motor cortex and parietal regions.
 
-* Session 1 (Offline): Continuous Theta Burst Stimulation (cTBS) applied to the parietal cortex (600 pulses, no concurrent recording).
+* Three lab visits on separate days
+- Day 1 cTBS over inferior parietal cortex
+- Day 2 cTBS over M1
+- Day 3 Sham cTBS
 
-* Session 2 (Online): Mixed TMS protocols including Single Pulse, Short-Interval Intracortical Inhibition (SICI), Intracortical Facilitation (ICF), and Silent Period (SP) — applied during EMG/EEG recording over the motor cortex.
-
-* Session 3 (Online): Repetition of session 2 to assess test–retest reliability.
+* Within each day
+- Block A SICI, ICF, single-pulse (SP) baseline with EMG MEPs
+- Block B Action-observation task with single-pulse TMS during video observation, EMG MEPs recorded
+- Block C SICI, ICF, SP post

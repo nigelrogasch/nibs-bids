@@ -1,6 +1,6 @@
 {
-  "TaskName": "Online Motor Task",
-  "TaskDescription": "Online Motor Task",
+  "TaskName": "EMG - Action-observation task  ",
+  "TaskDescription": "",
   "Manufacturer":"Brain Products",
   "ManufacturerModelName": "BrainAmp_DC",
   

@@ -4,9 +4,15 @@ This data set provides an example of formatting using a proposed nibs-bidsv5+ st
 
 ## Experiment details
 This example demonstrates a realistic multi-session experiment combining both offline and online transcranial magnetic stimulation (TMS) protocols targeting the motor cortex and parietal regions.
+* Day 1 cTBS over inferior parietal cortex
+* Day 2 cTBS over M1
+* Day 3 Sham cTBS
 
-Session 1 (Offline): Continuous Theta Burst Stimulation (cTBS) applied to the parietal cortex (600 pulses, no concurrent recording).
+•	Within each day
+Block A SICI, ICF, single-pulse (SP) baseline with EMG MEPs
+Block B Action-observation task with single-pulse TMS during video observation, EMG MEPs recorded
+Block C SICI, ICF, SP post
 
-Session 2 (Online): Mixed TMS protocols including Single Pulse, Short-Interval Intracortical Inhibition (SICI), Intracortical Facilitation (ICF), and Silent Period (SP) — applied during EMG/EEG recording over the motor cortex.
+•	Aim
+Correlate SICI, ICF, SP changes with AO-MEP modulation. Run E-field checks based on coil geometry. Use neuronavigation
 
-Session 3 (Online): Repetition of session 2 to assess test–retest reliability.

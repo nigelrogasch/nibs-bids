@@ -1,0 +1,6 @@
+{
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "TMS Stimulation trigger"
+  }
+}
