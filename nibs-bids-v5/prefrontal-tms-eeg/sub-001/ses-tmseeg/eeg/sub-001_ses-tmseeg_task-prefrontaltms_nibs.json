@@ -30,6 +30,11 @@
     "Description": "Trial number of TMS pulses given.",
     "Units": "Integer"
   },
+  "tms_intensity_mso": {
+    "LongName": "TMS intensity",
+    "Description": "TMS intensity, described as a percentage of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
   "tms_pulse_shape": {
     "LongName": "Shape of the TMS pulse",
     "Description": "Shape of the TMS pulse.",
