@@ -1,0 +1,12 @@
+{
+  "TaskName": "EEG during TMS to left DLPFC.",
+  "TaskDescription": "EEG recorded while participant was at rest with eyes open during TMS to left DLPFC.",
+  "Manufacturer": "SickEEG products",
+  "ManufacturerModelName": "Cool^2",
+  "ManufacturerSerialNumber": "3234-00",
+  "EEGChannelCount": 64,
+  "EEGreference": "single electrode placed on forehead",
+  "EEGground": "single electrode placed on forehead",
+  "SamplingFrequency": 10000,
+  "PowerLineFrequency": 50
+}

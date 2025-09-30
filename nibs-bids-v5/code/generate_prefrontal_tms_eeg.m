@@ -193,164 +193,337 @@ filename = [filePath,id,filesep,sesname,filesep,'nibs',filesep,id,'_',sesname,'_
 % Write the JSON data to a file
 writejson(filename, jsonData);
 
-% %% Input output curve files
-% 
-% % Task name
-% taskname = 'task-prefrontaltms';
-% 
-% % Empty data file
-% outputName = [filePath,id,filesep,'eeg',filesep,id,'_',taskname,'_emg.mat'];
-% save(outputName);
-% 
-% % Data file .json
-% % Write .json file
-% % Define the structure for the JSON data
-% data = struct();
-% 
-% % fields
-% data.TaskName = 'EMG during TMS input-output curve.';
-% data.TaskDescription = 'EMG recorded from right first dorsal interosseus muscle while participants hand was at rest during TMS input-output curve.';
-% data.Manufacturer = 'SickEMG products';
-% data.ManufacturerModelName = 'Cool^2';
-% data.ManufacturerSerialNumber = '3234-00';
-% data.EMGChannelCount = 1;
-% data.EMGreference = 'single electrode placed on carpal joint';
-% data.EMGground = 'wrist strap';
-% data.SamplingFrequency = 2000;
-% data.PowerLineFrequency = 50;
-% dataSoftwareFilters = 'n/a';
-% 
-% % Convert the structure to JSON format
-% jsonData = jsonencode(data, 'PrettyPrint', true);
-% 
-% % Define the filename
-% filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_emg.json'];
-% 
-% % Write the JSON data to a file
-% writejson(filename, jsonData);
-% 
-% % _nibs.tsv
-% trial_type = {'TMS90';'TMS100';'TMS110';'TMS120'};
-% tms_intensity_mso = {'54';'60';'66';'72'};
-% tms_pos_centre = {'LeftM1';'LeftM1';'LeftM1';'LeftM1'};
-% tms_pos_ydir = {'45';'45';'45';'45'};
-% tms_pulse_shape = {'Monophasic';'Monophasic';'Monophasic';'Monophasic';};
-% tms_pulse_direction = {'PA';'PA';'PA';'PA'};
-% 
-% % Write table
-% T = table(trial_type,tms_intensity_mso, tms_pos_centre,tms_pos_ydir,tms_pulse_shape, tms_pulse_direction, 'VariableNames', {'trial_type','tms_intensity_mso', 'tms_pos_centre','tms_pos_ydir','tms_pulse_shape','tms_pulse_direction'});
-% outputName = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.tsv'];
-% writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
-% 
-% % Write .json file
-% % Define the structure for the JSON data
-% data = struct();
-% 
-% % fields
-% data.NIBSType = 'TMS';
-% data.NIBSDescription = 'Input-output curve.';
-% data.Manufacturer = 'Magstim';
-% data.ManufacturerModelName = 'BiStim^2';
-% data.ManufacturerSerialNumber = '3234-00';
-% data.CoilDetails.ModelName = 'D70';
-% data.CoilDetails.SerialNumber = '4150-00';
-% 
-% data.trial_type.LongName = 'Stimulation type';
-% data.trial_type.Description = 'Different stimulation intensity conditions provided for input-output curve.';
-% data.trial_type.Levels.TMS90 = 'TMS at 90% RMT';
-% data.trial_type.Levels.TMS100 = 'TMS at 100% RMT';
-% data.trial_type.Levels.TMS110 = 'TMS at 110% RMT';
-% data.trial_type.Levels.TMS120 = 'TMS at 120% RMT';
-% 
-% data.tms_intensity_mso.LongName = 'TMS intensity';
-% data.tms_intensity_mso.Description = 'TMS intensity, described as a percentage of maximum stimulator output (MSO).';
-% data.tms_intensity_mso.Units = 'percent';
-% 
-% data.tms_pos_centre.LongName = 'Position of the centre of the TMS coil.';
-% data.tms_pos_centre.Description = 'TMS Coil Position Relative to underlying anatomy.';
-% data.tms_pos_centre.Levels.LeftM1 = "Coil center positioned over Left M1 (primary motor cortex).";
-% 
-% data.tms_pos_ydir.LongName = 'TMS Coil Handle Direction';
-% data.tms_pos_ydir.Description = 'The angular direction of the TMS coil handle relative to the midline with handle pointing to posterior.';
-% data.tms_pos_ydir.Units = 'degrees';
-% 
-% data.tms_pulse_shape.LongName = 'Shape of the TMS pulse';
-% data.tms_pulse_shape.Description = 'Shape of the TMS pulse.';
-% data.tms_pulse_shape.Levels.Monophasic = 'Monophasic pulse shape';
-% data.tms_pulse_shape.Levels.Biphasic = 'Biphasic pulse shape';
-% 
-% data.tms_pulse_direction.LongName = 'Direction of the TMS pulse';
-% data.tms_pulse_direction.Description = 'Direction of the TMS pulse in the underlying cortex.';
-% data.tms_pulse_direction.Levels.PA = 'Posterior to anterior';
-% data.tms_pulse_direction.Levels.AP = 'Anterior to posterior';
-% data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to posterior';
-% data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
-% 
-% % Convert the structure to JSON format
-% jsonData = jsonencode(data, 'PrettyPrint', true);
-% 
-% % Define the filename
-% filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_nibs.json'];
-% 
-% % Write the JSON data to a file
-% writejson(filename, jsonData);
-% 
-% % Generate _events.tsv
-% 
-% % Parameters
-% n = 40;                % Number of values
-% mean_interval = 5;     % Mean interval between values
-% jitter_percent = 0.10; % 10% jitter
-% 
-% % Generate jittered intervals
-% min_interval = mean_interval * (1 - jitter_percent);
-% max_interval = mean_interval * (1 + jitter_percent);
-% intervals = min_interval + (max_interval - min_interval) * rand(1, n-1);
-% 
-% % Generate the vector from cumulative sum of intervals
-% vec = [0, cumsum(intervals)];
-% 
-% onset = num2cell(vec');
-% duration = num2cell(zeros(n,1));
-% 
-% % Original trial types
-% trial_type = {'TMS90'; 'TMS100'; 'TMS110'; 'TMS120'};
-% 
-% % Number of repetitions per type
-% reps_per_type = 10;
-% 
-% % Expand to 40 elements (10 of each)
-% expanded_types = repmat(trial_type, reps_per_type, 1);
-% 
-% % Randomize the order
-% shuffled_types = expanded_types(randperm(numel(expanded_types)));
-% trial_type = shuffled_types;
-% 
-% % Write table
-% T = table(onset,duration,trial_type, 'VariableNames', {'onset','duration','trial_type'});
-% outputName = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_events.tsv'];
-% writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
-% 
-% % Write .json file for _events.tsv
-% % Define the structure for the JSON data
-% data = struct();
-% 
-% % fields
-% data.trial_type.LongName = 'Stimulation type';
-% data.trial_type.Description = 'Different stimulation intensity conditions provided for input-output curve.';
-% data.trial_type.Levels.TMS90 = 'TMS at 90% RMT';
-% data.trial_type.Levels.TMS100 = 'TMS at 100% RMT';
-% data.trial_type.Levels.TMS110 = 'TMS at 110% RMT';
-% data.trial_type.Levels.TMS120 = 'TMS at 120% RMT';
-% 
-% % Convert the structure to JSON format
-% jsonData = jsonencode(data, 'PrettyPrint', true);
-% 
-% % Define the filename
-% filename = [filePath,id,filesep,'emg',filesep,id,'_',taskname,'_events.json'];
-% 
-% % Write the JSON data to a file
-% writejson(filename, jsonData);
+%% TMS-EEG files
+
+% Task name
+taskname = 'task-prefrontaltms';
+sesname = 'ses-tmseeg';
+
+% ### Empty data file ###
+outputName = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_eeg.mat'];
+save(outputName);
+
+% Data file .json
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.TaskName = 'EEG during TMS to left DLPFC.';
+data.TaskDescription = 'EEG recorded while participant was at rest with eyes open during TMS to left DLPFC.';
+data.Manufacturer = 'SickEEG products';
+data.ManufacturerModelName = 'Cool^2';
+data.ManufacturerSerialNumber = '3234-00';
+data.EEGChannelCount = 64;
+data.EEGreference = 'single electrode placed on forehead';
+data.EEGground = 'single electrode placed on forehead';
+data.SamplingFrequency = 10000;
+data.PowerLineFrequency = 50;
+dataSoftwareFilters = 'n/a';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_eeg.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+% ### _events.tsv ###
+
+% Parameters
+n = 100;                % Number of values
+mean_interval = 5;     % Mean interval between values
+jitter_percent = 0.10; % 10% jitter
+
+% Generate jittered intervals
+min_interval = mean_interval * (1 - jitter_percent);
+max_interval = mean_interval * (1 + jitter_percent);
+intervals = min_interval + (max_interval - min_interval) * rand(1, n-1);
+
+% Generate the vector from cumulative sum of intervals
+vec = [0, cumsum(intervals)];
+
+onset = num2cell(vec');
+duration = num2cell(zeros(n,1));
+
+% Original trial types
+trial_type_name = {'TMSDLPFC'};
+trial_type = cell(100,1);
+for i=1:n
+    trial_type{i} = trial_type_name;
+end
+
+% Trial number
+trial_no = [1:100]';
+
+% Write table
+T = table(onset,duration,trial_type,trial_no, 'VariableNames', {'onset','duration','trial_type','trial_no'});
+outputName = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_events.tsv'];
+writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
+
+% Write .json file for _events.tsv
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.trial_type.LongName = 'Stimulation type';
+data.trial_type.Description = 'TMS pulses.';
+data.trial_type.Levels.TMSDLPFC = 'TMS to left DLPFC';
+
+data.trial_no.LongName = 'Trial number';
+data.trial_no.Description = 'Trial number of TMS pulses given.';
+data.trial_no.Units = 'Integer';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_events.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+% ### _nibs.tsv ###
+trial_type = cell(100,1);
+for i = 1:100
+    trial_type{i} = 'TMSDLPFC';
+end
+trial_no = cell(100,1);
+for i = 1:100
+    trial_no{i} =i;
+end
+tms_intensity_mso = cell(100,1);
+for i = 1:100
+    tms_intensity_mso{i} = 72;
+end
+tms_pulse_shape = cell(100,1);
+for i = 1:100
+    tms_pulse_shape{i} = 'Monophasic';
+end
+tms_pulse_direction = cell(100,1);
+for i = 1:100
+    tms_pulse_direction{i} = 'PA';
+end
+tms_pos_r1_c1 = cell(100,1);
+for i = 1:100
+    tms_pos_r1_c1{i} = 1;
+end
+tms_pos_r1_c2 = cell(100,1);
+for i = 1:100
+    tms_pos_r1_c2{i} = 0;
+end
+tms_pos_r1_c3 = cell(100,1);
+for i = 1:100
+    tms_pos_r1_c3{i} = 0;
+end
+tms_pos_r1_c4 = cell(100,1);
+for i = 1:100
+    tms_pos_r1_c4{i} = 20;
+end
+tms_pos_r2_c1 = cell(100,1);
+for i = 1:100
+    tms_pos_r2_c1{i} = 0;
+end
+tms_pos_r2_c2 = cell(100,1);
+for i = 1:100
+    tms_pos_r2_c2{i} = 1;
+end
+tms_pos_r2_c3 = cell(100,1);
+for i = 1:100
+    tms_pos_r2_c3{i} = 0;
+end
+tms_pos_r2_c4 = cell(100,1);
+for i = 1:100
+    tms_pos_r2_c4{i} = 20;
+end
+tms_pos_r3_c1 = cell(100,1);
+for i = 1:100
+    tms_pos_r3_c1{i} = 0;
+end
+tms_pos_r3_c2 = cell(100,1);
+for i = 1:100
+    tms_pos_r3_c2{i} = 0;
+end
+tms_pos_r3_c3 = cell(100,1);
+for i = 1:100
+    tms_pos_r3_c3{i} = 1;
+end
+tms_pos_r3_c4 = cell(100,1);
+for i = 1:100
+    tms_pos_r3_c4{i} = 20;
+end
+tms_pos_r4_c1 = cell(100,1);
+for i = 1:100
+    tms_pos_r4_c1{i} = 0;
+end
+tms_pos_r4_c2 = cell(100,1);
+for i = 1:100
+    tms_pos_r4_c2{i} = 0;
+end
+tms_pos_r4_c3 = cell(100,1);
+for i = 1:100
+    tms_pos_r4_c3{i} = 0;
+end
+tms_pos_r4_c4 = cell(100,1);
+for i = 1:100
+    tms_pos_r4_c4{i} = 1;
+end
+
+% Write table
+T = table(trial_type,trial_no,tms_pulse_shape,tms_pulse_direction,...
+    tms_pos_r1_c1,tms_pos_r1_c2,tms_pos_r1_c3,tms_pos_r1_c4,...
+    tms_pos_r2_c1,tms_pos_r2_c2,tms_pos_r2_c3,tms_pos_r2_c4,...
+    tms_pos_r3_c1,tms_pos_r3_c2,tms_pos_r3_c3,tms_pos_r3_c4,...
+    tms_pos_r4_c1,tms_pos_r4_c2,tms_pos_r4_c3,tms_pos_r4_c4,...
+    'VariableNames', {'trial_type','trial_no','tms_pulse_shape','tms_pulse_direction',...
+    'tms_pos_r1_c1','tms_pos_r1_c2','tms_pos_r1_c3','tms_pos_r1_c4',...
+    'tms_pos_r2_c1','tms_pos_r2_c2','tms_pos_r2_c3','tms_pos_r2_c4',...
+    'tms_pos_r3_c1','tms_pos_r3_c2','tms_pos_r3_c3','tms_pos_r3_c4',...
+    'tms_pos_r4_c1','tms_pos_r4_c2','tms_pos_r4_c3','tms_pos_r4_c4',...
+    });
+outputName = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_nibs.tsv'];
+writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
+
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+% fields
+data.NIBSType = 'TMS';
+data.NIBSDescription = 'TMS-EEG over left DLPFC';
+data.Manufacturer = 'Magstim';
+data.ManufacturerModelName = 'BiStim^2';
+data.ManufacturerSerialNumber = '3234-00';
+data.CoilDetails.ModelName = 'D70';
+data.CoilDetails.SerialNumber = '4150-00';
+data.NeuronavigationDetails.Manufacturer = 'BrainSight';
+data.NeuronavigationDetails.ManufacturerModelName = 'BrainSight3';
+data.NeuronavigationDetails.SoftwareVersions = '3.1';
+data.NeuronavigationDetails.NeuronavigationCoordinateSystem = 'Other';
+data.NeuronavigationDetails.NeuronavigationCoordinateUnits = 'RAS';
+data.NeuronavigationDetails.NeuronavigationCooridinateSystemDescription = "RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction.";
+data.NeuronavigationDetails.NeuronavigationCoilCoordiateSystemDescription = "Origin is centre of the coil, positive x-axis towards the right of the coil, positive y-axis orthogonal to x-axis through and away from the coil handle, z-axis orthogonal to xy-plane along the planar surface of the coil, positive pointing up (i.e., away from the participant’s head) of the active side of the coil.";
+data.NeuronavigationDetails.IntendedFor = "bids::sub-001/ses-mri/anat/sub-001_T1w.nii";
+
+data.trial_type.LongName = 'Stimulation type';
+data.trial_type.Description = 'TMS pulses.';
+data.trial_type.Levels.TMSDLPFC = 'TMS to left DLPFC';
+
+data.trial_no.LongName = 'Trial number';
+data.trial_no.Description = 'Trial number of TMS pulses given.';
+data.trial_no.Units = 'Integer';
+
+data.tms_pulse_shape.LongName = 'Shape of the TMS pulse';
+data.tms_pulse_shape.Description = 'Shape of the TMS pulse.';
+data.tms_pulse_shape.Levels.Monophasic = 'Monophasic pulse shape';
+data.tms_pulse_shape.Levels.Biphasic = 'Biphasic pulse shape';
+
+data.tms_pulse_direction.LongName = 'Direction of the TMS pulse';
+data.tms_pulse_direction.Description = 'Direction of the TMS pulse in the underlying cortex.';
+data.tms_pulse_direction.Levels.PA = 'Posterior to anterior';
+data.tms_pulse_direction.Levels.AP = 'Anterior to posterior';
+data.tms_pulse_direction.Levels.PAAP = 'Posterior to anterior then anterior to posterior';
+data.tms_pulse_direction.Levels.APPA = 'Anterior to posterior then posterior to anterior';
+
+data.tms_pos_r1_c1.LongName = 'Row 1 column 1 of affine transformation matrix describing coil position';
+data.tms_pos_r1_c1.Description = 'Corresponds to the [1,1] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r1_c1.Units = 'n/a';
+
+data.tms_pos_r1_c2.LongName = 'Row 1 column 2 of affine transformation matrix describing coil position';
+data.tms_pos_r1_c2.Description = 'Corresponds to the [1,2] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r1_c2.Units = 'n/a';
+
+data.tms_pos_r1_c3.LongName = 'Row 1 column 3 of affine transformation matrix describing coil position';
+data.tms_pos_r1_c3.Description = 'Corresponds to the [1,3] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r1_c3.Units = 'n/a';
+
+data.tms_pos_r1_c4.LongName = 'Row 1 column 4 of affine transformation matrix describing coil position';
+data.tms_pos_r1_c4.Description = 'Corresponds to the [1,4] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r1_c4.Units = 'n/a';
+
+data.tms_pos_r2_c1.LongName = 'Row 2 column 1 of affine transformation matrix describing coil position';
+data.tms_pos_r2_c1.Description = 'Corresponds to the [2,1] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r2_c1.Units = 'n/a';
+
+data.tms_pos_r2_c2.LongName = 'Row 2 column 2 of affine transformation matrix describing coil position';
+data.tms_pos_r2_c2.Description = 'Corresponds to the [2,2] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r2_c2.Units = 'n/a';
+
+data.tms_pos_r2_c3.LongName = 'Row 2 column 3 of affine transformation matrix describing coil position';
+data.tms_pos_r2_c3.Description = 'Corresponds to the [2,3] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r2_c3.Units = 'n/a';
+
+data.tms_pos_r2_c4.LongName = 'Row 2 column 4 of affine transformation matrix describing coil position';
+data.tms_pos_r2_c4.Description = 'Corresponds to the [2,4] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r2_c4.Units = 'n/a';
+
+data.tms_pos_r3_c1.LongName = 'Row 3 column 1 of affine transformation matrix describing coil position';
+data.tms_pos_r3_c1.Description = 'Corresponds to the [3,1] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r3_c1.Units = 'n/a';
+
+data.tms_pos_r3_c2.LongName = 'Row 3 column 2 of affine transformation matrix describing coil position';
+data.tms_pos_r3_c2.Description = 'Corresponds to the [3,2] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r3_c2.Units = 'n/a';
+
+data.tms_pos_r3_c3.LongName = 'Row 3 column 3 of affine transformation matrix describing coil position';
+data.tms_pos_r3_c3.Description = 'Corresponds to the [3,3] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r3_c3.Units = 'n/a';
+
+data.tms_pos_r3_c4.LongName = 'Row 3 column 4 of affine transformation matrix describing coil position';
+data.tms_pos_r3_c4.Description = 'Corresponds to the [3,4] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r3_c4.Units = 'n/a';
+
+data.tms_pos_r4_c1.LongName = 'Row 4 column 1 of affine transformation matrix describing coil position';
+data.tms_pos_r4_c1.Description = 'Corresponds to the [4,1] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r4_c1.Units = 'n/a';
+
+data.tms_pos_r4_c2.LongName = 'Row 4 column 2 of affine transformation matrix describing coil position';
+data.tms_pos_r4_c2.Description = 'Corresponds to the [4,2] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r4_c2.Units = 'n/a';
+
+data.tms_pos_r4_c3.LongName = 'Row 4 column 3 of affine transformation matrix describing coil position';
+data.tms_pos_r4_c3.Description = 'Corresponds to the [4,3] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r4_c3.Units = 'n/a';
+
+data.tms_pos_r4_c4.LongName = 'Row 4 column 4 of affine transformation matrix describing coil position';
+data.tms_pos_r4_c4.Description = 'Corresponds to the [4,4] row/column position in the affine transformation matrix describing coil position.';
+data.tms_pos_r4_c4.Units = 'n/a';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,sesname,filesep,'eeg',filesep,id,'_',sesname,'_',taskname,'_nibs.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
+
+%% MRI files
+
+% Task name
+taskname = 'task-rest';
+sesname = 'ses-mri';
+
+% ### Empty data file ###
+outputName = [filePath,id,filesep,sesname,filesep,'anat',filesep,id,'_',sesname,'_',taskname,'_T1w.mat'];
+save(outputName);
+
+% Write .json file
+% Define the structure for the JSON data
+data = struct();
+
+data.MRIDetails = 'Include MRI details here.';
+
+% Convert the structure to JSON format
+jsonData = jsonencode(data, 'PrettyPrint', true);
+
+% Define the filename
+filename = [filePath,id,filesep,sesname,filesep,'anat',filesep,id,'_',sesname,'_',taskname,'_T1w.json'];
+
+% Write the JSON data to a file
+writejson(filename, jsonData);
 
 %% Helper function for writing JSON to file
 function writejson(filename, jsonData)
