@@ -1,0 +1,124 @@
+{
+  "NIBSType": "TMS",
+  "NIBSDescription": "iTBS over left DLPFC",
+  "Manufacturer": "Magstim",
+  "ManufacturerModelName": "Rapid",
+  "ManufacturerSerialNumber": "3234-00",
+  "CoilDetails": {
+    "ModelName": "D70",
+    "SerialNumber": "4150-00"
+  },
+  "NeuronavigationDetails": {
+    "Manufacturer": "BrainSight",
+    "ManufacturerModelName": "BrainSight3",
+    "SoftwareVersions": "3.1",
+    "NeuronavigationCoordinateSystem": "Other",
+    "NeuronavigationCoordinateUnits": "RAS",
+    "NeuronavigationCooridinateSystemDescription": "RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction.",
+    "NeuronavigationCoilCoordiateSystemDescription": "Origin is centre of the coil, positive x-axis towards the right of the coil, positive y-axis orthogonal to x-axis through and away from the coil handle, z-axis orthogonal to xy-plane along the planar surface of the coil, positive pointing up (i.e., away from the participant’s head) of the active side of the coil.",
+    "IntendedFor": "bids::sub-001/ses-mri/anat/sub-001_T1w.nii"
+  },
+  "tms_intensity_mso": {
+    "LongName": "TMS intensity (set to 70% RMT)",
+    "Description": "TMS intensity of stimulation, described as a percentage of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
+  "tms_pulse_shape": {
+    "LongName": "Shape of the TMS pulse",
+    "Description": "Shape of the TMS pulse.",
+    "Levels": {
+      "Monophasic": "Monophasic pulse shape",
+      "Biphasic": "Biphasic pulse shape"
+    }
+  },
+  "tms_pulse_direction": {
+    "LongName": "Direction of the TMS pulse",
+    "Description": "Direction of the TMS pulse in the underlying cortex.",
+    "Levels": {
+      "PA": "Posterior to anterior",
+      "AP": "Anterior to posterior",
+      "PAAP": "Posterior to anterior then anterior to posterior",
+      "APPA": "Anterior to posterior then posterior to anterior"
+    }
+  },
+  "tms_pos_r1_c1": {
+    "LongName": "Row 1 column 1 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [1,1] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r1_c2": {
+    "LongName": "Row 1 column 2 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [1,2] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r1_c3": {
+    "LongName": "Row 1 column 3 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [1,3] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r1_c4": {
+    "LongName": "Row 1 column 4 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [1,4] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r2_c1": {
+    "LongName": "Row 2 column 1 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [2,1] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r2_c2": {
+    "LongName": "Row 2 column 2 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [2,2] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r2_c3": {
+    "LongName": "Row 2 column 3 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [2,3] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r2_c4": {
+    "LongName": "Row 2 column 4 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [2,4] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r3_c1": {
+    "LongName": "Row 3 column 1 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [3,1] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r3_c2": {
+    "LongName": "Row 3 column 2 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [3,2] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r3_c3": {
+    "LongName": "Row 3 column 3 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [3,3] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r3_c4": {
+    "LongName": "Row 3 column 4 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [3,4] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r4_c1": {
+    "LongName": "Row 4 column 1 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [4,1] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r4_c2": {
+    "LongName": "Row 4 column 2 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [4,2] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r4_c3": {
+    "LongName": "Row 4 column 3 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [4,3] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  },
+  "tms_pos_r4_c4": {
+    "LongName": "Row 4 column 4 of affine transformation matrix describing coil position",
+    "Description": "Corresponds to the [4,4] row/column position in the affine transformation matrix describing coil position.",
+    "Units": "n/a"
+  }
+}

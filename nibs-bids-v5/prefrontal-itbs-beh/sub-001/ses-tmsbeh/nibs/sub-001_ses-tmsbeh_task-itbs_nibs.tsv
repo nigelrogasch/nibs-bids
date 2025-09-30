@@ -1,0 +1,2 @@
+tms_intensity_mso	tms_pulse_shape	tms_pulse_direction	tms_pos_r1_c1	tms_pos_r1_c2	tms_pos_r1_c3	tms_pos_r1_c4	tms_pos_r2_c1	tms_pos_r2_c2	tms_pos_r2_c3	tms_pos_r2_c4	tms_pos_r3_c1	tms_pos_r3_c2	tms_pos_r3_c3	tms_pos_r3_c4	tms_pos_r4_c1	tms_pos_r4_c2	tms_pos_r4_c3	tms_pos_r4_c4
+42	Biphasic	PAAP	1	0	0	20	0	1	0	20	0	0	1	20	0	0	0	1

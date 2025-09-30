@@ -1,0 +1,10 @@
+{
+  "TaskName": "Working memory",
+  "accuracy": {
+    "LongName": "Accuracy",
+    "Description": "Percentage of correct responses."
+  },
+  "tms_rmt": {
+    "Units": "percent"
+  }
+}

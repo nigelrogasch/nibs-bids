@@ -1,0 +1,32 @@
+{
+  "pulses_in_burst": {
+    "LongName": "Pulses in burst",
+    "Description": "Number of pulses included in a burst.",
+    "Units": "integer"
+  },
+  "inter_pulse_interval": {
+    "LongName": "Inter-pulse interval",
+    "Description": "Interval in seconds between consecutive TMS pulses.",
+    "Units": "seconds"
+  },
+  "bursts_in_train": {
+    "LongName": "Bursts in train.",
+    "Description": "Number of bursts included in a train.",
+    "Units": "integer"
+  },
+  "inter_burst_interval": {
+    "LongName": "Inter-burst interval",
+    "Description": "Interval in seconds between the first pulse in the intial burst and the first pulse in the subsequent burst.",
+    "Units": "seconds"
+  },
+  "trains_in_protocol": {
+    "LongName": "Trains in protocol.",
+    "Description": "Number of trains included in a protocol.",
+    "Units": "integer"
+  },
+  "inter_train_interval": {
+    "LongName": "Inter-train interval",
+    "Description": "Interval in seconds between the first pulse in the intial train and the first pulse in the subsequent train.",
+    "Units": "seconds"
+  }
+}
