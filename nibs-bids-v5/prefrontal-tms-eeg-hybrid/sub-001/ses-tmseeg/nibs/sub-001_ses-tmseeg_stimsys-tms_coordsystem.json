@@ -1,0 +1,8 @@
+{
+  "NeuronavigationDetails": {
+    "Manufacturer": "BrainSight",
+    "ManufacturerModelName": "BrainSight3",
+    "SoftwareVersions": "3.1"
+  },
+  "otherfields": "As suggested to stay in line with EEG etc. Might need to add description of affine transformation matrix."
+}

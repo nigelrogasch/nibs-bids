@@ -1,0 +1,14 @@
+{
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "TMS pulses.",
+    "Levels": {
+      "TMSDLPFC": "TMS to left DLPFC"
+    }
+  },
+  "trial_id": {
+    "LongName": "Trial number",
+    "Description": "Trial number of TMS pulses given.",
+    "Units": "Integer"
+  }
+}

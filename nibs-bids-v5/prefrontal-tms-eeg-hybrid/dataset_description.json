@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset: prefrontal TMS-EEG experiment",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "Licence": "CC0",
+  "Authors": "Nigel Rogasch"
+}

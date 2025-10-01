@@ -1,0 +1,45 @@
+{
+  "NIBSType": "TMS",
+  "NIBSDescription": "TMS-EEG over left DLPFC",
+  "Manufacturer": "Magstim",
+  "ManufacturerModelName": "BiStim^2",
+  "ManufacturerSerialNumber": "3234-00",
+  "CoilDetails": {
+    "ModelName": "D70",
+    "SerialNumber": "4150-00"
+  },
+  "target_id": {
+    "Description": "Unique identifier for each target. This column must appear first in the file."
+  },
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "TMS pulses.",
+    "Levels": {
+      "TMSDLPFC": "TMS to left DLPFC"
+    },
+    "IntendedFor": "bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat"
+  },
+  "tms_intensity_mso": {
+    "LongName": "TMS intensity",
+    "Description": "TMS intensity, described as a percentage of maximum stimulator output (MSO).",
+    "Units": "percent"
+  },
+  "tms_pulse_shape": {
+    "LongName": "Shape of the TMS pulse",
+    "Description": "Shape of the TMS pulse.",
+    "Levels": {
+      "Monophasic": "Monophasic pulse shape",
+      "Biphasic": "Biphasic pulse shape"
+    }
+  },
+  "tms_pulse_direction": {
+    "LongName": "Direction of the TMS pulse",
+    "Description": "Direction of the TMS pulse in the underlying cortex.",
+    "Levels": {
+      "PA": "Posterior to anterior",
+      "AP": "Anterior to posterior",
+      "PAAP": "Posterior to anterior then anterior to posterior",
+      "APPA": "Anterior to posterior then posterior to anterior"
+    }
+  }
+}
