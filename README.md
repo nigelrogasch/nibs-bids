@@ -59,3 +59,11 @@ This example demonstrates a realistic multi-session experiment combining both of
 - Block A SICI, ICF, single-pulse (SP) baseline with EMG MEPs
 - Block B Action-observation task with single-pulse TMS during video observation, EMG MEPs recorded
 - Block C SICI, ICF, SP post
+
+  ### 6. TMS-EMG plasticity study
+
+  * Protocol
+  - RMT
+  - 10 trials single pulse MEP (EMG) - S1mV
+  - iTBS (standard; 70% RMT)
+  - 10 trials single pulse MEP (EMG) - S1mV
