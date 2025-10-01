@@ -1,6 +1,8 @@
 {
   "NIBSType": "TMS",
   "NIBSDescription": "TMS-EEG over left DLPFC",
+  "NIBSData": "Online",
+  "IntendedFor": "bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat",
   "Manufacturer": "Magstim",
   "ManufacturerModelName": "BiStim^2",
   "ManufacturerSerialNumber": "3234-00",
@@ -16,8 +18,7 @@
     "Description": "TMS pulses.",
     "Levels": {
       "TMSDLPFC": "TMS to left DLPFC"
-    },
-    "IntendedFor": "bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat"
+    }
   },
   "tms_intensity_mso": {
     "LongName": "TMS intensity",

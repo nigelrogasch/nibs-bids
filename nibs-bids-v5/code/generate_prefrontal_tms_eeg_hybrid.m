@@ -136,6 +136,7 @@ taskname = 'task-rmt';
 sesname = 'ses-tmseeg';
 
 % _nibs.tsv
+target_id = {'M1'};
 tms_rmt = {60};
 tms_pos_centre = {'LeftM1'};
 tms_pos_ydir = {'45'};
@@ -143,7 +144,7 @@ tms_pulse_shape = {'Monophasic'};
 tms_pulse_direction = {'PA'};
 
 % Write table
-T = table(tms_rmt, tms_pos_centre,tms_pos_ydir,tms_pulse_shape, tms_pulse_direction, 'VariableNames', {'tms_rmt', 'tms_pos_centre','tms_pos_ydir','tms_pulse_shape','tms_pulse_direction'});
+T = table(target_id,tms_rmt, tms_pos_centre,tms_pos_ydir,tms_pulse_shape, tms_pulse_direction, 'VariableNames', {'target_id','tms_rmt', 'tms_pos_centre','tms_pos_ydir','tms_pulse_shape','tms_pulse_direction'});
 outputName = [filePath,id,filesep,sesname,filesep,'nibs',filesep,id,'_',sesname,'_',taskname,'_stimsys-tms_nibs.tsv'];
 writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
 
@@ -154,11 +155,15 @@ data = struct();
 % fields
 data.NIBSType = 'TMS';
 data.NIBSDescription = 'Resting motor threshold';
+data.NIBSData = 'Offline';
+
 data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
 data.CoilDetails.ModelName = 'D70';
 data.CoilDetails.SerialNumber = '4150-00';
+
+data.target_id.Description = "Unique identifier for each target. This column must appear first in the file.";
 
 data.tms_rmt.LongName = 'TMS Resting Motor Threshold';
 data.tms_rmt.Description = 'Lowest stimulation intensity required to evoke at least 5 out of 10 MEPs with a peak-to-peak amplitude > 0.05 mV, described as a percentage of maximum stimulator output (MSO).';
@@ -320,8 +325,13 @@ writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
 data = struct();
 
 % fields
+
+% REQUIRED
 data.NIBSType = 'TMS';
 data.NIBSDescription = 'TMS-EEG over left DLPFC';
+data.NIBSData = 'Online';
+data.IntendedFor = 'bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat';
+
 data.Manufacturer = 'Magstim';
 data.ManufacturerModelName = 'BiStim^2';
 data.ManufacturerSerialNumber = '3234-00';
@@ -333,7 +343,6 @@ data.target_id.Description = "Unique identifier for each target. This column mus
 data.trial_type.LongName = 'Stimulation type';
 data.trial_type.Description = 'TMS pulses.';
 data.trial_type.Levels.TMSDLPFC = 'TMS to left DLPFC';
-data.trial_type.IntendedFor = 'bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat';
 
 data.tms_intensity_mso.LongName = 'TMS intensity';
 data.tms_intensity_mso.Description = 'TMS intensity, described as a percentage of maximum stimulator output (MSO).';
@@ -455,12 +464,11 @@ writetable(T, outputName, 'Delimiter', 'tab', 'FileType', 'text');
 % Define the structure for the JSON data
 data = struct();
 
-data.target_id.Description = "Unique identifier for each target. This column must appear first in the file."
+data.target_id.Description = "Unique identifier for each target. This column must appear first in the file.";
 
 data.trial_id.LongName = 'Trial number';
 data.trial_id.Description = 'Trial number of TMS pulses given.';
 data.trial_id.Units = 'Integer';
-data.trial_id.IntendedFor = 'bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat';
 
 data.tms_pos_r1_c1.LongName = 'Row 1 column 1 of affine transformation matrix describing coil position';
 data.tms_pos_r1_c1.Description = 'Corresponds to the [1,1] row/column position in the affine transformation matrix describing coil position.';

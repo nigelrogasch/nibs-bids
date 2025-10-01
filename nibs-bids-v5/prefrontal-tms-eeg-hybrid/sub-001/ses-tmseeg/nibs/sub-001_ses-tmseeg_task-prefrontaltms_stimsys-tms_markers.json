@@ -5,8 +5,7 @@
   "trial_id": {
     "LongName": "Trial number",
     "Description": "Trial number of TMS pulses given.",
-    "Units": "Integer",
-    "IntendedFor": "bids::sub-001/ses-tmseeg/eeg/sub-001_ses-tmseeg_task-prefrontaltms_eeg.mat"
+    "Units": "Integer"
   },
   "tms_pos_r1_c1": {
     "LongName": "Row 1 column 1 of affine transformation matrix describing coil position",

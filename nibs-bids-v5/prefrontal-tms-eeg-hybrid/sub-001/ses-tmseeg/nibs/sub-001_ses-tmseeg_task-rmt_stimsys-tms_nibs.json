@@ -1,12 +1,16 @@
 {
   "NIBSType": "TMS",
   "NIBSDescription": "Resting motor threshold",
+  "NIBSData": "Offline",
   "Manufacturer": "Magstim",
   "ManufacturerModelName": "BiStim^2",
   "ManufacturerSerialNumber": "3234-00",
   "CoilDetails": {
     "ModelName": "D70",
     "SerialNumber": "4150-00"
+  },
+  "target_id": {
+    "Description": "Unique identifier for each target. This column must appear first in the file."
   },
   "tms_rmt": {
     "LongName": "TMS Resting Motor Threshold",
