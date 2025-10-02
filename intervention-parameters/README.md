@@ -19,7 +19,7 @@ From these parameters, two additional features can be calculated:
 
 Here are the settings for some common protocols.
 
-| **Protocol** | **inter_pulse_interval** | **pulses_in_burst** | **inter_burst_interval** | **bursts_in_train** | **inter_train_interval** | **trains_in_protocol** |
+| **Protocol** | **pulses_in_burst**      | **inter_pulse_interval** | **bursts_in_train** | **inter_burst_interval** | **trains_in_protocol** | **inter_train_interval** |
 |--------------|--------------------------|---------------------|--------------------------|---------------------|--------------------------|------------------------|
 | iTBS         | 3                        | 0.02                | 10                       |0.2                  |20                        | 10                     |
 | cTBS         | 3                        | 0.02                | 200                      |0.2                  |1                         | 0                      |
