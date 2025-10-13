@@ -36,10 +36,14 @@ I've written a basic script `tms_intervention_builder.m` to show how these setti
 
 I've given some examples of writing these protocols out in text form. Note that other descriptors like frequency can be described, however the 6 descriptors are required and take precedence. If a descriptor is not described it is automatically condsidered to = 1 (for no-repeats) or 0 (for interval). 
 
-*iTBS:* iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 10) for 2 seconds with an 8 seconds gap (inter-train-interval = 10 s; trains-in-protocol = 20) for a total of 600 pulses over 200 seconds. 
+*iTBS:* 
+iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 10) for 2 seconds with an 8 seconds gap (inter-train-interval = 10 s; trains-in-protocol = 20) for a total of 600 pulses over 200 seconds. 
 
-*cTBS:* cTBS iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 200) for a total of 600 pulses over 40 seconds.
+*cTBS:* 
+cTBS iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 200) for a total of 600 pulses over 40 seconds.
 
-*10 Hz rTMS:* rTMS was given at 10 Hz for 4 s (inter-pulse-interval = 0.1 s; pulses-in-burst = 40) followed by a 26 s gap (inter-burst-interval = 30; burst-in-train = 75) for a total of 3000 pulses over 37 mins and 30 seconds.
+*10 Hz rTMS:* 
+rTMS was given at 10 Hz for 4 s (inter-pulse-interval = 0.1 s; pulses-in-burst = 40) followed by a 26 s gap (inter-burst-interval = 30; burst-in-train = 75) for a total of 3000 pulses over 37 mins and 30 seconds.
 
-*1 Hz rTMS:* rTMS was given at 1 Hz for 10 minutes (inter-pulse-interval = 1; pulses-in-burst = 600).
+*1 Hz rTMS:* 
+rTMS was given at 1 Hz for 10 minutes (inter-pulse-interval = 1; pulses-in-burst = 600).
