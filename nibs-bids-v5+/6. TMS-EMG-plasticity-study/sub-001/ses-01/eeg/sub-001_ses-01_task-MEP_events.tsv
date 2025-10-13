@@ -1,0 +1,12 @@
+onset	duration	trial_type	MarkerID	StimStepCount
+0	0	n/a	n/a	n/a
+4.58995067877058	0	single_pulse	marker1.1	1
+9.20165642296378	0	single_pulse	marker1.2	2
+13.8379489719021	0	single_pulse	marker1.3	3
+19.0166012767023	0	single_pulse	marker1.4	4
+24.0117782957919	0	single_pulse	marker1.5	5
+28.7014887018095	0	single_pulse	marker1.6	6
+33.6964945267997	0	single_pulse	marker1.7	7
+38.3441027487764	0	single_pulse	marker1.8	8
+42.8990768956826	0	single_pulse	marker1.9	9
+46.3395765957324	0	single_pulse	marker1.10	10

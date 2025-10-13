@@ -1,0 +1,11 @@
+CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	InterStimulusInterval	MarkerID	StimStepCount	FirstPulseAmplitudeRMT	SecondPulseAmplitudeRMT	StimValidation	MotorResponse	Latency	ResponseChannelName		ResponseChannelReference	ResponseChannelDescription	IntendedFor	Timestamp
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.1	1	100.0	n/a	good	243.67	18.85	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:00Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.2	2	100.0	n/a	good	341.62	21.47	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:05Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.3	3	100.0	n/a	good	304.44	18.24	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:10Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.4	4	100.0	n/a	good	281.77	24.37	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:15Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.5	5	100.0	n/a	good	206.52	19.81	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:20Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.6	6	100.0	n/a	good	206.52	22.64	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:25Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.7	7	100.0	n/a	good	189.87	20.18	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:30Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.8	8	100.0	n/a	good	327.25	21.64	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:35Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.9	9	100.0	n/a	good	282.19	21.83	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:40Z
+manual	coil_2	single	normal	monophasic	SP	n/a	marker1.10	10	100.0	n/a	good	300.37	19.29	FDI	EMG	FDI+	 first dorsal interosseous muscle 	/sub-001/ses-01/eeg/sub-001_ses-01_task-MEP_eeg.eeg	2025-09-13T14:00:45Z

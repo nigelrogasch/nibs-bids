@@ -1,0 +1,9 @@
+{
+  "trial_type": {
+    "LongName": "Stimulation type",
+    "Description": "Single and paired pulses for MEP.",
+    "Levels": {
+      "single_pulse": "Single pulse test stimulus"
+    }
+  }
+}
