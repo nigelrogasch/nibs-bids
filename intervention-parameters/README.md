@@ -17,7 +17,7 @@ Importantly, only intervals (in seconds) and number of pulses  are described, wh
 
 From these parameters, two additional features can be calculated:
 * Total pulses = total number of pulses in protocol
-* Total duration = time in seconds from first pulse to last pulse of protocol (perhaps it might be better to calculate total period - i.e., the time taken to complete all cycles - it's easier to calculate and is perhaps more intuitive).
+* Total duration = time in seconds from first pulse to end of cycle (I think it is better to calculate total period - i.e., the time taken to complete all cycles - it's easier to calculate and is perhaps more intuitive).
 
 Here are the settings for some common protocols.
 
@@ -31,3 +31,15 @@ Here are the settings for some common protocols.
 | iTMS         | 2                        | 0.0015              | 180                      |5                    |1                         | 0                      |
 
 I've written a basic script `tms_intervention_builder.m` to show how these settings can build the protocols and calculate total pulses and total duration.
+
+## Text description of TMS intervention parameters
+
+I've given some examples of writing these protocols out in text form. Note that other descriptors like frequency can be described, however the 6 descriptors are required and take precedence. If a descriptor is not described it is automatically condsidered to = 1 (for no-repeats) or 0 (for interval). 
+
+*iTBS:* iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 10) for 2 seconds with an 8 seconds gap (inter-train-interval = 10 s; trains-in-protocol = 20) for a total of 600 pulses over 200 seconds. 
+
+*cTBS:* cTBS iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 200) for a total of 600 pulses over 40 seconds.
+
+*10 Hz rTMS:* rTMS was given at 10 Hz for 4 s (inter-pulse-interval = 0.1 s; pulses-in-burst = 40) followed by a 26 s gap (inter-burst-interval = 30; burst-in-train = 75) for a total of 3000 pulses over 37 mins and 30 seconds.
+
+*1 Hz rTMS:* rTMS was given at 1 Hz for 10 minutes (inter-pulse-interval = 1; pulses-in-burst = 600).
