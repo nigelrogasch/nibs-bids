@@ -13,9 +13,11 @@ Importantly, only intervals (in seconds) and number of pulses  are described, wh
 * `inter_train_interval` = time in seconds between first pulse in first train and first pulse in subsequent train.
 * `trains_in_protocol` = third level of nesting - describes the number of trains in a protocol.
 
+*Note:* I've used the term `interval` above, but perhaps `period` might be more appropriate as it describes the time taken to complete a full cycle including stimuli and gaps.
+
 From these parameters, two additional features can be calculated:
 * Total pulses = total number of pulses in protocol
-* Total duration = time in seconds from first pulse to last pulse of protocol.
+* Total duration = time in seconds from first pulse to last pulse of protocol (perhaps it might be better to calculate total period - i.e., the time taken to complete all cycles - it's easier to calculate and is perhaps more intuitive).
 
 Here are the settings for some common protocols.
 
