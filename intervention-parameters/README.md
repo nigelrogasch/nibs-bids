@@ -6,12 +6,12 @@ Below I describe a method for accurately describing the timing of common rTMS pa
 
 Importantly, only intervals (in seconds) and number of pulses  are described, which prevents ambiguity from describing combinations of frequency of stimulation and duration of stimulation.
 
-* `inter_pulse_interval` = time in seconds between the first pulse and subsequent pulse.
-* `pulses_in_burst` = first level of nesting - describes the number of pulses in a burst.
-* `inter_burst_interval` = time in seconds between first pulse in first burst and first pulse in subsequent burst.
-* `bursts_in_train` = second level of nesting - describes the number of bursts in a train.
-* `inter_train_interval` = time in seconds between first pulse in first train and first pulse in subsequent train.
-* `trains_in_protocol` = third level of nesting - describes the number of trains in a protocol.
+* `inter-pulse-interval` = time in seconds between the first pulse and subsequent pulse.
+* `pulses-in-burst` = first level of nesting - describes the number of pulses in a burst.
+* `inter-burst-interval` = time in seconds between first pulse in first burst and first pulse in subsequent burst.
+* `bursts-in-train` = second level of nesting - describes the number of bursts in a train.
+* `inter-train-interval` = time in seconds between first pulse in first train and first pulse in subsequent train.
+* `trains-in-protocol` = third level of nesting - describes the number of trains in a protocol.
 
 *Note:* I've used the term `interval` above, but perhaps `period` might be more appropriate as it describes the time taken to complete a full cycle including stimuli and gaps.
 
@@ -21,7 +21,7 @@ From these parameters, two additional features can be calculated:
 
 Here are the settings for some common protocols.
 
-| **Protocol** | **pulses_in_burst**      | **inter_pulse_interval** | **bursts_in_train** | **inter_burst_interval** | **trains_in_protocol** | **inter_train_interval** |
+| **Protocol** | **pulses-in-burst**      | **inter-pulse-interval** | **bursts-in-train** | **inter-burst-interval** | **trains-in-protocol** | **inter-train-interval** |
 |--------------|--------------------------|---------------------|--------------------------|---------------------|--------------------------|------------------------|
 | iTBS         | 3                        | 0.02                | 10                       |0.2                  |20                        | 10                     |
 | cTBS         | 3                        | 0.02                | 200                      |0.2                  |1                         | 0                      |
