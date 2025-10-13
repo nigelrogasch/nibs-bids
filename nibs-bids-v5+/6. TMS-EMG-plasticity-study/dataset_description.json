@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset: TMS-EMG plasticity study",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "Licence": "CC0",
+  "Authors": "Oleg Shevtsov, Nigel Rogasch"
+}
