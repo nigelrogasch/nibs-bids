@@ -253,7 +253,7 @@ MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specif
 ```
 ** Example:**
 
-
+```
 "CoilSet": [
   {
     "CoilID": "1",
@@ -282,7 +282,7 @@ MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specif
     }
   }
 ]
-
+```
 The _nibs.json follows standard BIDS JSON conventions and is essential for validator support, automated parsing, and multimodal integration (e.g., aligning stimulation parameters with EEG or MRI metadata).
 
 ### 1.4 `*_nibs.tsv` — Stimulation Parameters
