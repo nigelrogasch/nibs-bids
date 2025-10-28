@@ -1,4 +1,4 @@
-# NIBS: Transcranial Electrical Stimulation section
+# NIBS: Transcranial Electrical Stimulation section.
 
 ## 1. Detailed overview of data structure
 
