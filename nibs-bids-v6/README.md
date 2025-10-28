@@ -48,26 +48,26 @@ Every stimulation event recorded in `*_nibs.tsv` and spatially described in `*_m
 | Column Name      | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
 | `StimStepCount`  | Corresponds to the unique stimulation row in `*_nibs.tsv`                   |
-| `MarkerID`       | One or more marker IDs from `*_markers.tsv` & `*_nibs.tsv` used in the event|
+| `StimID`       | One or more marker IDs from `*_markers.tsv` & `*_nibs.tsv` used in the event|
 
 ### Modality-Specific Considerations
 
-| Modality | MarkerID Usage                                   	 | Example Format            |
+| Modality | StimID Usage                                   	 | Example Format            |
 |----------|-----------------------------------------------------|---------------------------|
-| `TMS`    | Typically **one marker** per stimulation            | `marker1.1`               |
-| `tES`    | **Multiple electrodes** involved in one stimulation | `marker2.1; marker2.2`    |
-| `TUS`    | **Single target**, **multiple entry points**        | `marker3.1; marker3.2`    |
+| `TMS`    | Typically **one marker** per stimulation            | `stim1.1`               |
+| `tES`    | **Multiple electrodes** involved in one stimulation | `stim2.1; stim2.2`    |
+| `TUS`    | **Single target**, **multiple entry points**        | `stim3.1; stim3.2`    |
 
-- MarkerIDs can be **semicolon-separated** to indicate multi-point involvement.
+- StimID's can be **semicolon-separated** to indicate multi-point involvement.
 - This preserves **readability** and avoids complex hierarchical structures.
 
 ** Example: *_events.tsv**
 
 ``` 
-onset	duration	trial_type	StimStepCount	MarkerID
-12.500	0.001	    stim_tms	1	            marker1.1
-17.300	0.001	    stim_tes	2	            marker2.1; marker2.2
-23.700	0.001	    stim_tus	3	            marker3.1; marker3.2; marker3.3
+onset	duration	trial_type	StimStepCount	StimID
+12.500	0.001	    stim_tms	1	            stim1.1
+17.300	0.001	    stim_tes	2	            stim2.1; stim2.2
+23.700	0.001	    stim_tus	3	            stim3.1; stim3.2; stim3.3
 ```
 
 ## 5. Scalable File Naming Convention
@@ -159,7 +159,8 @@ The _coordsystem.json file is REQUIRED for navigated TMS stimulation datasets. I
 
 This file is RECOMMENDED.
 
-3D digitized head points  that describe the head shape and/or EEG electrode locations can be digitized and stored in separate files. These files are typically used to improve the accuracy of co-registration between the stimulation target, anatomical data, etc. The acq-<label> entity can be used when more than one type of digitization in done for a session, for example when the head points are in a separate file from the EEG locations.
+3D digitized head points  that describe the head shape and/or EEG electrode locations can be digitized and stored in separate files. 
+These files are typically used to improve the accuracy of co-registration between the stimulation target, anatomical data, etc. 
 
 ** For example:**
 
@@ -178,37 +179,39 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 Stores stimulation target coordinates and optional coil's orientation information. Supports multiple navigation systems (e.g., Localite, Nexstim) via flexible fields. 
 
 ```
-| Field                | Type   | Description                                                                                             | Units    |
-| -------------------- | ------ | ------------------------------------------------------------------------------------------------------- | -------- |
-| `MarkerID`           | string | Unique identifier for each marker. This column must appear first in the file.                           | —        |
-| `PeelingDepth`       | number | Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. | `mm`     |
-| `target_x`           | number | X-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `target_y`           | number | Y-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `target_z`           | number | Z-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `entry_x`            | number | X-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `entry_y`            | number | Y-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `entry_z`            | number | Z-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `Matrix_4x4`         | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     |  —       |
-| `coil_x`             | number | X component of coil's origin location.                                                                  | `mm`     |
-| `coil_y`             | number | Y component of coil's origin location.                                                                  | `mm`     |
-| `coil_z`             | number | Z component of coil's origin location.                                                                  | `mm`     |
-| `normal_x`           | number | X component of coil normal vector.                                                                      | `mm`     |
-| `normal_y`           | number | Y component of coil normal vector.                                                                      | `mm`     |
-| `normal_z`           | number | Z component of coil normal vector.                                                                      | `mm`     |
-| `direction_x`        | number | X component of coil direction vector.                                                                   | `mm`     |
-| `direction_y`        | number | Y component of coil direction vector.                                                                   | `mm`     |
-| `direction_z`        | number | Z component of coil direction vector.                                                                   | `mm`     |
-| `ElectricFieldMax_x` | number | X coordinate of max electric field point.                                                               | `mm`     |
-| `ElectricFieldMax_y` | number | Y coordinate of max electric field point.                                                               | `mm`     |
-| `ElectricFieldMax_z` | number | Z coordinate of max electric field point.                                                               | `mm`     |
-| `Timestamp`          | string | Timestamp of the stimulation event in ISO 8601 format.                                                  | ISO 8601 |
+| Field                | Type   | Description                                                                                                 			
+| -------------------- | ------ | ------------------------------------------------------------------------------------------------------- 				
+| `StimID`			   | string | Unique identifier for each marker. This column must appear first in the file.                           				
+| `MarkerName`   	   | string | Optional (TMS-specific). Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `PeelingDepth`       | number | Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. 				
+| `target_x`           | number | X-coordinate of the target point in millimeters.                                                        					
+| `target_y`           | number | Y-coordinate of the target point in millimeters.                                                        
+| `target_z`           | number | Z-coordinate of the target point in millimeters.                                                        
+| `entry_x`            | number | X-coordinate of the entry point in millimeters.                                                         
+| `entry_y`            | number | Y-coordinate of the entry point in millimeters.                                                         
+| `entry_z`            | number | Z-coordinate of the entry point in millimeters.                                                         
+| `Matrix_4x4`         | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     
+| `coil_x`             | number | X component of coil's origin location.                                                                  
+| `coil_y`             | number | Y component of coil's origin location.                                                                  
+| `coil_z`             | number | Z component of coil's origin location.                                                                  
+| `normal_x`           | number | X component of coil normal vector.                                                                      
+| `normal_y`           | number | Y component of coil normal vector.                                                                      
+| `normal_z`           | number | Z component of coil normal vector.                                                                      
+| `direction_x`        | number | X component of coil direction vector.                                                                   
+| `direction_y`        | number | Y component of coil direction vector.                                                                  
+| `direction_z`        | number | Z component of coil direction vector.                                                                   
+| `ElectricFieldMax_x` | number | X coordinate of max electric field point.                                                               
+| `ElectricFieldMax_y` | number | Y coordinate of max electric field point.                                                               
+| `ElectricFieldMax_z` | number | Z coordinate of max electric field point.                                                               
+| `Timestamp`          | string | Timestamp of the stimulation event in ISO 8601 format.                                                  
 ```
+
 ### Field Ordering Rationale
 
 The _markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. When designing this structure, we drew partial inspiration from existing BIDS files such as _electrodes.tsv (EEG), which capture electrode positions. 
 However, no existing modality in BIDS explicitly supports the full specification required for navigated TMS — including stimulation coordinates, orientation vectors, and electric field estimates.
 This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
-- Identification: MarkerID appears first, enabling structured referencing in the _tms.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
+- Identification: StimID appears first, enabling structured referencing in the _tms.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
 - Spatial Coordinates: target_, entry_ and PeelingDepth  describe the position of the stimulation point in the selected coordinate system. coil(x,y,z) describe the position of the TMS coil in the selected coordinate system.
 - Orientation Vectors: normal_ and direction_ vectors or transformation matrix ("Matrix4D") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
 - Electric Field (optional): ElectricFieldMax_ defines where the electric field is maximized.
@@ -225,7 +228,7 @@ Like other BIDS modalities, this JSON file includes:
 **Task information:**
 
 - TaskName, TaskDescription, Instructions
-
+ 
 **Institutional context:**
 
 - InstitutionName, InstitutionAddress, InstitutionalDepartmentName
@@ -256,7 +259,7 @@ MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specif
 ```
 "CoilSet": [
   {
-    "CoilID": "1",
+    "CoilID": "coil_1",
     "CoilType": "CB60",
     "CoilShape": "figure-of-eight",
     "CoilCooling": "air",
@@ -301,7 +304,7 @@ Grouping fields this way improves readability and aligns with practical data col
 |-----------------------|-------|-----------------------------------
 |`CoilDriver`			|string	| Control method for coil positioning	(manual, fixed, cobot, robot0
 |`CoilID`				|string	| Coil identifier (e.g. coil\_1, coil\_2). Should be described in Hardware part in json sidecar.
-|`StimulusMode`			|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
+|`TmsStimMode`			|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
 |`CurrentDirection`		|string	| Direction of induced current	(e.g. normal, reverse).
 |`Waveform`				|string	| Pulse shape	(e.g. monophasic, biphasic, etc).        
 ```
@@ -337,7 +340,8 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
-| `MarkerID`                   | string  | Identifier of stimulation target.                                                              | —                                           |
+| `StimID`                     | string  | Identifier of stimulation target.       
+| `MarkerName`                 | string  | Optional (TMS-specific). Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                               | —                                           |
 | `StimStepCount`              | integer | Number of pulses applied at the marker. 
 ```
 **Amplitude & Thresholds**
