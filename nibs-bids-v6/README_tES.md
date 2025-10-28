@@ -89,7 +89,6 @@ This section describes all possible fields that may appear in *_nibs.tsv files.
 The fields are grouped into logical sections based on their function and purpose. 
 All fields are optional unless stated otherwise, but some are strongly recommended.
 The order of parameters in _nibs.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. Parameters are grouped into three logical blocks:
-This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. 
 Grouping fields this way improves readability and aligns with practical data collection workflows.
 
 **Stimulator Device & Configuration**
