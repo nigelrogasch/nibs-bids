@@ -98,7 +98,6 @@ Grouping fields this way improves readability and aligns with practical data col
 |-----------------------|-------|-----------------------------------
 |`TesStimMode`			|string	| Type of stimulation mode (tDCS, tACS, tRNS,tPCS (transcranial Pulsed Current Stimulation))
 |`ControlMode			|string	| Stimulator control mode: what we stabilize. (current-controlled, voltage-controlled)
-|`ElectrodeType			|string	| Type of the electrode  (sponge, HD, ring, etc.)
 |`ElectrodeMaterial		|string	| Electrode material (rubber, AgCl, carbon)
 |`ElectrodeShape		|string	| Shape of the electrode (circular, rectangular, ring)
 |`ElectrodeSize			|number	| Electrode surface area  (sm²,mm²)
@@ -149,10 +148,10 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-| `StimID`                   | string  | Identifier of stimulation target. 
+| `StimID`              | string  | Identifier of stimulation target. 
 | `ChannelName`			|string	| Name of cahnnel/electrode according 10-20 system (AF3, Ch1)
 | `ChannelType			|string	| Channel function (anode, cathode, return, ground)
-| `StimStepCount`              | integer | Count of simulations applied to the marker.
+| `StimStepCount`       | integer | Count of simulations applied to the marker.
 ```
 
 **Amplitude & Thresholds**
@@ -178,6 +177,6 @@ Grouping fields this way improves readability and aligns with practical data col
 |`SubjectFeedback			|string | Participant-reported perception or discomfort. Suggested levels: none, tingling, itching, burning, pain, unpleasant, other.
 |`MeasuredCurrentIntensity	|number	| Current measured by the device during stimulation in voltage-controlled mode. May vary across pulses or be averaged. (mA)
 |`CurrentStatistics			|string | Optional summary of current over session: e.g., mean=0.8;max=1.2;min=0.4
-|`Timestamp				string ISO 8601 timestamp for the event or setting
+|`Timestamp					|string | ISO 8601 timestamp for the event or setting
 ```
 
