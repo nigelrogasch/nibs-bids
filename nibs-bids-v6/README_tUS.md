@@ -1,4 +1,4 @@
-# NIBS: Transcranial Electrical Stimulation section.
+# NIBS: Transcranial Ultrasound Stimulation section.
 
 ## 1. Detailed overview of data structure
 
@@ -122,7 +122,7 @@ Like other BIDS modalities, this JSON file includes:
 Additionally, the _nibs.json file introduces a dedicated hardware block called "TransducerSet".
 TransducerSet provides a structured, machine-readable description of one or more transcranial ultrasound transducers used in the dataset.
 Each transducer is defined as an object with a unique TransducerID, which is referenced from the *_nibs.tsv file.
-This structure mirrors the approach used in CoilSet (TMS) and includes key physical and acoustic properties of each transducer, such as center frequency, focus depth, aperture diameter, and intensity-related parameters.
+This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes key physical and acoustic properties of each transducer, such as center frequency, focus depth, aperture diameter, and intensity-related parameters.
 
 * Each entry in 'TransducerSet' is an object with the following fields:
 ```
