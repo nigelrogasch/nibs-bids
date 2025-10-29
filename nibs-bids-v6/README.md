@@ -104,26 +104,30 @@ Further elaboration and demonstration of these principles are provided in the ac
 
 ### 1.1 `*_coordsystem.json` — Coordinate Metadata
 
-A _coordsystem.json file is used to specify the fiducials, the location of anatomical landmarks, and the coordinate system and units in which the position of landmarks or TMS stimulation targets is expressed. Fiducials are objects with a well-defined location used to facilitate the localization of sensors and co-registration. Anatomical landmarks are locations on a research subject such as the nasion (for a detailed definition see the coordinate system appendix).
+A _coordsystem.json file is used to specify the fiducials, the location of anatomical landmarks, and the coordinate system and units in which the position of landmarks or TMS stimulation targets is expressed. 
+Anatomical landmarks are locations on a research subject such as the nasion (for a detailed definition see the coordinate system appendix).
 The _coordsystem.json file is REQUIRED for navigated TMS stimulation datasets. If a corresponding anatomical MRI is available, the locations of anatomical landmarks in that scan should also be stored in the _T1w.json file which accompanies the TMS data.
 
 ```
 | Field                                           | Type    | Description                                                                                                                                                                                                                                                                     | Units / Levels                      |
-| ----------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `ImageData`                                     | string  | Description of the anatomical data used for co-registration. Includes Levels: DICOM, NIFTI, MR-less.                                                                                                                                                                            | Levels: `DICOM`, `NIFTI`, `MR-less` |
-| `IntendedFor`                                   | string  | Path to the anatomical file this coordinate system refers to. BIDS-style path. (example: `bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz`)                                                                                                                                          | BIDS path                           |
-| `AnatomicalLandmarkCoordinateSystem`            | string  | Defines the coordinate system for the anatomical landmarks. See the Coordinate Systems Appendix for a list of restricted keywords for coordinate systems. If "Other", provide definition of the coordinate system in `AnatomicalLandmarkCoordinateSystemDescription`.           | —                                   |
-| `AnatomicalLandmarkCoordinateSystemUnits`       | string  | Units of the coordinates of Anatomical Landmark Coordinate System. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                              | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
-| `AnatomicalLandmarkCoordinateSystemDescription` | string  | Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.                                                                                                                          | Free text                           |
-| `AnatomicalLandmarkCoordinates`                 | object  | Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the `AnatomicalLandmarkCoordinateSystem`. Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order. | 3D coordinates                      |
-| `AnatomicalLandmarkCoordinatesDescription`      | string  | `[x, y, z]` coordinates of anatomical landmarks. NAS — nasion, LPA — left preauricular point, RPA — right preauricular point                                                                                                                                                    | —                                   |
-| `DigitizedHeadPoints`                           | string  | Relative path to the file containing the locations of digitized head points collected during the session. (for example, `"sub-01_headshape.pos"`)                                                                                                                               | File path or `"n/a"`                |
-| `DigitizedHeadPointsNumber`                     | integer | Number of digitized head points during co-registration.                                                                                                                                                                                                                         | count                               |
-| `DigitizedHeadPointsDescription`                | string  | Free-form description of digitized points.                                                                                                                                                                                                                                      | —                                   |
-| `DigitizedHeadPointsUnits`                      | string  | Unit type. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                                                                                      | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
-| `RmsDeviation`                                  | object  | `{"RMS":[],"NAS":[],"LPA":[],"RPA":[]}` — deviation values per landmark                                                                                                                                                                                                         | values per marker                   |
-| `RmsDeviationUnits`                             | string  | Unit of RMS deviation values.                                                                                                                                                                                                                                                   | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
-| `RmsDeviationDescription`                       | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                           | —                                   |
+| ----------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 				| ----------------------------------- |
+| `ImageData`                                     | string  | Description of the anatomical data used for co-registration. Includes Levels: DICOM, NIFTI, MR-less.                                                                                                                                                                            				| Levels: `DICOM`, `NIFTI`, `MR-less` |
+| `IntendedFor`                                   | string  | Path to the anatomical file this coordinate system refers to. BIDS-style path. (example: `bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz`)                                                                                                                                          				| BIDS path                           |
+| `NIBSCoordinateSystem`						  | string  | Name of the coordinate system used to define the spatial location of stimulation targets. Common values for TUS include: IndividualMRI, MNI152NLin2009cAsym, or CapTrak.																														|									  |	
+| `NIBSCoordinateUnits`							  | string  | Units used to express spatial coordinates in *_markers.tsv. Typically mm (millimeters) for MRI-based spaces.																																													|									  |
+| `NIBSCoordinateSystemDescription`				  | string  | Free-text description providing details on how the coordinate system was defined. This may include registration methods (e.g., neuronavigation, manual annotation), whether coordinates represent the ultrasound focus or entry point, and how the space aligns with anatomical references.	|									  |
+| `AnatomicalLandmarkCoordinateSystem`            | string  | Defines the coordinate system for the anatomical landmarks. See the Coordinate Systems Appendix for a list of restricted keywords for coordinate systems. If "Other", provide definition of the coordinate system in `AnatomicalLandmarkCoordinateSystemDescription`.           				| —                                   |
+| `AnatomicalLandmarkCoordinateSystemUnits`       | string  | Units of the coordinates of Anatomical Landmark Coordinate System. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                              				| `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
+| `AnatomicalLandmarkCoordinateSystemDescription` | string  | Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.                                                                                                                          				| Free text                           |
+| `AnatomicalLandmarkCoordinates`                 | object  | Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the `AnatomicalLandmarkCoordinateSystem`. Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order.			    | 3D coordinates                      |
+| `AnatomicalLandmarkCoordinatesDescription`      | string  | `[x, y, z]` coordinates of anatomical landmarks. NAS — nasion, LPA — left preauricular point, RPA — right preauricular point                                                                                                                                                    				| —                                   |
+| `DigitizedHeadPoints`                           | string  | Relative path to the file containing the locations of digitized head points collected during the session. (for example, `"sub-01_headshape.pos"`)                                                                                                                               				| File path or `"n/a"`                |
+| `DigitizedHeadPointsNumber`                     | integer | Number of digitized head points during co-registration.                                                                                                                                                                                                                       			    | count                               |
+| `DigitizedHeadPointsDescription`                | string  | Free-form description of digitized points.                                                                                                                                                                                                                                      				| —                                   |
+| `DigitizedHeadPointsUnits`                      | string  | Unit type. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                                                                                      				| `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
+| `AnatomicalLandmarkRmsDeviation`                | object  | `{"RMS":[],"NAS":[],"LPA":[],"RPA":[]}` — deviation values per landmark                                                                                                                                                                                                         				| values per marker                   |
+| `AnatomicalLandmarkRmsDeviationUnits`           | string  | Unit of RMS deviation values.                                                                                                                                                                                                                                               				    | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
+| `AnatomicalLandmarkRmsDeviationDescription`     | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                         			    | —                                   |
 ```
 
 ** Example *_coordsystem.json:**
@@ -145,17 +149,17 @@ The _coordsystem.json file is REQUIRED for navigated TMS stimulation datasets. I
   "DigitizedHeadPointsNumber": 1200,
   "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
   "DigitizedHeadPointsUnits": "mm",
-  "RmsDeviation": {
+  "AnatomicalLandmarkRmsDeviation": {
     "NAS": [0.7],
     "LPA": [0.3],
     "RPA": [0.4],
     "RMS": [0.5]
   },
-  "RmsDeviationUnits": "mm",
-  "RmsDeviationDescription": "Root Mean Square deviation for fiducial points"
+  "AnatomicalLandmarkRmsDeviationUnits": "mm",
+  "AnatomicalLandmarkRmsDeviationDescription": "Root Mean Square deviation for fiducial points"
 }
 ```
-### Optional Headshape Files (*_headshape.<extension>)
+#### Optional Headshape Files (*_headshape.<extension>)
 
 This file is RECOMMENDED.
 
@@ -182,7 +186,7 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | Field                | Type   | Description                                                                                                 			
 | -------------------- | ------ | ------------------------------------------------------------------------------------------------------- 				
 | `StimID`			   | string | Unique identifier for each marker. This column must appear first in the file.                           				
-| `MarkerName`   	   | string | Optional (TMS-specific). Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `MarkerName`   	   | string | Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
 | `PeelingDepth`       | number | Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. 				
 | `target_x`           | number | X-coordinate of the target point in millimeters.                                                        					
 | `target_y`           | number | Y-coordinate of the target point in millimeters.                                                        
@@ -190,7 +194,7 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | `entry_x`            | number | X-coordinate of the entry point in millimeters.                                                         
 | `entry_y`            | number | Y-coordinate of the entry point in millimeters.                                                         
 | `entry_z`            | number | Z-coordinate of the entry point in millimeters.                                                         
-| `Matrix_4x4`         | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     
+| `CoilTransform`      | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     
 | `coil_x`             | number | X component of coil's origin location.                                                                  
 | `coil_y`             | number | Y component of coil's origin location.                                                                  
 | `coil_z`             | number | Z component of coil's origin location.                                                                  
@@ -211,9 +215,9 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 The _markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. When designing this structure, we drew partial inspiration from existing BIDS files such as _electrodes.tsv (EEG), which capture electrode positions. 
 However, no existing modality in BIDS explicitly supports the full specification required for navigated TMS — including stimulation coordinates, orientation vectors, and electric field estimates.
 This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
-- Identification: StimID appears first, enabling structured referencing in the _tms.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
+- Identification: StimID appears first, enabling structured referencing in the _nibs.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
 - Spatial Coordinates: target_, entry_ and PeelingDepth  describe the position of the stimulation point in the selected coordinate system. coil(x,y,z) describe the position of the TMS coil in the selected coordinate system.
-- Orientation Vectors: normal_ and direction_ vectors or transformation matrix ("Matrix4D") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
+- Orientation Vectors: normal_ and direction_ vectors or transformation matrix ("CoilTransform") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
 - Electric Field (optional): ElectricFieldMax_ defines where the electric field is maximized.
 
 This design supports both minimal and advanced use cases: basic datasets can include just the spatial coordinates, while high-resolution multimodal studies can specify full coil orientation and field modeling parameters.
@@ -255,7 +259,6 @@ MagneticFieldPenetrationDepth.Value		number	Penetration depth of the magnetic fi
 MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specific depth (typically in kT/s).
 ```
 ** Example:**
-
 ```
 "CoilSet": [
   {
@@ -293,7 +296,7 @@ The _nibs.json follows standard BIDS JSON conventions and is essential for valid
 This section describes all possible fields that may appear in *_nibs.tsv files. 
 The fields are grouped into logical sections based on their function and purpose. 
 All fields are optional unless stated otherwise, but some are strongly recommended.
-The order of parameters in _nibs.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. Parameters are grouped into three logical blocks:
+The order of parameters in _nibs.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. Parameters are grouped into three logical blocks.
 This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. 
 Grouping fields this way improves readability and aligns with practical data collection workflows.
 
@@ -302,54 +305,62 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-|`CoilDriver`			|string	| Control method for coil positioning	(manual, fixed, cobot, robot0
 |`CoilID`				|string	| Coil identifier (e.g. coil\_1, coil\_2). Should be described in Hardware part in json sidecar.
+|`TargetingMethod`		|string	| Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot0
 |`TmsStimMode`			|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
-|`CurrentDirection`		|string	| Direction of induced current	(e.g. normal, reverse).
-|`Waveform`				|string	| Pulse shape	(e.g. monophasic, biphasic, etc).        
+|`CurrentDirection`		|string	| Direction of induced current	(e.g. normal, reverse).  
 ```
+
 **Protocol Metadata** 
 
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-| `ProtocolName`        |string | The sequence timing mode unique name (e.g. sici, lici, custom, etc).
+| `ProtocolName`        |string | The protocol unique name (e.g. sici, lici, custom, etc).
 ```
+
 **Stimulation Timing Parameters**
 
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
+| `Waveform`				   | string  | Pulse shape	(e.g. monophasic, biphasic, etc).      
 | `InterTrialInterval`         | string  | Interval between simple trials 
-| `InterStimulusInterval`      | number  | (ISI)  Time from start of first to start of second pulse (twin or dual).                              | msec                                        |
+| `InterStimulusInterval`      | number  | (ISI)  Time from start of first to start of second pulse (twin or dual).                       | msec                                        |
 | `InterPulseInterval`         | number  | Interval between pulses within a train.                                                        | msec                                        |
-| `BurstPulsesNumber`          | integer | Number of pulses in a burst.                                                                   | —                                           |
+| `BurstPulsesNumber`          | number  | Number of pulses in a burst. 
+| `BurstDuration`              | number  | Duration of a single burst block                          							          | —                                           |
 | `PulseRate`                  | number  | Number of pulses per second.                                                                   | pps                                         |
-| `TrainPulses`                | integer | Number of pulses in each train.                                                                | —                                           |
+| `TrainPulses`                | number  | Number of pulses in each train.                                                                | —                                           |
 | `RepetitionRate`             | number  | Frequency of trains.                                                                           | pps                                         |
 | `InterRepetitionInterval`    | number  | Time between start of burst N and N+1.                                                         | msec                                        |
 | `TrainDuration`              | number  | Duration of the full train.                                                                    | msec                                        |
-| `TrainNumber`                | integer | Number of trains in sequence.                                                                  | —                                           |
+| `TrainNumber`                | number  | Number of trains in sequence.                                                                  | —                                           |
 | `InterTrainInterval`         | number  | Time from last pulse of one train to first of next.                                            | msec                                        |
 | `InterTrainIntervalDelay`    | number  | Optional per-train delay override.                                                             | msec                                        |
 | `TrainRampUp`                | number  | Gradual amplitude increase per train.                                                          | —                                           |
-| `TrainRampUpNumber`          | integer | Number of trains for ramp-up.
+| `TrainRampUpNumber`          | number  | Number of trains for ramp-up.
+| `StimulationDuration`		   | number  | Total duration of the stimulation block
+| `RampUpDuration`			   | number  |(Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train.
+| `RampDownDuration`           | number  |(Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train.
 ```
+
 **Spatial & Targeting Information**
 
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
 | `StimID`                     | string  | Identifier of stimulation target.       
-| `MarkerName`                 | string  | Optional (TMS-specific). Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                               | —                                           |
-| `StimStepCount`              | integer | Number of pulses applied at the marker. 
+| `MarkerName`                 | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                        
+| `StimStepCount`              | integer | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
 ```
+
 **Amplitude & Thresholds**
 
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
-| `PulseIntensity`             | number  | Intensity of the first or single pulse (% of maximum stimulator output).                           | %                                           |
+| `PulseIntensity`             | number  | Intensity of the first or single pulse (% of maximum stimulator output).                       | %                                           |
 | `SecondPulseIntensity`       | number  | Intensity of the second pulse (dual mode).                                                     | %                                           |
 | `PulseIntensityRatio`        | number  | Amplitude ratio of two pulses (B/A).                                                           | —                                           |
 | `RMTIntensity`               | number  | Resting motor threshold as a percentage of maximum stimulator output
@@ -360,22 +371,23 @@ Grouping fields this way improves readability and aligns with practical data col
 | `SecondPulseIntensityAMT`    | number  | Intensity of second pulse as % of AMT.   
 | `StimValidation`             | string  | Was the stimulation verified / observed.
 ```
+
 **Derived / Device-Generated Parameters**
 
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
-| `CurrentGradient`            | number  | Measured gradient of coil current.                                                             | A/µs                                        |
-| `ElectricFieldTarget`        | number  | Electric field at stimulation target.                                                          | V/m                                         |
-| `ElectricFieldMax`           | number  | Peak electric field at any location.                                                           | V/m                                         |
-| `MotorResponse`              | number  | Motor-evoked potential (MEP) amplitude.                                                        | µV                                          |
-| `Latency`                    | number  | Delay between stimulation and response.                                                        | ms                                          |
-| `ResponseChannelName`        | string  | Name of recorded EMG/EEG/MEG channel.                                                          | —                                           |
-| `ResponseChannelType`        | string  | Type of channel (e.g. emg, eeg).                                                               | —                                           |
-| `ResponseChannelDescription` | string  | Description of the response channel.                                                           | —                                           |
-| `ResponseChannelReference`   | string  | Reference channel name if applicable.                                                          | —                                           |
-| `Status`                     | string  | Data quality observed on the channel.                                                          | —                                           |
-| `StatusDescription`          | string  | Freeform text description of noise or artifact affecting data quality on the channel.          | —                                           |
-| `IntendedFor `               | string  | Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/ses-01/eeg/sub-01_eeg.eeg`)
-| `Timestamp`                  | string  | Timestamp in ISO 8601 format.       
+| `CurrentGradient`            | number  | (Optional) Measured gradient of coil current.                                                             | A/µs                                        |
+| `ElectricFieldTarget`        | number  | (Optional) Electric field at stimulation target.                                                          | V/m                                         |
+| `ElectricFieldMax`           | number  | (Optional) Peak electric field at any location.                                                           | V/m                                         |
+| `MotorResponse`              | number  | (Optional) Motor-evoked potential (MEP) amplitude.                                                        | µV                                          |
+| `Latency`                    | number  | (Optional) Delay between stimulation and response.                                                        | ms                                          |
+| `ResponseChannelName`        | string  | (Optional) Name of recorded EMG/EEG/MEG channel.                                                          | —                                           |
+| `ResponseChannelType`        | string  | (Optional) Type of channel (e.g. emg, eeg).                                                               | —                                           |
+| `ResponseChannelDescription` | string  | (Optional) Description of the response channel.                                                           | —                                           |
+| `ResponseChannelReference`   | string  | (Optional) Reference channel name if applicable.                                                          | —                                           |
+| `SystemStatus`               | string  | (Optional) Data quality observed on the channel.                                                          | —                                           |
+| `SubjectFeedback`		       | string  | (Optional) Participant-reported perception or discomfort.
+| `IntendedFor `               | string  | (Optional) Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/ses-01/eeg/sub-01_eeg.eeg`)
+| `Timestamp`                  | string  | (Optional) Timestamp in ISO 8601 format.       
 ```
