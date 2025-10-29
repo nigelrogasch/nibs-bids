@@ -98,13 +98,10 @@ Grouping fields this way improves readability and aligns with practical data col
 |-----------------------|-------|-----------------------------------
 |`TesStimMode`			|string	| Type of stimulation mode (tDCS, tACS, tRNS,tPCS (transcranial Pulsed Current Stimulation))
 |`ControlMode			|string	| Stimulator control mode: what we stabilize. (current-controlled, voltage-controlled)
-|`ElectrodeMaterial		|string	| Electrode material (rubber, AgCl, carbon)
 |`ElectrodeShape		|string	| Shape of the electrode (circular, rectangular, ring)
 |`ElectrodeSize			|number	| Electrode surface area  (sm²,mm²)
 |`ElectrodeType`		|string	| Type of electrode (pad, ring, HD, custom)
 |`ElectrodeMaterial`	|string	| Material of electrode (rubber, sponge, gel, metal, etc.)
-|`ElectrodeShape		|string	| rectangular / circular
-|`ElectrodeSize`		|string	| Size of electrode surface area (cm², mm²)
 |`ContactMedium			|string	| What is between the skin and the electrode? (saline, gel, paste, dry, other)
 
 ```
