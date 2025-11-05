@@ -54,5 +54,10 @@ It replaces MarkerID and allows for consistent referencing across modalities.
 
 `ElectrodeSet` -> _nibs.json
 
+### 3.
+ 
+`StimStepCount` -> `stim_count`
 
+### 4.
 
+`*_.tsv` -> `snake case`

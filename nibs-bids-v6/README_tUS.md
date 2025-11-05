@@ -73,8 +73,8 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 ```
 | Field                	| Type   | Description                                                                                                 			
 | -------------------- 	| ------ | ------------------------------------------------------------------------------------------------------- 				
-| `StimID`			   	| string | Unique identifier for each marker. This column must appear first in the file.                           				
-| `MarkerName`   	   	| string | Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `stim_id`			   	| string | Unique identifier for each marker. This column must appear first in the file.                           				
+| `marker_name`   	   	| string | Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
 | `target_x`           	| number | X-coordinate of the target point in millimeters.                                                        					
 | `target_y`           	| number | Y-coordinate of the target point in millimeters.                                                        
 | `target_z`           	| number | Z-coordinate of the target point in millimeters. 
@@ -90,7 +90,7 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 | `beam_x`				| number | X-coordinate of unit vector representing the actual direction of the ultrasound beam propagation. Used when beam axis differs from the normal vector.
 | `beam_y`				| number | Y-coordinate of unit vector representing the actual direction of the ultrasound beam propagation. Used when beam axis differs from the normal vector.
 | `beam_z`				| number | Z-coordinate of unit vector representing the actual direction of the ultrasound beam propagation. Used when beam axis differs from the normal vector.
-| `TransducerTransform`	| array  | Optional: 4×4 affine transformation matrix representing the transducer’s spatial pose in the coordinate system. This field should be included only when the transducer was repositioned across different stimulation points, such that a single transformation in *_coordsystem.json would not adequately describe all locations.
+| `transducer_transform`| array  | Optional: 4×4 affine transformation matrix representing the transducer’s spatial pose in the coordinate system. This field should be included only when the transducer was repositioned across different stimulation points, such that a single transformation in *_coordsystem.json would not adequately describe all locations.
 ```
 
 * target_x/y/z: "Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
@@ -98,7 +98,7 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 * transducer_x/y/z: "Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
 * normal_x/y/z: "Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
 * beam_x/y/z: "Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
-* TransducerTransform: "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
+* transducer_transform: "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
 
 ### 1.3 `*_nibs.json` — Sidecar JSON 
 
@@ -121,13 +121,13 @@ Like other BIDS modalities, this JSON file includes:
 
 Additionally, the _nibs.json file introduces a dedicated hardware block called "TransducerSet".
 TransducerSet provides a structured, machine-readable description of one or more transcranial ultrasound transducers used in the dataset.
-Each transducer is defined as an object with a unique TransducerID, which is referenced from the *_nibs.tsv file.
+Each transducer is defined as an object with a unique transducer_id, which is referenced from the *_nibs.tsv file.
 This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes key physical and acoustic properties of each transducer, such as center frequency, focus depth, aperture diameter, and intensity-related parameters.
 
 * Each entry in 'TransducerSet' is an object with the following fields:
 ```
 Field									Type	Description
-TransducerID							string	Unique identifier for the transducer, referenced from *_nibs.tsv.
+transducer_id							string	Unique identifier for the transducer, referenced from *_nibs.tsv.
 TransducerType							string	Physical configuration: single-element, phased-array, planar, or custom.
 FocusType								string	Acoustic focus shape: point, line, volume, or swept.
 CarrierFrequency						number	Nominal center frequency of the ultrasound wave (Hz).
@@ -142,7 +142,7 @@ ContactMedium							string	Coupling method between the transducer and the scalp,
 ```
 "TransducerSet": [
   {
-    "TransducerID": "tr_1",
+    "transducer_id": "tr_1",
     "TransducerType": "single-element",
     "FocusType": "point",
     "CarrierFrequency": {
@@ -188,10 +188,10 @@ Parameters are grouped into three logical blocks.
 ```
 | Field                        	| Type    | Description                                                                                    | Units / Levels                              |
 | ----------------------------	| ------- | --------------------------------------
-| `TransducerID`				| string  | Identifier for the ultrasound transducer used in this stimulation configuration. Corresponds to a detailed transducer entry in the *_nibs.json file.
-| `TargetingMethod`				| string  | Method used to guide targeting of the stimulation site (e.g., MRI-based neuronavigation, anatomical template, robotic arm, freehand placement).
-| `TusStimMode`					| string  | Type of transcranial ultrasound stimulation protocol used (e.g., tFUS, LIFU, AM-tFUS, burstTUS).
-| `FocusType`					| string  | Type of acoustic focus generated by the transducer. Indicates the spatial profile of the ultrasound energy deposition. Typical values include: point (tightly focused), line (elongated focal zone), volume (broader area), swept (dynamic focus across space).
+| `transducer_id`				| string  | Identifier for the ultrasound transducer used in this stimulation configuration. Corresponds to a detailed transducer entry in the *_nibs.json file.
+| `targeting_method`			| string  | Method used to guide targeting of the stimulation site (e.g., MRI-based neuronavigation, anatomical template, robotic arm, freehand placement).
+| `tus_stim_mode`				| string  | Type of transcranial ultrasound stimulation protocol used (e.g., tFUS, LIFU, AM-tFUS, burstTUS).
+| `focus_type`					| string  | Type of acoustic focus generated by the transducer. Indicates the spatial profile of the ultrasound energy deposition. Typical values include: point (tightly focused), line (elongated focal zone), volume (broader area), swept (dynamic focus across space).
 ```
 
 **Protocol Metadata** 
@@ -199,7 +199,7 @@ Parameters are grouped into three logical blocks.
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-| `ProtocolName`        |string | Name of the stimulation protocol or experimental condition associated with this stimulation configuration (e.g., theta, working_memory, burst_40Hz, sham).
+| `protocol_name`       |string | Name of the stimulation protocol or experimental condition associated with this stimulation configuration (e.g., theta, working_memory, burst_40Hz, sham).
 ```
 
 **Stimulation Timing Parameters**
@@ -207,27 +207,27 @@ Parameters are grouped into three logical blocks.
 ```
 | Field                        	| Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- 	| ------- | --------------------------------------
-| `Waveform`					| string  | sine, square, burst, AM, FM, custom
-| `CarrierFrequency`			| number  | Frequency of the continuous or pulsed ultrasound carrier
-| `DutyCycle`					| number  | Percentage of time the ultrasound is active (on) within each pulse or burst cycle. Expressed as a number between 0 and 100.
-| `PulseWidth`					| number  | Duration of a single ultrasound pulse
-| `InterTrialInterval`			| number  | Time between repeated trials or blocks
-| `InterPulseInterval`			| number  | Time between pulses within a burst
-| `BurstPulsesNumber`			| number  |	Number of pulses per burst
-| `BurstDuration`				| number  | Duration of a single burst block
-| `PulseRate`					| number  | Repetition rate of pulses within a burst (PRF equivalent)
-| `TrainPulses`					| number  | Number of pulses in a full train (e.g. 100 pulses = 10 bursts of 10 pulses)
-| `RepetitionRate`				| number  | How often the burst is repeated (can be inverse of InterTrialInterval)
-| `InterRepetitionInterval`     | number  | Time between start of burst N and N+1.
-| `TrainDuration`               | number  | Duration of the full train.                                                                    | msec                                        |
-| `TrainNumber`                 | number  | Number of trains in sequence.                                                                  | —                                           |
-| `InterTrainInterval`          | number  | Time from last pulse of one train to first of next.                                            | msec                                        |
-| `InterTrainIntervalDelay`     | number  | Optional per-train delay override.      
-| `TrainRampUp` 				| number  | Proportional ramping factor or amplitude increment per train (e.g., in % of max intensity)
-| `TrainRampUpNumber` 			| number  | Number of initial trains during which ramp-up is applied
-| `StimulationDuration`			| number  | Total duration of the stimulation block
-| `RampUpDuration`				| number  | Duration of ramp-up (fade-in) at onset
-| `RampDownDuration`			| number  | Duration of ramp-down (fade-out) at offset
+| `waveform`					| string  | sine, square, burst, AM, FM, custom
+| `carrier_frequency`			| number  | Frequency of the continuous or pulsed ultrasound carrier
+| `duty_cycle`					| number  | Percentage of time the ultrasound is active (on) within each pulse or burst cycle. Expressed as a number between 0 and 100.
+| `pulse_width`					| number  | Duration of a single ultrasound pulse
+| `inter_trial_interval`		| number  | Time between repeated trials or blocks
+| `inter_pulse_interval`		| number  | Time between pulses within a burst
+| `burst_pulses_number`			| number  |	Number of pulses per burst
+| `burst_duration`				| number  | Duration of a single burst block
+| `pulse_rate`					| number  | Repetition rate of pulses within a burst (PRF equivalent)
+| `train_pulses`				| number  | Number of pulses in a full train (e.g. 100 pulses = 10 bursts of 10 pulses)
+| `repetition_rate`				| number  | How often the burst is repeated (can be inverse of InterTrialInterval)
+| `inter_repetition_interval`   | number  | Time between start of burst N and N+1.
+| `train_duration`              | number  | Duration of the full train.                                                                    | msec                                        |
+| `train_number`                | number  | Number of trains in sequence.                                                                  | —                                           |
+| `inter_train_interval`        | number  | Time from last pulse of one train to first of next.                                            | msec                                        |
+| `inter_train_interval_delay`  | number  | Optional per-train delay override.      
+| `train_ramp_up` 				| number  | Proportional ramping factor or amplitude increment per train (e.g., in % of max intensity)
+| `train_ramp_up_number` 		| number  | Number of initial trains during which ramp-up is applied
+| `stimulation_duration`		| number  | Total duration of the stimulation block
+| `ramp_up_duration`			| number  | Duration of ramp-up (fade-in) at onset
+| `ramp_down_duration`			| number  | Duration of ramp-down (fade-out) at offset
 ```
 
 **Spatial & Targeting Information**
@@ -235,9 +235,9 @@ Parameters are grouped into three logical blocks.
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
-| `StimID`                     | string  | Identifier of stimulation target or target group.       
-| `MarkerName`                 | string  | (Optional) Human-readable name or anatomical label of the stimulation site (e.g., M1_hand, left_DLPFC, anterior_insula).
-| `StimStepCount`              | number  | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
+| `stim_id`                    | string  | Identifier of stimulation target or target group.       
+| `marker_name`                | string  | (Optional) Human-readable name or anatomical label of the stimulation site (e.g., M1_hand, left_DLPFC, anterior_insula).
+| `stim_count`    		       | number  | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
 ```
 
 **Amplitude & Thresholds**
@@ -245,24 +245,24 @@ Parameters are grouped into three logical blocks.
 ```
 | Field                        	| Type    | Description                                                                                    | Units / Levels                              |
 | ----------------------------	| ------- | --------------------------------------
-| `PulseIntensity`             	| number  | (Optional) Absolute acoustic intensity of the stimulation pulse, expressed in physical units such as mW/cm² (ISPTA or ISPPA), MPa (peak pressure), or dB.
-| `AcousticIntensity` 			| number  | (Optional) Estimated acoustic intensity delivered to the target region, commonly reported as spatial-peak temporal-average (ISPTA) in mW/cm².
-| `MechanicalIndex`				| number  | (Optional) Mechanical Index (MI), calculated as the peak negative pressure (in MPa) divided by the square root of the frequency (in MHz).
-| `PeakNegativePressure`		| number  | (Optional) Peak negative pressure at the focus, in megapascals (MPa). Important for evaluating safety and cavitation risk.
-| `ThresholdType` 				| string  | (Optional) Method used to determine the individual stimulation threshold. Typical values include: behavioral, physiological, subjective, or none.
-| `ThresholdIntensity`			| number  | (Optional) Individually determined stimulation threshold, expressed in the same units as PulseIntensity.
-| `PulseIntensityThreshold`		| number  | (Optional) Stimulation intensity expressed as a percentage of the individual threshold (e.g., 90% of threshold).
-| `StimValidation`              | string  | Was the stimulation verified / observed.
+| `pulse_intensity`            	| number  | (Optional) Absolute acoustic intensity of the stimulation pulse, expressed in physical units such as mW/cm² (ISPTA or ISPPA), MPa (peak pressure), or dB.
+| `acoustic_intensity` 			| number  | (Optional) Estimated acoustic intensity delivered to the target region, commonly reported as spatial-peak temporal-average (ISPTA) in mW/cm².
+| `mechanical_index`			| number  | (Optional) Mechanical Index (MI), calculated as the peak negative pressure (in MPa) divided by the square root of the frequency (in MHz).
+| `peak_negative_pressure`		| number  | (Optional) Peak negative pressure at the focus, in megapascals (MPa). Important for evaluating safety and cavitation risk.
+| `threshold_type` 				| string  | (Optional) Method used to determine the individual stimulation threshold. Typical values include: behavioral, physiological, subjective, or none.
+| `threshold_intensity`			| number  | (Optional) Individually determined stimulation threshold, expressed in the same units as PulseIntensity.
+| `pulse_intensity_threshold`	| number  | (Optional) Stimulation intensity expressed as a percentage of the individual threshold (e.g., 90% of threshold).
+| `stim_validation`             | string  | Was the stimulation verified / observed.
 ```
 
 **Derived / Device-Generated Parameters**
 
 ```
 |Field						|Type   | Description	
-|-----------------------	|-------|-----------------------------------
-| `SystemStatus				|string | (Optional) Device-reported status during or after stimulation. Examples: ok, overload, error.
-| `SubjectFeedback			|string | (Optional) Participant-reported experience or sensation during stimulation (e.g., none, pain, tingling, heat).
-| `MeasuredPulseIntensity   |number | (Optional) Actual measured intensity of the stimulation pulse, in the same units as PulseIntensity. Used if different from the planned value.
-| `TransducerRmsDeviation   |number | (Optional) Root-mean-square deviation of the transducer position during stimulation, in millimeters.
-| `Timestamp`               |string | (Optional) Timestamp in ISO 8601 format. 
+|---------------------------|-------|-----------------------------------
+| `system_status`			|string | (Optional) Device-reported status during or after stimulation. Examples: ok, overload, error.
+| `subject_feedback`		|string | (Optional) Participant-reported experience or sensation during stimulation (e.g., none, pain, tingling, heat).
+| `measured_pulse_intensity`|number | (Optional) Actual measured intensity of the stimulation pulse, in the same units as PulseIntensity. Used if different from the planned value.
+| `transducer_rms_deviation`|number | (Optional) Root-mean-square deviation of the transducer position during stimulation, in millimeters.
+| `timestamp`               |string | (Optional) Timestamp in ISO 8601 format. 
 ```
