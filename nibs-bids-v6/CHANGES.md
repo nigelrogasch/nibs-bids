@@ -1,4 +1,5 @@
 ##  --------------- 28.10.2025  ---------------
+
 ### 1. MarkerID -> StimID
 
 The term MarkerID originated from TMS use cases, where stimulation targets are typically discrete points defined in space. However, other NIBS modalities—such as tES and tUS—may use spatially extended or distributed stimulation, and sometimes do not rely on explicit “markers” at all. 
@@ -12,21 +13,46 @@ It replaces MarkerID and allows for consistent referencing across modalities.
 ### 3. TMS section, StimulusMode -> TmsStimMode
 
 ## --------------- 29.10.2025  ---------------
+
 ### 1. 
-`NIBSCoordinateSystem` -> _coordsystem.json
-`NIBSCoordinateUnits` -> _coordsystem.json
-`NIBSCoordinateSystemDescription` -> _coordsystem.json
+
+`NIBSCoordinateSystem` -> coordsystem.json
+`NIBSCoordinateUnits` -> coordsystem.json
+`NIBSCoordinateSystemDescription` -> coordsystem.json
+
 ### 2. 
+
 `RmsDeviation` -> `AnatomicalLandmarkRmsDeviation`          
 `RmsDeviationUnits` -> `AnatomicalLandmarkRmsDeviationUnits`             
 `RmsDeviationDescription` -> `AnatomicalLandmarkRmsDeviationDescription`
+
 ### 3. 
+
 `Matrix_4x4` -> `CoilTransform`
+
 ### 4. 
+
 `CoilDriver` -> `TargetingMethod`
+
 ### 5.
+
 `BurstDuration` -> _nibs.tsv (tms section)
+
 ### 6.
-`StimulationDuration` -> _nibs.tsv (tms section)
-`RampUpDuration` -> _nibs.tsv (tms section)
-`RampDownDuration` -> _nibs.tsv (tms section)
+
+`StimulationDuration` -> nibs.tsv (tms section)
+`RampUpDuration` -> nibs.tsv (tms section)
+`RampDownDuration` -> nibs.tsv (tms section)
+
+## --------------- 05.11.2025  ---------------
+
+### 1. 
+
+`Online vs Offline` -> README.md
+
+### 2. 
+
+`ElectrodeSet` -> _nibs.json
+
+
+

@@ -87,6 +87,44 @@ Like other BIDS modalities, this JSON file includes:
 
 - Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, StimulationSystemName, NavigationSystemName
 
+Additionally, the _nibs.json file introduces a dedicated hardware block called 'ElectrodeSet', which captures detailed physical and electromagnetic parameters of one or more stimulation electrodes used in the session. 
+This structure allows precise modeling, reproducibility, and harmonization of electrode-related effects across studies.
+
+* Each entry in 'ElectrodeSet' is an object with the following fields:
+```
+Field									Type	Description
+ElectrodeID								string	Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.tsv.
+ElectrodeType							string	Type of electrode: pad, HD, ring, custom, etc.
+ElectrodeShape							string	Physical shape: rectangular, circular, ring, segmented, etc.
+ElectrodeSize							string	Structured field: surface area of the electrode (e.g., 25 cm²).
+ElectrodeThickness						string	Structured field: total thickness of the electrode (mm), including any conductive interface (e.g., sponge).
+ElectrodeMaterial						string	Material in direct contact with skin: AgCl, rubber, carbon, etc.
+ContactMedium							string	Interface material: gel, saline, paste, dry, etc.
+Notes									string	(Optional) Free-text description or comments on usage, e.g., "used for return electrode".
+```
+** Example:**
+```
+"ElectrodeSet": [
+  {
+    "ElectrodeID": "el_1",
+    "ElectrodeType": "pad",
+    "ElectrodeShape": "rectangular",
+    "ElectrodeSize": {
+      "Value": 25,
+      "Units": "cm^2",
+      "Description": "Electrode surface area"
+    },
+    "ElectrodeThickness": {
+      "Value": 3,
+      "Units": "mm",
+      "Description": "Thickness of the electrode including sponge/gel"
+    },
+    "ElectrodeMaterial": "AgCl",
+    "ContactMedium": "saline-soaked sponge",
+    "Notes": "Standard rectangular TES pad for M1/SO montage"
+  }
+]
+```
 
 ### 1.4 `*_nibs.tsv` — Stimulation Parameters
 
@@ -101,14 +139,9 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
+|`ElectrodeID`			|string	| Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.ts
 |`TesStimMode`			|string	| Type of stimulation mode (tDCS, tACS, tRNS,tPCS (transcranial Pulsed Current Stimulation))
 |`ControlMode			|string	| Stimulator control mode: what we stabilize. (current-controlled, voltage-controlled)
-|`ElectrodeShape		|string	| Shape of the electrode (circular, rectangular, ring)
-|`ElectrodeSize			|number	| Electrode surface area  (sm²,mm²)
-|`ElectrodeType`		|string	| Type of electrode (pad, ring, HD, custom)
-|`ElectrodeMaterial`	|string	| Material of electrode (rubber, sponge, gel, metal, etc.)
-|`ContactMedium`		|string	| What is between the skin and the electrode? (saline, gel, paste, dry, other)
-
 ```
 
 **Protocol Metadata** 

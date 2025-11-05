@@ -39,7 +39,25 @@ The stimsys-<label> entity can be used as a key-value pair to label _nibs.tsv an
 It can also be used to label _markers.tsv; _markers.tsv or _coordsystem.json files when they belong to a specific stimulation system.
 This entity corresponds to the "StimulationSystemName" metadata field in a _nibs.json file. stimsys-<label> entity is a concise string whereas "StimulationSystemName" may be longer and more human readable.
 
-## 4. Synchronizing NIBS Data Across Modalities (*_events.tsv)
+## 4. Online vs Offline Experiments
+
+NIBS paradigms can be applied either concurrently with the acquisition of neuroimaging and/or behavioral data, or in a temporally separated (offline) manner.
+To reflect this distinction in BIDS-compatible datasets, we recommend the use of acquisition labels:
+
+*_acq-online_* — for online paradigms, where NIBS is delivered concurrently with behavioral and/or neuroimaging acquisition.
+
+*_acq-offline_* — for offline paradigms, where NIBS is applied before or after other data recordings, but not during them.
+
+These acquisition suffixes can be applied to any relevant BIDS modality (e.g., EEG, fMRI, MEG, NIRS, etc.) as well as to NIBS-related files such as *_nibs.tsv.
+
+```
+Example:
+sub-01_ses-01_task-motor_stimsys-tms_acq-online_nibs.tsv
+sub-01_ses-01_task-motor_stimsys-tes_acq-offline_nibs.tsv
+```
+This avoids the need for new fields in metadata files while maintaining clear, machine-readable semantics.
+
+## 5. Synchronizing NIBS Data Across Modalities (*_events.tsv)
 
 ### Core Idea 
 
@@ -65,12 +83,12 @@ Every stimulation event recorded in `*_nibs.tsv` and spatially described in `*_m
 
 ``` 
 onset	duration	trial_type	StimStepCount	StimID
-12.500	0.001	    stim_tms	1	            stim1.1
-17.300	0.001	    stim_tes	2	            stim2.1; stim2.2
-23.700	0.001	    stim_tus	3	            stim3.1; stim3.2; stim3.3
+12.500	0.001	    stim_tms	1	            stim_1.1
+17.300	0.001	    stim_tes	2	            stim_2.1; stim_2.2
+23.700	0.001	    stim_tus	3	            stim_3.1; stim_3.2; stim_3.3
 ```
 
-## 5. Scalable File Naming Convention
+## 6. Scalable File Naming Convention
 
 The following files are used to organize stimulation-related data:
 
@@ -90,7 +108,7 @@ The following files are used to organize stimulation-related data:
   * Describes the coordinate system used in the stimulation session.
   * Equivalent to the former `*_coordsystem.json`.
 
-## 6. Design Philosophy
+## 7. Design Philosophy
 
 * The structure is **modular**, **scalable**, and follows the BIDS principle of one `datatype` per modality.
 * It avoids semantic overload and ambiguity by isolating stimulation metadata from behavioral, electrophysiological, and physiological datatypes.
@@ -251,12 +269,10 @@ CoilID									string	Unique identifier for the coil, used to reference this ent
 CoilType								string	Model/type of the coil (e.g., CB60, Cool-B65).
 CoilShape								string	Geometric shape of the coil windings (e.g., figure-of-eight, circular).
 CoilCooling								string	Cooling method (air, liquid, passive).
-CoilDiameter.Value						number	Diameter of the outer winding (usually in mm).
-CoilDiameter.Units						string	Units for the diameter (e.g., mm).
-MagneticFieldPeak.Value					number	Peak magnetic field at the surface of the coil (in Tesla).
-MagneticFieldPeak.Units					string	Units for magnetic field peak (Tesla).
-MagneticFieldPenetrationDepth.Value		number	Penetration depth of the magnetic field at a reference intensity level (e.g., 70 V/m).
-MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specific depth (typically in kT/s).
+CoilDiameter							number	Diameter of the outer winding (usually in mm).
+MagneticFieldPeak						number	Peak magnetic field at the surface of the coil (in Tesla).
+MagneticFieldPenetrationDepth			number	Penetration depth of the magnetic field at a reference intensity level (e.g., 70 V/m).
+MagneticFieldGradient					number	Gradient of the magnetic field at a specific depth (typically in kT/s).
 ```
 ** Example:**
 ```
