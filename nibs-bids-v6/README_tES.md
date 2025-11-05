@@ -52,20 +52,20 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 Stores stimulation target coordinates. Supports multiple navigation systems via flexible fields. 
 
 ```
-| Field                | Type   | Description                                                                                             | Units    |
-| -------------------- | ------ | ------------------------------------------------------------------------------------------------------- | -------- |
-| `StimID`             | string | Unique identifier for each marker. This column must appear first in the file.                           | —        |
-| `ChannelName` 	   | string | Optional (tES-specific). Human-readable name of the electrode/channel (e.g., AF3, Fp2, Ch7).
-| `target_x`           | number | X-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `target_y`           | number | Y-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `target_z`           | number | Z-coordinate of the target point in millimeters.                                                        | `mm`     |
-| `entry_x`            | number | X-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `entry_y`            | number | Y-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `entry_z`            | number | Z-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `ElectricFieldMax_x` | number | X coordinate of max electric field point.                                                               | `mm`     |
-| `ElectricFieldMax_y` | number | Y coordinate of max electric field point.                                                               | `mm`     |
-| `ElectricFieldMax_z` | number | Z coordinate of max electric field point.                                                               | `mm`     |
-| `Timestamp`          | string | Timestamp of the stimulation event in ISO 8601 format.                                                  | ISO 8601 |
+| Field                	| Type   | Description                                                                                             | Units    |
+| -------------------- 	| ------ | ------------------------------------------------------------------------------------------------------- | -------- |
+| `stim_id`             | string | Unique identifier for each marker. This column must appear first in the file.                           | —        |
+| `channel_name` 	   	| string | Optional (tES-specific). Human-readable name of the electrode/channel (e.g., AF3, Fp2, Ch7).
+| `target_x`           	| number | X-coordinate of the target point in millimeters.                                                        | `mm`     |
+| `target_y`           	| number | Y-coordinate of the target point in millimeters.                                                        | `mm`     |
+| `target_z`           	| number | Z-coordinate of the target point in millimeters.                                                        | `mm`     |
+| `entry_x`            	| number | X-coordinate of the entry point in millimeters.                                                         | `mm`     |
+| `entry_y`            	| number | Y-coordinate of the entry point in millimeters.                                                         | `mm`     |
+| `entry_z`            	| number | Z-coordinate of the entry point in millimeters.                                                         | `mm`     |
+| `electric_field_max_x`| number | X coordinate of max electric field point.                                                               | `mm`     |
+| `electric_field_max_y`| number | Y coordinate of max electric field point.                                                               | `mm`     |
+| `electric_field_max_z`| number | Z coordinate of max electric field point.                                                               | `mm`     |
+| `timestamp`          	| string | timestamp of the stimulation event in ISO 8601 format.                                                  | ISO 8601 |
 ```
 
 ### 1.3 `*_nibs.json` — Sidecar JSON 
@@ -87,6 +87,43 @@ Like other BIDS modalities, this JSON file includes:
 
 - Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, StimulationSystemName, NavigationSystemName
 
+Additionally, the _nibs.json file introduces a dedicated hardware block called 'ElectrodeSet', which captures detailed physical and electromagnetic parameters of one or more stimulation electrodes used in the session. 
+This structure allows precise modeling, reproducibility, and harmonization of electrode-related effects across studies.
+
+* Each entry in 'ElectrodeSet' is an object with the following fields:
+```
+|Field									|Type   | Description	
+|---------------------------------------|-------|-----------------------------------
+|electrode_id							|string	| Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.tsv.
+|ElectrodeType							|string	| Type of electrode: pad, HD, ring, custom, etc.
+|ElectrodeShape							|string	| Physical shape: rectangular, circular, ring, segmented, etc.
+|ElectrodeSize							|string	| Structured field: surface area of the electrode (e.g., 25 cm²).
+|ElectrodeThickness						|string	| Structured field: total thickness of the electrode (mm), including any conductive interface (e.g., sponge).
+|ElectrodeMaterial						|string	| Material in direct contact with skin: AgCl, rubber, carbon, etc.
+|ContactMedium							|string	| Interface material: gel, saline, paste, dry, etc.
+```
+** Example:**
+```
+"ElectrodeSet": [
+  {
+    "electrode_id": "el_1",
+    "ElectrodeType": "pad",
+    "ElectrodeShape": "rectangular",
+    "ElectrodeSize": {
+      "Value": 25,
+      "Units": "cm^2",
+      "Description": "Electrode surface area"
+    },
+    "ElectrodeThickness": {
+      "Value": 3,
+      "Units": "mm",
+      "Description": "Thickness of the electrode including sponge/gel"
+    },
+    "ElectrodeMaterial": "AgCl",
+    "ContactMedium": "saline-soaked sponge"
+  }
+]
+```
 
 ### 1.4 `*_nibs.tsv` — Stimulation Parameters
 
@@ -101,14 +138,9 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-|`TesStimMode`			|string	| Type of stimulation mode (tDCS, tACS, tRNS,tPCS (transcranial Pulsed Current Stimulation))
-|`ControlMode			|string	| Stimulator control mode: what we stabilize. (current-controlled, voltage-controlled)
-|`ElectrodeShape		|string	| Shape of the electrode (circular, rectangular, ring)
-|`ElectrodeSize			|number	| Electrode surface area  (sm²,mm²)
-|`ElectrodeType`		|string	| Type of electrode (pad, ring, HD, custom)
-|`ElectrodeMaterial`	|string	| Material of electrode (rubber, sponge, gel, metal, etc.)
-|`ContactMedium`		|string	| What is between the skin and the electrode? (saline, gel, paste, dry, other)
-
+|`electrode_id`			|string	| Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.ts
+|`tes_stim_mode`		|string	| Type of stimulation mode (tDCS, tACS, tRNS,tPCS (transcranial Pulsed Current Stimulation))
+|`control_mode`			|string	| Stimulator control mode: what we stabilize. (current-controlled, voltage-controlled)
 ```
 
 **Protocol Metadata** 
@@ -116,7 +148,7 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-| `ProtocolName`        |string | Name of stimulation protocol (e.g. theta, alpha, working_memory, etc.)
+|`protocol_name`        |string | Name of stimulation protocol (e.g. theta, alpha, working_memory, etc.)
 ```
 
 **Stimulation Timing Parameters tACS/tDCS**
@@ -124,12 +156,12 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-|`Waveform`				|string | Type of waveform (sine, square, pulse, custom)
-|`WaveformFrequency`	|number | Frequency of waveform (for tACS) (Hz)
-|`NoiseType`			|string | Type of noise (for tRNS) (white, pink, band-limited, custom)
-|`StimulationDuration`  |number | Total stimulation time (seconds)
-|`RampUpDuration` 		|number | Time to ramp current up (seconds)
-|`RampDownDuration`		|number | Time to ramp current down (seconds)
+|`waveform`				|string | Type of waveform (sine, square, pulse, custom)
+|`waveform_frequency`	|number | Frequency of waveform (for tACS) (Hz)
+|`noise_type`			|string | Type of noise (for tRNS) (white, pink, band-limited, custom)
+|`stimulation_duration` |number | Total stimulation time (seconds)
+|`ramp_up_duration` 	|number | Time to ramp current up (seconds)
+|`ramp_down_duration`	|number | Time to ramp current down (seconds)
 ```
 
 **Stimulation Timing Parameters tPCS (transcranial Pulsed Current Stimulation)**
@@ -137,11 +169,10 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-|`PulseWidth`			|number | Width of each current pulse (ms)
-|`BurstPulsesNumber`	|number | Pulses per burst (if grouped)
-|`BurstDuration`        |number | Duration of a single burst block          
-|`PulseRate`			|number | Repetition rate (1/InterPulseInterval)
-
+|`pulse_width`			|number | Width of each current pulse (ms)
+|`burst_pulses_number`	|number | Pulses per burst (if grouped)
+|`burst_duration`       |number | Duration of a single burst block          
+|`pulse_rate`			|number | Repetition rate (1/InterPulseInterval)
 ```
 
 
@@ -150,10 +181,10 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
-| `StimID`              |string	| Identifier of stimulation target. 
-| `ChannelName`			|string	| Name of cahnnel/electrode according 10-20 system (AF3, Ch1)
-| `ChannelType			|string	| Channel function (anode, cathode, return, ground)
-| `StimStepCount`       |number | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
+|`stim_id`              |string	| Identifier of stimulation target. 
+|`channel_name`			|string	| Name of cahnnel/electrode according 10-20 system (AF3, Ch1)
+|`channel_type`			|string	| Channel function (anode, cathode, return, ground)
+|`stim_count`  			|number | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
 ```
 
 **Amplitude & Thresholds**
@@ -161,24 +192,24 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 |Field						|Type   | Description	
 |---------------------------|-------|-----------------------------------
-|`CurrentIntensity			|number | Current applied through the electrode (mA)
-|`CurrentDensity 			|number | Current per unit surface area (mA/cm²)
-|`VoltageIntensity			|number | Peak voltage applied (if voltage-controlled) (V)
-|`ThresholdType				|number | Type of physiological or behavioral threshold used for defining ThresholdIntensity. Optional (motor, phosphene, perceptual, pain, none, other).
-|`ThresholdIntensity		|number | Subject-specific threshold used for scaling (mA or V)
-|`PulseIntensityThreshold	|number | Stimulation intensity expressed as % of threshold (%)
+|`current_intensity`		|number | Current applied through the electrode (mA)
+|`current_density` 			|number | Current per unit surface area (mA/cm²)
+|`voltage_intensity`		|number | Peak voltage applied (if voltage-controlled) (V)
+|`threshold_type`			|number | Type of physiological or behavioral threshold used for defining ThresholdIntensity. Optional (motor, phosphene, perceptual, pain, none, other).
+|`threshold_intensity`		|number | Subject-specific threshold used for scaling (mA or V)
+|`pulse_intensity_threshold`|number | Stimulation intensity expressed as % of threshold (%)
 ```
 
 **Derived / Device-Generated Parameters**
 ```
-|Field						|Type   | Description	
-|-----------------------	|-------|-----------------------------------
-|`Impedance					|number	| (Optional) Measured impedance per channel (kΩ)
-|`EstimatedFieldStrength	|number | (Optional) Computed or simulated electric field strength at target (V/m)
-|`SystemStatus				|string | (Optional) Device-detected QC status. Suggested levels: ok, impedance_high, unstable_contact, channel_fail, n/a
-|`SubjectFeedback			|string | (Optional) Participant-reported perception or discomfort. Suggested levels: none, tingling, itching, burning, pain, unpleasant, other.
-|`MeasuredCurrentIntensity	|number	| (Optional) Current measured by the device during stimulation in voltage-controlled mode. May vary across pulses or be averaged. (mA)
-|`CurrentStatistics			|string | (Optional) Summary of current over session: e.g., mean=0.8;max=1.2;min=0.4
-|`Timestamp					|string | (Optional) ISO 8601 timestamp for the event or setting
+|Field							|Type   | Description	
+|-------------------------------|-------|-----------------------------------
+|`impedance`					|number	| (Optional) Measured impedance per channel (kΩ)
+|`estimated_field_strength`		|number | (Optional) Computed or simulated electric field strength at target (V/m)
+|`system_status`				|string | (Optional) Device-detected QC status. Suggested levels: ok, impedance_high, unstable_contact, channel_fail, n/a
+|`subject_feedback`				|string | (Optional) Participant-reported perception or discomfort. Suggested levels: none, tingling, itching, burning, pain, unpleasant, other.
+|`measured_current_intensity`	|number	| (Optional) Current measured by the device during stimulation in voltage-controlled mode. May vary across pulses or be averaged. (mA)
+|`current_statistics`			|string | (Optional) Summary of current over session: e.g., mean=0.8;max=1.2;min=0.4
+|`timestamp`					|string | (Optional) ISO 8601 timestamp for the event or setting
 ```
 
