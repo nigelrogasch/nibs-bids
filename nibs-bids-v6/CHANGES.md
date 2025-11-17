@@ -61,3 +61,8 @@ It replaces MarkerID and allows for consistent referencing across modalities.
 ### 4.
 
 `*_.tsv` -> `snake case`
+
+### 5.
+
+README_tUS.md -> merged with README.md
+README_tES.md -> merged with README.md

@@ -175,7 +175,7 @@ ContactMedium							string	Coupling method between the transducer and the scalp,
 ]
 ```
 
-### 1.4 `*_nibs.tsv` — Stimulation Parameters4
+### 1.4 `*_nibs.tsv` — Stimulation Parameters
 
 This section describes all possible fields that may appear in *_nibs.tsv files. 
 The fields are grouped into logical sections based on their function and purpose. 
