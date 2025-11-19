@@ -10,6 +10,7 @@ It is designed to precede and accompany real-life examples and comparative demon
 * This design allows coherent grouping of stimulation parameters, spatial data, and metadata.
 
 ### Template:
+
 ```
 sub-<label>/
     └──[ses-<label>/]
@@ -636,12 +637,18 @@ Stores stimulation target coordinates. Supports multiple navigation systems via 
 | `transducer_transform`	| array  | (Optional) 4×4 affine transformation matrix representing the transducer’s spatial pose in the coordinate system. This field should be included only when the transducer was repositioned across different stimulation points, such that a single transformation in *_coordsystem.json would not adequately describe all locations.
 ```
 
-** target_x/y/z: ** "Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
-** entry_x/y/z: ** "Scalp entry point of the ultrasound beam — where it penetrates the skin and skull en route to the target."
-** transducer_x/y/z: ** "Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
-** normal_x/y/z: ** "Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
-** beam_x/y/z: ** "Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
-** transducer_transform: ** "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
+** target_x/y/z: ** 
+- "Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
+** entry_x/y/z: ** 
+- "Scalp entry point of the ultrasound beam — where it penetrates the skin and skull en route to the target."
+** transducer_x/y/z: ** 
+- "Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
+** normal_x/y/z: ** 
+- "Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
+** beam_x/y/z: ** 
+- "Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
+** transducer_transform: ** 
+- "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
 
 ### 1.2 `*_nibs.json` — Sidecar JSON 
 
