@@ -1,0 +1,82 @@
+{
+  "stim_id": {
+    "Description": "Unique identifier for each marker. This column must appear first in the file."
+  },
+  
+  "marker_name": {
+    "Description": "Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)."
+  },
+
+  "peeling_depth": {
+    "Description": "Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker.",
+    "Units": "mm"
+  },
+  
+  "target_x": {
+    "Description": "X-coordinate of the target point in millimeters",
+    "Units": "mm"
+  },
+  "target_y": {
+    "Description": "Y-coordinate of the target point in millimeters",
+    "Units": "mm"
+  },
+  "target_z": {
+    "Description": "Z-coordinate of the target point in millimeters",
+    "Units": "mm"
+  },
+  "entry_x": {
+    "Description": "X-coordinate of the entry point in millimeters",
+    "Units": "mm"
+  },
+  "entry_y": {
+    "Description": "Y-coordinate of the entry point in millimeters",
+    "Units": "mm"
+  },
+  "entry_z": {
+    "Description": "Z-coordinate of the entry point in millimeters",
+    "Units": "mm"
+  },
+  "coil_transform": {
+	  "Description": "4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems)"
+  },
+  "coil_x": {
+	  "Description": "X component of coil's origin location."
+  },
+  "coil_y": {
+	  "Description": "Y component of coil's origin location."
+  },
+  "coil_z": {
+	  "Description": "Z component of coil's origin location."
+  },
+  "normal_x": {
+	  "Description": "X component of coil normal vector."
+  },
+  "normal_y": {
+	  "Description": "Y component of coil normal vector."
+  },
+  "normal_z": {
+	  "Description": "Z component of coil normal vector."
+  },
+  "direction_x": {
+	  "Description": "X component of coil direction vector."
+  },
+  "direction_y": {
+	  "Description": "Y component of coil direction vector."
+  },
+  "direction_z": {
+	  "Description": "Z component of coil direction vector."
+  },
+  
+  "electric_field_max_x": {
+	  "Description": "X coordinate of max electric field point."
+  },
+  "electric_field_max_y": {
+	  "Description": "Y coordinate of max electric field point."
+  },
+  "electric_field_max_z": {
+	  "Description": "Z coordinate of max electric field point."
+  },
+  "timestamp": {
+    "Description": "Timestamp of the stimulation event in ISO 8601 format"
+  }
+}

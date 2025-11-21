@@ -1,0 +1,34 @@
+{
+  "TaskName":"Online prefrontal TMS-EEG experiment",
+  "InstitutionName":"",
+  
+  "TaskDescription":"TMS applied to prefrontal cortex during EEG recording. Coil position recorded using neuronavigation with each trial.",
+
+  "Manufacturer":"Brain Products",
+  "ManufacturersModelName":"actiCHamp",
+  "SamplingFrequency":500,
+  "CapManufacturer":"EasyCap",
+  "CapManufacturersModelName":"CMA-64",
+  
+  "EEGChannelCount":62,
+  "EOGChannelCount":2,
+  "ECGChannelCount":1,
+  "EMGChannelCount":0,
+  "MiscChannelCount":0,
+  "TriggerChannelCount":1,
+  "PowerLineFrequency":50,
+  "EEGPlacementScheme":"10-20",
+  "EEGReference":"single electrode placed on FCz",
+  "EEGGround":"placed on Fpz",
+  
+  "SoftwareFilters": {
+	  "Anti-aliasing filter":{
+		  "High-cutoff (Hz)": 500,
+		  "Low-cutoff (Hz)": 0.1,
+		  "Notch (Hz)": 50
+	  }
+  },
+  
+  "RecordingDuration":600,
+  "RecordingType":"continuous"
+}
