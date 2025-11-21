@@ -1,0 +1,142 @@
+{
+  "TaskName": "Input-output curve",
+  "Instructions": "",
+  "TaskDescription": "Different stimulation intensity conditions provided for input-output curve.",
+  
+  "Manufacturer": "MagVenture",
+  "ManufacturersModelName": "MagProX100 MAGOPTION",
+  "SoftwareVersion": "",
+  
+  "Navigation": "n/a",
+  "NavigationModelName": "n/a",
+  "NavigationSoftwareVersion": "n/a",
+  
+  "CoilSet": [
+  {
+    "CoilID": "coil_1",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }
+    }],
+
+  "coil_id": {
+    "Description": "Coil identifier. Should be described in Hardware part in json sidecar."
+  },
+  
+  "targeting_method": {
+    "Description": "Control method for the coil.(manual, fixed, cobot, robot)",
+    "Levels": {
+      "manual": "Coil is held and directed by the operator manually",
+	  "fixed": "Coil is fixed in place using a mechanical arm or holder (non-controllable)",
+	  "cobot": "Coil is positioned via a collaborative system (e.g., Localite arm)",
+      "robot": "Coil is dynamically positioned via a robotic system"
+    }
+  },
+  
+  "tms_stim_mode": {
+    "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
+    "Levels": {
+      "single": "Single pulse",
+      "power": "Power mode single pulse",
+      "twin": "Twin pulse",
+      "dual": "Dual pulse",
+	  "sequence": "Sequence stimulation"
+    }
+  },
+  
+  "current_direction": {
+    "Description": "Direction of induced current (e.g. normal, reverse).",
+    "Levels": {
+      "normal": "normal",
+      "reverse": "reverse"
+    }
+  },
+  
+  "protocol_name": {
+    "Description": "(when using sequence stimulation) The sequence timing mode unique name. (e.g. sici,lici,custom, etc)"
+  },
+  
+  "waveform": {
+    "Description": "Shape of the TMS pulse (e.g. monophasic, biphasic, etc).",
+    "Levels": {
+      "monophasic": "Monophasic pulse",
+      "biphasic": "Biphasic pulse",
+      "halfsine": "Halfsine"
+    }
+  },
+  
+  "stim_count": {
+    "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
+  },
+  "pulse_intensity": {
+    "Description": "An expression for the power output level as a percentage of maximum stimulator power",
+    "Units": "%"
+  },
+  
+  "rmt_intensity": {
+    "Description": "Resting motor threshold as a percentage of maximum stimulator output"
+  },
+  
+  "pulse_intensity_rmt": {
+    "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  },
+ 
+  "stim_validation": {
+    "Description": "Validation of the applied stimulation. Whether stimulation was validated"
+  },
+ 
+  "motor_response": {
+    "Description": "Motor response amplitude",
+    "Units": "µV"
+  },
+  "latency": {
+    "Description": "Latency of the motor response.",
+	"Units": "msec"
+  },
+  "response_channel_name": {
+    "Description": "Channel name used for the response (motor-response) measurement."
+  },
+  "response_channel_type":{
+	  "Description":"Type of channel used for response measurement. The channel types are similar to the list of eeg modality channel type."
+  },
+  "response_channel_description":{
+	  "Description":"Brief free-text description of the channel"
+  },
+  "response_channel_reference":{
+	  "Description":"Name of the reference electrode(s). This column is not needed when it is common to all channels. In that case the reference electrode(s) can be specified in *_eeg.json as EEGReference)."
+  },  
+  "status": {
+    "Description": "Data quality observed on the channel. A channel is considered bad if its data quality is compromised by excessive noise."
+  },
+  "status_description": {
+	  "Description": "Freeform text description of noise or artifact affecting data quality on the channel."
+  },
+  
+  "intended_for": {
+    "Description": "(Optional) Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/eeg/sub-01_eeg.eeg`)"
+  },
+  "timestamp": {
+    "Description": "Timestamp of the stimulation event in ISO 8601 format"
+  }
+}
