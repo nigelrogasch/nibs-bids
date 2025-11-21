@@ -65,10 +65,10 @@ This avoids the need for new fields in metadata files while maintaining clear, m
 
 Every stimulation event recorded in `*_nibs.tsv` and spatially described in `*_markers.tsv` can be **referenced from other modalities** (e.g., `eeg/`, `nirs/`, `beh/`) using the following fields:
 
-| Column Name      | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| `stim_count`  | Corresponds to the unique stimulation row in `*_nibs.tsv`                   |
-| `stim_id`       | One or more marker IDs from `*_markers.tsv` & `*_nibs.tsv` used in the event|
+| Column Name      | Description                                                                							   		|
+|------------------|----------------------------------------------------------------------------------------------------------------|
+| `stim_count` 	   | Corresponds to the unique stimulation row in `*_nibs.tsv` (Recommended for online sessions without navigation) |
+| `stim_id`        | One or more marker IDs from `*_markers.tsv` & `*_nibs.tsv` (Sessions with navigation)							   						|
 
 ### Modality-Specific Considerations
 
@@ -279,7 +279,7 @@ Like other BIDS modalities, this JSON file includes:
 
 **Device metadata:**
 
-- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, StimulationSystemName, NavigationSystemName
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, Navigation, NavigationModelName, NavigationSoftwareVersion
 
 Additionally, the _nibs.json file introduces a dedicated hardware block called 'CoilSet', which captures detailed physical and electromagnetic parameters of one or more stimulation coils used in the session. 
 This structure allows precise modeling, reproducibility, and harmonization of coil-related effects across studies.
@@ -288,7 +288,7 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 ```
 |Field									|Type   | Description	
 |---------------------------------------|-------|-----------------------------------
-| `coil_id`								|string	| Unique identifier for the coil, used to reference this entry from _tms.tsv.
+| `CoilID`								|string	| Unique identifier for the coil, used to reference this entry from _tms.tsv.
 | `CoilType`							|string	| Model/type of the coil (e.g., CB60, Cool-B65).
 | `CoilShape`							|string	| Geometric shape of the coil windings (e.g., figure-of-eight, circular).
 | `CoilCooling`							|string	| Cooling method (air, liquid, passive).
@@ -348,7 +348,7 @@ Grouping fields this way improves readability and aligns with practical data col
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
 | `coil_id`				|string	| Coil identifier (e.g. coil\_1, coil\_2). Should be described in Hardware part in json sidecar `CoilID`.
-| `targeting_method`	|string	| Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot0
+| `targeting_method`	|string	| Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot)
 | `tms_stim_mode`		|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
 | `current_direction`	|string	| Direction of induced current	(e.g. normal, reverse).  
 ```
@@ -371,7 +371,7 @@ Grouping fields this way improves readability and aligns with practical data col
 | `inter_stimulus_interval`    | number  | (ISI)  Time from start of first to start of second pulse (twin or dual).                      
 | `inter_pulse_interval`       | number  | Interval between pulses within a train.                                                      
 | `burst_pulses_number`        | number  | Number of pulses in a burst. 
-| `burst_duration`             | number  | Duration of a single burst block                          							         
+| `burst_duration`             | number  | Duration of a single burst block
 | `pulse_rate`                 | number  | Number of pulses per second.                                                                   
 | `train_pulses`               | number  | Number of pulses in each train.                                                                
 | `repetition_rate`            | number  | Frequency of trains.                                                                           
@@ -383,7 +383,7 @@ Grouping fields this way improves readability and aligns with practical data col
 | `train_ramp_up`              | number  | Gradual amplitude increase per train.                                                          
 | `train_ramp_up_number`       | number  | Number of trains for ramp-up.
 | `ramp_up_duration`		   | number  |(Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train.
-| `train_ramp_down`            | number  | Gradual amplitude decrease per train.                                                         
+| `train_ramp_down`            | number  | Gradual amplitude decrease per train.
 | `train_ramp_down_number`     | number  | Number of trains for ramp-down.
 | `ramp_down_duration`         | number  |(Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train.
 | `stimulation_duration`	   | number  | Total duration of the stimulation block
@@ -396,7 +396,7 @@ Grouping fields this way improves readability and aligns with practical data col
 | ---------------------------- | ------- | --------------------------------------
 | `stim_id`                    | string  | Identifier of stimulation target.       
 | `marker_name`                | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                        
-| `stim_count`				   | integer | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
+| `stim_count`				   | integer | (Optional) Number of stimulation steps or repetitions delivered at spatial location or total count.
 ```
 
 **Amplitude & Thresholds**
@@ -407,13 +407,12 @@ Grouping fields this way improves readability and aligns with practical data col
 | `pulse_intensity`            | number  | Intensity of the first or single pulse (% of maximum stimulator output).                      
 | `second_pulse_intensity`     | number  | Intensity of the second pulse (dual mode).                                                  
 | `pulse_intensity_ratio`      | number  | Amplitude ratio of two pulses (B/A).                                                           
-| `rmt_intensity`              | number  | Resting motor threshold as a percentage of maximum stimulator output
-| `amt_intensity`              | number  | Active motor threshold as a percentage of maximum stimulator output
+| `rmt_intensity`              | number  | Resting motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
+| `amt_intensity`              | number  | Active motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
 | `pulse_intensity_rmt`        | number  | Intensity of first/single pulse as % of RMT.                                                   
 | `second_pulse_intensity_rmt` | number  | Intensity of second pulse as % of RMT.                                                         
 | `pulse_intensity_amt`        | number  | Intensity of first/single pulse as % of AMT.                                                
 | `second_pulse_intensity_amt` | number  | Intensity of second pulse as % of AMT.   
-| `stim_validation`            | string  | Was the stimulation verified / observed.
 ```
 
 **Derived / Device-Generated Parameters**
@@ -421,6 +420,7 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 | Field                        	| Type    | Description                                                                                   
 | ------------------------------| ------- | --------------------------------------
+| `stim_validation`             | string  | Was the stimulation verified / observed.
 | `current_gradient`           	| number  | (Optional) Measured gradient of coil current.                                                            
 | `electric_field_target`      	| number  | (Optional) Electric field at stimulation target.                                                          
 | `electric_field_max`         	| number  | (Optional) Peak electric field at any location.                                                        
@@ -430,9 +430,10 @@ Grouping fields this way improves readability and aligns with practical data col
 | `response_channel_type`      	| string  | (Optional) Type of channel (e.g. emg, eeg).                                                              
 | `response_channel_description`| string  | (Optional) Description of the response channel.                                                           
 | `response_channel_reference`  | string  | (Optional) Reference channel name if applicable.                                                     
-| `system_status`               | string  | (Optional) Data quality observed on the channel.                                               
+| `status`               		| string  | (Optional) Data quality observed on the channel.                                               
+| `status_description`   		| string  | (Optional) Freeform text description of noise or artifact affecting data quality on the channel.                                               
 | `subject_feedback`		    | string  | (Optional) Participant-reported perception or discomfort.
-| `IntendedFor `               	| string  | (Optional) Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/ses-01/eeg/sub-01_eeg.eeg`)
+| `intended_for`               	| string  | (Optional) Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/ses-01/eeg/sub-01_eeg.eeg`)
 | `timestamp`                  	| string  | (Optional) timestamp in ISO 8601 format.       
 ```
 
@@ -477,7 +478,7 @@ Like other BIDS modalities, this JSON file includes:
 
 **Device metadata:**
 
-- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, StimulationSystemName, NavigationSystemName
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, Navigation, NavigationModelName, NavigationSoftwareVersion
 
 Additionally, the _nibs.json file introduces a dedicated hardware block called 'ElectrodeSet', which captures detailed physical and electromagnetic parameters of one or more stimulation electrodes used in the session. 
 This structure allows precise modeling, reproducibility, and harmonization of electrode-related effects across studies.
@@ -487,7 +488,7 @@ This structure allows precise modeling, reproducibility, and harmonization of el
 ```
 | Field									| Type  | Description	
 |---------------------------------------|-------|-----------------------------------
-| `electrode_id`						|string	| Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.tsv.
+| `ElectrodeID`							|string	| Unique identifier for this electrode type (e.g., "el1"), referenced in *_nibs.tsv.
 | `ElectrodeType`						|string	| Type of electrode: pad, HD, ring, custom, etc.
 | `ElectrodeShape`						|string	| Physical shape: rectangular, circular, ring, segmented, etc.
 | `ElectrodeSize`						|string	| Structured field: surface area of the electrode (e.g., 25 cm²).
@@ -637,22 +638,29 @@ Stores stimulation target coordinates. Supports multiple navigation systems via 
 | `transducer_transform`	| array  | (Optional) 4×4 affine transformation matrix representing the transducer’s spatial pose in the coordinate system. This field should be included only when the transducer was repositioned across different stimulation points, such that a single transformation in *_coordsystem.json would not adequately describe all locations.
 ```
 
-- target_x/y/z:
-"Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
+** target_x/y/z: **
 
-- entry_x/y/z: 
-"Scalp entry point of the ultrasound beam — where it penetrates the skin and skull en route to the target."
+- "Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
 
-- transducer_x/y/z:
-"Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
-- normal_x/y/z:
-"Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
+** entry_x/y/z: **  
 
-- beam_x/y/z:
-"Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
+- "Scalp entry point of the ultrasound beam — where it penetrates the skin and skull en route to the target."
 
-- transducer_transform: 
-"Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
+** transducer_x/y/z: ** 
+
+- "Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
+
+** normal_x/y/z: ** 
+
+- "Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
+
+** beam_x/y/z: ** 
+
+- "Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
+
+** transducer_transform: ** 
+
+- "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
 
 ### 1.2 `*_nibs.json` — Sidecar JSON 
 
@@ -671,7 +679,7 @@ Like other BIDS modalities, this JSON file includes:
 
 **Device metadata:**
 
-- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, StimulationSystemName, NavigationSystemName
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, Navigation, NavigationModelName, NavigationSoftwareVersion
 
 Additionally, the _nibs.json file introduces a dedicated hardware block called "TransducerSet".
 TransducerSet provides a structured, machine-readable description of one or more transcranial ultrasound transducers used in the dataset.
@@ -682,7 +690,7 @@ This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes
 ```
 | Field							|  Type  | Description	
 | ------------------------------| -----	 | --------------------------------------------------------------------------------------------------------- 				
-| `transducer_id`				| string | Unique identifier for the transducer, referenced from *_nibs.tsv.
+| `TransducerID`				| string | Unique identifier for the transducer, referenced from *_nibs.tsv.
 | `TransducerType`				| string | Physical configuration: single-element, phased-array, planar, or custom.
 | `FocusType`					| string | Acoustic focus shape: point, line, volume, or swept.
 | `CarrierFrequency`			| number | Nominal center frequency of the ultrasound wave (Hz).
