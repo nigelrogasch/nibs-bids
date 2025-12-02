@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset:  Multimodal TMS Experiment During Product Preference Decision-Making",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "Licence": "CC0",
+  "Authors": "Oleg Shevtsov"
+}

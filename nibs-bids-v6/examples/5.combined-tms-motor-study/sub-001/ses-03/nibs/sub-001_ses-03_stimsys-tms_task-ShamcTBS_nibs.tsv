@@ -1,0 +1,2 @@
+coil_id	targeting_method	tms_stim_mode	current_direction	protocol_name	waveform	inter_pulse_interval	burst_pulses_number	pulse_rate	train_pulses	repetition_rate	train_number	inter_train_interval	stim_id	stim_count	pulse_intensity	pulse_intensity_rmt	stim_validation	timestamp
+coil_1	manual	sequence	normal	Sham_cTBS	monophasic	20	3	50	200	5	1	0	marker1	1	40	70	good	2025-06-01T15:00:00Z

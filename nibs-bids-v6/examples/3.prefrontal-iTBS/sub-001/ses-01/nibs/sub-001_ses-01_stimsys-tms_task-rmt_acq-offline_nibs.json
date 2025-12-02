@@ -1,0 +1,248 @@
+{
+  "TaskName": "Resting motor threshold",
+  "Instructions": "",
+  "TaskDescription": "Searching for a Resting motor threshold in the motor cortex",
+  "SoftwareVersion": "",
+  "Manufacturer": "MagVenture",
+  "ManufacturersModelName": "MagProX100 MAGOPTION",
+  "TrackingSystemName": "n/a",
+  
+  "CoilSet": [
+  {
+    "CoilID": "coil_1",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }
+    }],
+
+  "coil_id": {
+    "Description": "Coil identifier. Should be described in Hardware part in json sidecar."
+  },
+  
+  "targeting_method": {
+    "Description": "Control method for the coil.(manual, fixed, cobot, robot)",
+    "Levels": {
+      "manual": "Coil is held and directed by the operator manually",
+	  "fixed": "Coil is fixed in place using a mechanical arm or holder (non-controllable)",
+	  "cobot": "Coil is positioned via a collaborative system (e.g., Localite arm)",
+      "robot": "Coil is dynamically positioned via a robotic system"
+    }
+  },
+  
+  "tms_stim_mode": {
+    "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
+    "Levels": {
+      "single": "Single pulse",
+      "power": "Power mode single pulse",
+      "twin": "Twin pulse",
+      "dual": "Dual pulse",
+	  "sequence": "Sequence stimulation"
+    }
+  },
+  
+  "current_direction": {
+    "Description": "Direction of induced current (e.g. normal, reverse).",
+    "Levels": {
+      "normal": "normal",
+      "reverse": "reverse"
+    }
+  },
+  
+  "protocol_name": {
+    "Description": "(when using sequence stimulation) The sequence timing mode unique name. (e.g. sici,lici,custom, etc)"
+  },
+  
+  "waveform": {
+    "Description": "Shape of the TMS pulse (e.g. monophasic, biphasic, etc).",
+    "Levels": {
+      "monophasic": "Monophasic pulse",
+      "biphasic": "Biphasic pulse",
+      "halfsine": "Halfsine"
+    }
+  },
+  
+  "inter_trial_interval": {
+    "Description": "(ITI) Interval between single pulse trials.",
+    "Units": "msec"
+  },
+  
+  "inter_stimulus_interval": {
+    "Description": "(ISI)  Time from start of first to start of second pulse (twin or dual).",
+    "Units": "msec"
+  },
+  
+  "inter_pulse_interval": {
+    "Description": "IPI - The duration between the beginning of the first pulse to the beginning of the second pulse (Interval between pulses in train in sequence mode).",
+    "Units": "msec"
+  },
+  
+  "burst_pulses_number": {
+    "Description": "Number of pulses in a burst"
+  },
+  
+  "burst_duration": {
+    "Description": "Duration of a single burst block"
+	},
+	
+  "pulse_rate": {
+    "Description": "(Optional) the number of pulses per second (pps or Hz)"
+  },
+  "train_pulses": {
+    "Description": "The number of pulses in each train."
+  },
+  "repetition_rate": {
+    "Description": "The repetition rate refers to the number of repetitions per second (pps) at which the pulses are generated. Hz equivalent",
+    "Units": "pps"
+  },
+  "inter_repetition_interval": {
+    "Description": "The duration between the beginning of the first burst to the beginning of the second burst. T=1/f",
+    "Units": "msec"
+  },
+  "train_duration": {
+    "Description": "The duration of the train stimulation"
+  },
+  "train_number": {
+    "Description": "The number of trains in sequence"
+  },
+  "inter_train_interval": {
+    "Description": "The time interval between two trains is described as the time period between the last pulse in the first train to the first pulse in the next train."
+  },
+  "inter_train_interval_delay": {
+	  "Description": "Additional individual time delay that can be added to the InterTrainInterval for each Train in custom protocols"
+  },
+  "train_ramp_up": {
+    "Description": "The Ramp Up function allows programming a gradual increase in amplitude with each train during burst stimulation."
+  },
+  "train_ramp_up_number": {
+    "Description": "The number of trains applied for Ramp Up function"
+  },
+  "ramp_up_duration": {
+    "Description": "(Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train."
+  },
+  "train_ramp_down": {
+    "Description": "Gradual amplitude decrease per train."
+  },
+  "train_ramp_down_number": {
+    "Description": "Number of trains for ramp-down."
+  },
+  "ramp_down_duration": {
+    "Description": "(Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train."
+  },
+  "stimulation_duration": {
+    "Description": "Total duration of the stimulation block"
+  },
+  
+  
+  "stim_id": {
+    "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
+  },
+  "marker_name": {
+    "Description": "(Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)"
+  },
+  "stim_count": {
+    "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
+  },
+  "pulse_intensity": {
+    "Description": "An expression for the power output level as a percentage of maximum stimulator power",
+    "Units": "%"
+  },
+  "second_pulse_intensity": {
+    "Description": "Actual for Dual_mode. The independent power output level of the second pulse as a percentage of maximum stimulator power.",
+    "Units": "%"
+  },
+  "pulse_intensity_ratio": {
+    "Description": "Actual for Twin_mode. Ratio of the power output levels of two pulses B/A."
+  },
+  "rmt_intensity": {
+    "Description": "Resting motor threshold as a percentage of maximum stimulator output"
+  },
+  "amt_intensity": {
+    "Description": "Active motor threshold as a percentage of maximum stimulator output"
+  },
+  "pulse_intensity_rmt": {
+    "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  },
+  "second_pulse_intensity_rmt": {
+    "Description": "Stimulation intensity for the second or single pulseas a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  }, 
+  "pulse_intensity_amt": {
+    "Description": "Intensity of first/single pulse as % of AMT.",
+    "Units": "%"
+  },
+  "second_pulse_intensity_amt": {
+    "Description": "Stimulation intensity for the second or single pulseas a percentage of the Active Motor Threshold (% of AMT).",
+    "Units": "%"
+  }, 
+  "stim_validation": {
+    "Description": "Validation of the applied stimulation. Whether stimulation was validated"
+  },
+  "current_gradient": {
+    "Description": "Actual measured value of the coil current gradient.",
+    "Units": "A/µs"
+  },
+  "electric_field_target": {
+    "Description": "Electric field at the target point",
+    "Units": "V/m"
+  },
+  "electric_field_max": {
+    "Description": "Peak electric field generated by the coil",
+    "Units": "V/m"
+  },
+  "motor_response": {
+    "Description": "Motor response amplitude",
+    "Units": "µV"
+  },
+  "latency": {
+    "Description": "Latency of the motor response.",
+	"Units": "msec"
+  },
+  "response_channel_name": {
+    "Description": "Channel name used for the response (motor-response) measurement."
+  },
+  "response_channel_type":{
+	  "Description":"Type of channel used for response measurement. The channel types are similar to the list of eeg modality channel type."
+  },
+  "response_channel_description":{
+	  "Description":"Brief free-text description of the channel"
+  },
+  "response_channel_reference":{
+	  "Description":"Name of the reference electrode(s). This column is not needed when it is common to all channels. In that case the reference electrode(s) can be specified in *_eeg.json as EEGReference)."
+  },  
+  "status": {
+    "Description": "Data quality observed on the channel. A channel is considered bad if its data quality is compromised by excessive noise."
+  },
+  "status_description": {
+	  "Description": "Freeform text description of noise or artifact affecting data quality on the channel."
+  },
+  "subject_feedback": {
+	  "Description": "(Optional) Participant-reported perception or discomfort."
+  },
+  "intended_for": {
+    "Description": "(Optional) Path to the recorded file refers to. BIDS-style path. (example: `bids::sub-01/eeg/sub-01_eeg.eeg`)"
+  },
+  "timestamp": {
+    "Description": "Timestamp of the stimulation event in ISO 8601 format"
+  }
+}
