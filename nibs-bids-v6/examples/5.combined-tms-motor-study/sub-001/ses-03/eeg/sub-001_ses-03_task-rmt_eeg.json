@@ -1,0 +1,12 @@
+{
+  "TaskName": "EMG - RMT",
+  "TaskDescription": "",
+  "Manufacturer":"Brain Products",
+  "ManufacturerModelName": "BrainAmp_DC",
+  
+  "EMGChannelCount": 1,
+  "EMGreference": "first dorsal interosseous muscle",
+  "EMGground": "wrist strap",
+  "SamplingFrequency": 2000,
+  "PowerLineFrequency": 50
+}

@@ -1,0 +1,58 @@
+{
+  "TaskName":"Products choice",
+  "Instructions":"Text of the instructions given to participants before the recording",
+  "TaskDescription":"Longer description of the task",
+
+  "trial": {
+	  "Description": "Indicator of the type of trial",
+	  "Levels": {
+		  "name_1": "description",
+		  "name_2": "description"
+	  }
+  },
+  "stimulus":{
+	  "Description": "type of stimulus presented to participant",
+	  "Levels": {
+		  "Face_A": "Face_A",
+		  "Face_B": "Face_A"
+	  }
+	  }
+  }, 
+  "response":{
+	  "Description": "type of participant's responce"
+	  }
+  }, 
+  "response_time":{
+	  "Description": "reaction time/decision time"
+  }, 
+  
+  "correct":{
+	  "Description": "validation of participant's answer"
+	  }
+  }, 
+   
+  "Software":"PsychoPy",
+  "SoftwareVersion":"2024.1.4",
+  
+  
+
+  "Hardware": {
+	  "Monitor": {
+		  "Model":"",
+		  "Diagonal":"",
+		  "Resolution":"",
+		  "Refresh Rate":""
+		  },
+	  
+	  "Keyboard": {
+		  "Model":"",
+		  "InterfaceType":"PS/2"
+		  },
+	  
+	  "HumanInterfaceDevice": {
+		  "Model":"",
+		  "Type":""
+		  }
+		  }
+
+}

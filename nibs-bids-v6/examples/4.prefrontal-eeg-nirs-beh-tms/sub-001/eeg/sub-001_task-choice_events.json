@@ -1,0 +1,12 @@
+{
+  "trial_type": {
+    "LongName": "TMS Stimulation",
+    "Description": "Transcranial Magnetic Stimulation online"
+  },
+  "stim_id": {
+    "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
+  },
+  "stim_count": {
+    "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
+  }
+}

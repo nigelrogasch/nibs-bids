@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset:  Combined TMS Motor Study — Mixed Online/Offline Stimulation",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "Licence": "CC0",
+  "Authors": "Oleg Shevtsov"
+}
