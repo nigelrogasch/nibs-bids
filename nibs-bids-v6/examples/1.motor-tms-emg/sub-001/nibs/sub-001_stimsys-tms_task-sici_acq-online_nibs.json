@@ -5,7 +5,10 @@
   "SoftwareVersion": "",
   "Manufacturer": "MagVenture",
   "ManufacturersModelName": "MagProX100 MAGOPTION",
-  "TrackingSystemName": "Localite",
+
+  "Navigation": "Localite",
+  "NavigationModelName": "n/a",
+  "NavigationSoftwareVersion": "n/a",
   
   "CoilSet": [
   {
