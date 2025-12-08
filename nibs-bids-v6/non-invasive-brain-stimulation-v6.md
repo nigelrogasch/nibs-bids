@@ -854,10 +854,10 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 ### Example *_markers.tsv (TMS-section):
 
 ```
-stim_id	target_x	target_y	target_z	entry_x	entry_y	entry_z	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z
-marker1.1	125.43	210.11	64.38	120.09	200.19	79.56	126.08	211.03	65.43	0.68	41275	0.44	-0.07	-0.19	0.13
-marker1.2	125.29	210.57	65.48	120.33	199.84	80.38	125.61	210.88	65.76	0.54	45659	-1.03	-0.26	-0.31	0.36
-marker1.3	125.34	209.63	65.11	120.02	199.67	81.07	126.32	209.99	66.09	0.17	46753	-0.5	-0.66	0.75	45717
+stim_id		target_x	target_y	target_z	entry_x	entry_y	entry_z	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z
+marker1.1	125.43		210.11		64.38		120.09	200.19	79.56	126.08	211.03	65.43	0.68		41275		0.44		-0.07		-0.19		0.13
+marker1.2	125.29		210.57		65.48		120.33	199.84	80.38	125.61	210.88	65.76	0.54		45659		-1.03		-0.26		-0.31		0.36
+marker1.3	125.34		209.63		65.11		120.02	199.67	81.07	126.32	209.99	66.09	0.17		46753		-0.5		-0.66		0.75		45717
 
 ```
 
@@ -945,8 +945,8 @@ marker1.3	125.34	209.63	65.11	120.02	199.67	81.07	126.32	209.99	66.09	0.17	46753
 ### Examples *_nibs.tsv (TMS-section):
 
 ```
-coil_id	tms_stim_mode	waveform	stim_id	pulse_intensity	rmt_intensity	pulse_intensity_rmt
-coil_1	single	biphasic	marker1.1	55	50	110.0
-coil_1	single	biphasic	marker1.2	55	50	110.0
-coil_1	single	biphasic	marker1.3	55	50	110.0
+coil_id		tms_stim_mode	waveform	stim_id		pulse_intensity	rmt_intensity	pulse_intensity_rmt
+coil_1		single			biphasic	marker1.1	55				50				110.0
+coil_1		single			biphasic	marker1.2	55				50				110.0
+coil_1		single			biphasic	marker1.3	55				50				110.0
 ```
