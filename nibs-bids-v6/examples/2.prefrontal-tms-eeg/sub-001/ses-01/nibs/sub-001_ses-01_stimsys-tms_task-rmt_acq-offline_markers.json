@@ -3,7 +3,7 @@
     "Description": "Unique identifier for each marker. This column must appear first in the file."
   },
   
-  "marker_name": {
+  "target_name": {
     "Description": "Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)."
   },
 
