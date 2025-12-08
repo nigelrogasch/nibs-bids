@@ -88,7 +88,7 @@
   "stim_id": {
     "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
   },
-  "marker_name": {
+  "target_name": {
     "Description": "(Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)"
   },
   "stim_count": {

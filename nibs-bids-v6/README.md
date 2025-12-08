@@ -226,15 +226,15 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | Field                		| Type   | Description                                                                                                 			
 | --------------------------| ------ | ------------------------------------------------------------------------------------------------------- 				
 | `stim_id`			   		| string | Unique identifier for each marker. This column must appear first in the file.                           				
-| `marker_name`   	   		| string | Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
-| `peeling_depth`       	| number | Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. 				
+| `target_name`   	   		| string | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `peeling_depth`       	| number | (Optional )Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. 				
 | `target_x`           		| number | X-coordinate of the target point in millimeters.                                                        					
 | `target_y`           		| number | Y-coordinate of the target point in millimeters.                                                        
 | `target_z`           		| number | Z-coordinate of the target point in millimeters.                                                        
 | `entry_x`            		| number | X-coordinate of the entry point in millimeters.                                                         
 | `entry_y`            		| number | Y-coordinate of the entry point in millimeters.                                                         
 | `entry_z`            		| number | Z-coordinate of the entry point in millimeters.                                                         
-| `coil_transform`      	| array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     
+| `coil_transform`      	| array  | (Optional) 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     
 | `coil_x`             		| number | X component of coil's origin location.                                                                  
 | `coil_y`             		| number | Y component of coil's origin location.                                                                  
 | `coil_z`             		| number | Z component of coil's origin location.                                                                  
@@ -244,10 +244,10 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | `direction_x`        		| number | X component of coil direction vector.                                                                   
 | `direction_y`        		| number | Y component of coil direction vector.                                                                  
 | `direction_z`        		| number | Z component of coil direction vector.                                                                   
-| `electric_field_max_x`	| number | X coordinate of max electric field point.                                                               
-| `electric_field_max_y` 	| number | Y coordinate of max electric field point.                                                               
-| `electric_field_max_z` 	| number | Z coordinate of max electric field point.                                                               
-| `timestamp`          		| string | timestamp of the stimulation event in ISO 8601 format.                                                  
+| `electric_field_max_x`	| number | (Optional) X coordinate of max electric field point.                                                               
+| `electric_field_max_y` 	| number | (Optional) Y coordinate of max electric field point.                                                               
+| `electric_field_max_z` 	| number | (Optional) Z coordinate of max electric field point.                                                               
+| `timestamp`          		| string | (Optional) timestamp of the stimulation event in ISO 8601 format.                                                  
 ```
 
 ### Field Ordering Rationale
@@ -290,6 +290,7 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 |---------------------------------------|-------|-----------------------------------
 | `CoilID`								|string	| Unique identifier for the coil, used to reference this entry from _tms.tsv.
 | `CoilType`							|string	| Model/type of the coil (e.g., CB60, Cool-B65).
+| `CoilSerialNumber`					|string	| Coil serial number
 | `CoilShape`							|string	| Geometric shape of the coil windings (e.g., figure-of-eight, circular).
 | `CoilCooling`							|string	| Cooling method (air, liquid, passive).
 | `CoilDiameter`						|number	| Diameter of the outer winding (usually in mm).
@@ -300,12 +301,15 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 
 ### Example:
 
+1. CoilSet description
+
 ```
 "CoilSet": [
   {
-    "coil_id": "coil_1",
+    "CoilID": "coil_1",
     "CoilType": "CB60",
     "CoilShape": "figure-of-eight",
+	"CoilSerialNumber": "2H54-321",
     "CoilCooling": "air",
     "CoilDiameter": {
       "Value": 75,
@@ -348,9 +352,9 @@ Grouping fields this way improves readability and aligns with practical data col
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
 | `coil_id`				|string	| Coil identifier (e.g. coil\_1, coil\_2). Should be described in Hardware part in json sidecar `CoilID`.
-| `targeting_method`	|string	| Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot)
+| `targeting_method`	|string	| (Optional) Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot)
 | `tms_stim_mode`		|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
-| `current_direction`	|string	| Direction of induced current	(e.g. normal, reverse).  
+| `current_direction`	|string	| (Optional) Direction of induced current	(e.g. normal, reverse) (Depends on the stimulator model described in _nibs.json).  
 ```
 
 **Protocol Metadata** 
@@ -367,26 +371,26 @@ Grouping fields this way improves readability and aligns with practical data col
 | Field                        | Type    | Description                                                                                   
 | ---------------------------- | ------- | --------------------------------------
 | `waveform`				   | string  | Pulse shape	(e.g. monophasic, biphasic, etc).      
-| `inter_trial_interval`       | string  | Interval between simple trials 
-| `inter_stimulus_interval`    | number  | (ISI)  Time from start of first to start of second pulse (twin or dual).                      
-| `inter_pulse_interval`       | number  | Interval between pulses within a train.                                                      
-| `burst_pulses_number`        | number  | Number of pulses in a burst. 
-| `burst_duration`             | number  | Duration of a single burst block
-| `pulse_rate`                 | number  | Number of pulses per second.                                                                   
-| `train_pulses`               | number  | Number of pulses in each train.                                                                
-| `repetition_rate`            | number  | Frequency of trains.                                                                           
-| `inter_repetition_interval`  | number  | Time between start of burst N and N+1.                                                        
-| `train_duration`             | number  | Duration of the full train.                                                                    
-| `train_number`               | number  | Number of trains in sequence.                                                                 
-| `inter_train_interval`       | number  | Time from last pulse of one train to first of next.                                            
-| `inter_train_interval_delay` | number  | Optional per-train delay override.                                                             
-| `train_ramp_up`              | number  | Gradual amplitude increase per train.                                                          
-| `train_ramp_up_number`       | number  | Number of trains for ramp-up.
-| `ramp_up_duration`		   | number  |(Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train.
-| `train_ramp_down`            | number  | Gradual amplitude decrease per train.
-| `train_ramp_down_number`     | number  | Number of trains for ramp-down.
-| `ramp_down_duration`         | number  |(Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train.
-| `stimulation_duration`	   | number  | Total duration of the stimulation block
+| `inter_trial_interval`       | string  | (Optional) Interval between simple trials 
+| `inter_stimulus_interval`    | number  | (Optional) (ISI)  Time from start of first to start of second pulse (twin or dual).                      
+| `inter_pulse_interval`       | number  | (Optional) Interval between pulses within a train.                                                      
+| `burst_pulses_number`        | number  | (Optional) Number of pulses in a burst. 
+| `burst_duration`             | number  | (Optional) Duration of a single burst block
+| `pulse_rate`                 | number  | (Optional) Number of pulses per second.                                                                   
+| `train_pulses`               | number  | (Optional) Number of pulses in each train.                                                                
+| `repetition_rate`            | number  | (Optional) Frequency of trains.                                                                           
+| `inter_repetition_interval`  | number  | (Optional) Time between start of burst N and N+1.                                                        
+| `train_duration`             | number  | (Optional) Duration of the full train.                                                                    
+| `train_number`               | number  | (Optional) Number of trains in sequence.                                                                 
+| `inter_train_interval`       | number  | (Optional) Time from last pulse of one train to first of next.                                            
+| `inter_train_interval_delay` | number  | (Optional) Per-train delay override.                                                             
+| `train_ramp_up`              | number  | (Optional) Gradual amplitude increase per train.                                                          
+| `train_ramp_up_number`       | number  | (Optional) Number of trains for ramp-up.
+| `ramp_up_duration`		   | number  | (Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train.
+| `train_ramp_down`            | number  | (Optional) Gradual amplitude decrease per train.
+| `train_ramp_down_number`     | number  | (Optional) Number of trains for ramp-down.
+| `ramp_down_duration`         | number  | (Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train.
+| `stimulation_duration`	   | number  | (Optional) Total duration of the stimulation block
 ```
 
 **Spatial & Targeting Information**
@@ -395,8 +399,9 @@ Grouping fields this way improves readability and aligns with practical data col
 | Field                        | Type    | Description                                                                                    
 | ---------------------------- | ------- | --------------------------------------
 | `stim_id`                    | string  | Identifier of stimulation target.       
-| `marker_name`                | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                        
+| `target_name`                | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                        
 | `stim_count`				   | integer | (Optional) Number of stimulation steps or repetitions delivered at spatial location or total count.
+| `coil_handle_direction`	   | string  | (Optional) Сoplanar handle direction (sometimes used in protocols without navigation). 
 ```
 
 **Amplitude & Thresholds**
@@ -405,14 +410,14 @@ Grouping fields this way improves readability and aligns with practical data col
 | Field                        | Type    | Description                                                                                                 
 | ---------------------------- | ------- | --------------------------------------
 | `pulse_intensity`            | number  | Intensity of the first or single pulse (% of maximum stimulator output).                      
-| `second_pulse_intensity`     | number  | Intensity of the second pulse (dual mode).                                                  
-| `pulse_intensity_ratio`      | number  | Amplitude ratio of two pulses (B/A).                                                           
+| `second_pulse_intensity`     | number  | (Optional) Intensity of the second pulse (dual mode).                                                  
+| `pulse_intensity_ratio`      | number  | (Optional) Amplitude ratio of two pulses (B/A).                                                           
 | `rmt_intensity`              | number  | Resting motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
-| `amt_intensity`              | number  | Active motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
+| `amt_intensity`              | number  | (Optional) Active motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
 | `pulse_intensity_rmt`        | number  | Intensity of first/single pulse as % of RMT.                                                   
-| `second_pulse_intensity_rmt` | number  | Intensity of second pulse as % of RMT.                                                         
-| `pulse_intensity_amt`        | number  | Intensity of first/single pulse as % of AMT.                                                
-| `second_pulse_intensity_amt` | number  | Intensity of second pulse as % of AMT.   
+| `second_pulse_intensity_rmt` | number  | (Optional) Intensity of second pulse as % of RMT.                                                         
+| `pulse_intensity_amt`        | number  | (Optional) Intensity of first/single pulse as % of AMT.                                                
+| `second_pulse_intensity_amt` | number  | (Optional) Intensity of second pulse as % of AMT.   
 ```
 
 **Derived / Device-Generated Parameters**
@@ -420,7 +425,7 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 | Field                        	| Type    | Description                                                                                   
 | ------------------------------| ------- | --------------------------------------
-| `stim_validation`             | string  | Was the stimulation verified / observed.
+| `stim_validation`             | string  | (Optional) Was the stimulation verified / observed.
 | `current_gradient`           	| number  | (Optional) Measured gradient of coil current.                                                            
 | `electric_field_target`      	| number  | (Optional) Electric field at stimulation target.                                                          
 | `electric_field_max`         	| number  | (Optional) Peak electric field at any location.                                                        
@@ -448,17 +453,17 @@ Stores stimulation target coordinates. Supports multiple navigation systems via 
 | Field                		| Type   | Description                                                                                             | Units    |
 | --------------------------| ------ | ------------------------------------------------------------------------------------------------------- | -------- |
 | `stim_id`             	| string | Unique identifier for each marker. This column must appear first in the file.                           |   —      |
-| `channel_name` 	   		| string | (Optional)(tES-specific). Human-readable name of the electrode/channel (e.g., AF3, Fp2, Ch7).		   |		  |
+| `channel_name` 	   		| string | (Optional) (tES-specific). Human-readable name of the electrode/channel (e.g., AF3, Fp2, Ch7).		   |		  |
 | `target_x`           		| number | X-coordinate of the target point in millimeters.                                                        | `mm`     |
 | `target_y`           		| number | Y-coordinate of the target point in millimeters.                                                        | `mm`     |
 | `target_z`           		| number | Z-coordinate of the target point in millimeters.                                                        | `mm`     |
 | `entry_x`            		| number | X-coordinate of the entry point in millimeters.                                                         | `mm`     |
 | `entry_y`            		| number | Y-coordinate of the entry point in millimeters.                                                         | `mm`     |
 | `entry_z`            		| number | Z-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `electric_field_max_x`	| number | (Optional)X coordinate of max electric field point.                                                     | `mm`     |
-| `electric_field_max_y`	| number | (Optional)Y coordinate of max electric field point.                                                     | `mm`     |
-| `electric_field_max_z`	| number | (Optional)Z coordinate of max electric field point.                                                     | `mm`     |
-| `timestamp`          		| string | (Optional)timestamp of the stimulation event in ISO 8601 format.                                        | ISO 8601 |
+| `electric_field_max_x`	| number | (Optional) X coordinate of max electric field point.                                                     | `mm`     |
+| `electric_field_max_y`	| number | (Optional) Y coordinate of max electric field point.                                                     | `mm`     |
+| `electric_field_max_z`	| number | (Optional) Z coordinate of max electric field point.                                                     | `mm`     |
+| `timestamp`          		| string | (Optional) timestamp of the stimulation event in ISO 8601 format.                                        | ISO 8601 |
 ```
 
 ### 1.2 `*_nibs.json` — Sidecar JSON 
@@ -499,10 +504,12 @@ This structure allows precise modeling, reproducibility, and harmonization of el
 
 ### Example:
 
+1. Electrode set description
+
 ```
 "ElectrodeSet": [
   {
-    "electrode_id": "el_1",
+    "ElectrodeID": "el_1",
     "ElectrodeType": "pad",
     "ElectrodeShape": "rectangular",
     "ElectrodeSize": {
@@ -554,7 +561,7 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 |---------------------------|-------|-----------------------------------
 | `waveform`				|string | Type of waveform (sine, square, pulse, custom)
 | `waveform_frequency`		|number | Frequency of waveform (for tACS) (Hz)
-| `noise_type`				|string | Type of noise (for tRNS) (white, pink, band-limited, custom)
+| `noise_type`				|string | (Optional) Type of noise (for tRNS) (white, pink, band-limited, custom)
 | `stimulation_duration` 	|number | Total stimulation time (seconds)
 | `ramp_up_duration` 		|number | Time to ramp current up (seconds)
 | `ramp_down_duration`		|number | Time to ramp current down (seconds)
@@ -577,8 +584,8 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | Field					| Type  | Description	
 |-----------------------|-------|-----------------------------------
 | `stim_id`             |string	| Identifier of stimulation target. 
-| `channel_name`		|string	| Name of cahnnel/electrode according 10-20 system (AF3, Ch1)
-| `channel_type`		|string	| Channel function (anode, cathode, return, ground)
+| `channel_name`		|string	| (Optional) Name of cahnnel/electrode according 10-20 system (AF3, Ch1)
+| `channel_type`		|string	| (Optional) Channel function (anode, cathode, return, ground)
 | `stim_count`  		|number | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
 ```
 
@@ -588,11 +595,11 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | Field							| Type  | Description	
 |-------------------------------|-------|-----------------------------------
 | `current_intensity`			|number | Current applied through the electrode (mA)
-| `current_density` 			|number | Current per unit surface area (mA/cm²)
-| `voltage_intensity`			|number | Peak voltage applied (if voltage-controlled) (V)
-| `threshold_type`				|number | Type of physiological or behavioral threshold used for defining ThresholdIntensity. Optional (motor, phosphene, perceptual, pain, none, other).
-| `threshold_intensity`			|number | Subject-specific threshold used for scaling (mA or V)
-| `pulse_intensity_threshold`	|number | Stimulation intensity expressed as % of threshold (%)
+| `current_density` 			|number | (Optional) Current per unit surface area (mA/cm²)
+| `voltage_intensity`			|number | (Optional) Peak voltage applied (if voltage-controlled) (V)
+| `threshold_type`				|number | (Optional) Type of physiological or behavioral threshold used for defining ThresholdIntensity. Optional (motor, phosphene, perceptual, pain, none, other).
+| `threshold_intensity`			|number | (Optional) Subject-specific threshold used for scaling (mA or V)
+| `pulse_intensity_threshold`	|number | (Optional) Stimulation intensity expressed as % of threshold (%)
 ```
 
 **Derived / Device-Generated Parameters**
@@ -619,7 +626,7 @@ Stores stimulation target coordinates. Supports multiple navigation systems via 
 | Field                		| Type   | Description                                                                                                 			
 | --------------------------| ------ | ------------------------------------------------------------------------------------------------------- 				
 | `stim_id`			   		| string | Unique identifier for each marker. This column must appear first in the file.                           				
-| `marker_name`   	   		| string | Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `target_name`   	   		| string | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
 | `target_x`           		| number | X-coordinate of the target point in millimeters.                                                        					
 | `target_y`           		| number | Y-coordinate of the target point in millimeters.                                                        
 | `target_z`           		| number | Z-coordinate of the target point in millimeters. 
@@ -702,10 +709,13 @@ This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes
 ```
 
 ** Example:**
+
+1. Transducer set description
+
 ```
 "TransducerSet": [
   {
-    "transducer_id": "tr_1",
+    "TransducerID": "tr_1",
     "TransducerType": "single-element",
     "FocusType": "point",
     "CarrierFrequency": {
@@ -774,23 +784,23 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `carrier_frequency`			| number  | Frequency of the continuous or pulsed ultrasound carrier
 | `duty_cycle`					| number  | Percentage of time the ultrasound is active (on) within each pulse or burst cycle. Expressed as a number between 0 and 100.
 | `pulse_width`					| number  | Duration of a single ultrasound pulse
-| `inter_trial_interval`		| number  | Time between repeated trials or blocks
-| `inter_pulse_interval`		| number  | Time between pulses within a burst
-| `burst_pulses_number`			| number  |	Number of pulses per burst
-| `burst_duration`				| number  | Duration of a single burst block
-| `pulse_rate`					| number  | Repetition rate of pulses within a burst (PRF equivalent)
-| `train_pulses`				| number  | Number of pulses in a full train (e.g. 100 pulses = 10 bursts of 10 pulses)
-| `repetition_rate`				| number  | How often the burst is repeated (can be inverse of InterTrialInterval)
-| `inter_repetition_interval`   | number  | Time between start of burst N and N+1.
-| `train_duration`              | number  | Duration of the full train.                                                                    | msec                                        |
-| `train_number`                | number  | Number of trains in sequence.                                                                  | —                                           |
-| `inter_train_interval`        | number  | Time from last pulse of one train to first of next.                                            | msec                                        |
-| `inter_train_interval_delay`  | number  | Optional per-train delay override.      
-| `train_ramp_up` 				| number  | Proportional ramping factor or amplitude increment per train (e.g., in % of max intensity)
-| `train_ramp_up_number` 		| number  | Number of initial trains during which ramp-up is applied
-| `stimulation_duration`		| number  | Total duration of the stimulation block
-| `ramp_up_duration`			| number  | Duration of ramp-up (fade-in) at onset
-| `ramp_down_duration`			| number  | Duration of ramp-down (fade-out) at offset
+| `inter_trial_interval`		| number  | (Optional) Time between repeated trials or blocks
+| `inter_pulse_interval`		| number  | (Optional) Time between pulses within a burst
+| `burst_pulses_number`			| number  |	(Optional) Number of pulses per burst
+| `burst_duration`				| number  | (Optional) Duration of a single burst block
+| `pulse_rate`					| number  | (Optional) Repetition rate of pulses within a burst (PRF equivalent)
+| `train_pulses`				| number  | (Optional) Number of pulses in a full train (e.g. 100 pulses = 10 bursts of 10 pulses)
+| `repetition_rate`				| number  | (Optional) How often the burst is repeated (can be inverse of InterTrialInterval)
+| `inter_repetition_interval`   | number  | (Optional) Time between start of burst N and N+1.
+| `train_duration`              | number  | (Optional) Duration of the full train.                                                                    | msec                                        |
+| `train_number`                | number  | (Optional) Number of trains in sequence.                                                                  | —                                           |
+| `inter_train_interval`        | number  | (Optional) Time from last pulse of one train to first of next.                                            | msec                                        |
+| `inter_train_interval_delay`  | number  | (Optional) Per-train delay override.      
+| `train_ramp_up` 				| number  | (Optional) Proportional ramping factor or amplitude increment per train (e.g., in % of max intensity)
+| `train_ramp_up_number` 		| number  | (Optional) Number of initial trains during which ramp-up is applied
+| `stimulation_duration`		| number  | (Optional) Total duration of the stimulation block
+| `ramp_up_duration`			| number  | (Optional) Duration of ramp-up (fade-in) at onset
+| `ramp_down_duration`			| number  | (Optional) Duration of ramp-down (fade-out) at offset
 ```
 
 **Spatial & Targeting Information**
@@ -799,7 +809,7 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
 | ---------------------------- | ------- | --------------------------------------
 | `stim_id`                    | string  | Identifier of stimulation target or target group.       
-| `marker_name`                | string  | (Optional) Human-readable name or anatomical label of the stimulation site (e.g., M1_hand, left_DLPFC, anterior_insula).
+| `target_name`                | string  | (Optional) Human-readable name or anatomical label of the stimulation site (e.g., M1_hand, left_DLPFC, anterior_insula).
 | `stim_count`    		       | number  | (Optional) Number of stimulation steps or repetitions delivered at this spatial location.
 ```
 
@@ -815,7 +825,7 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `threshold_type` 				| string  | (Optional) Method used to determine the individual stimulation threshold. Typical values include: behavioral, physiological, subjective, or none.
 | `threshold_intensity`			| number  | (Optional) Individually determined stimulation threshold, expressed in the same units as PulseIntensity.
 | `pulse_intensity_threshold`	| number  | (Optional) Stimulation intensity expressed as a percentage of the individual threshold (e.g., 90% of threshold).
-| `stim_validation`             | string  | Was the stimulation verified / observed.
+| `stim_validation`             | string  | (Optional) Was the stimulation verified / observed.
 ```
 
 **Derived / Device-Generated Parameters**

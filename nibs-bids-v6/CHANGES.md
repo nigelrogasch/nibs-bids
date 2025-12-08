@@ -66,3 +66,21 @@ It replaces MarkerID and allows for consistent referencing across modalities.
 
 README_tUS.md -> merged with README.md
 README_tES.md -> merged with README.md
+
+## --------------- 08.12.2025  ---------------
+
+### 1. 
+
+`*_nibs.json` -> `CoilModelName`, `CoilSerialNumber`
+
+### 2.
+
+`marker_name` -> `target_name`
+
+### 3.
+
+`*_nibs.json`, `*_nibs.tsv` -> `coil_handle_direction`
+
+### 4.
+
+added "(Optional)" to descriptions
