@@ -27,7 +27,7 @@ sub-<label>/
 * The structure supports multiple types of NIBS techniques:
 
   * Transcranial Magnetic Stimulation (**TMS**)
-  * Transcranial Electrical Stimulation (**tES**, e.g., tDCS, tACS)
+  * Transcranial Electrical Stimulation (**TES**, e.g., tDCS, tACS)
   * Transcranial Ultrasound Stimulation (**TUS**)
 * At this stage, the file templates and parameters are modeled based on **TMS**, while allowing future extensibility to other modalities.
 
@@ -75,7 +75,7 @@ Every stimulation event recorded in `*_nibs.tsv` and spatially described in `*_m
 | Modality | stim_id Usage                                   	 | Example Format            |
 |----------|-----------------------------------------------------|---------------------------|
 | `TMS`    | Typically **one marker** per stimulation            | `stim_1.1`               |
-| `tES`    | **Multiple electrodes** involved in one stimulation | `stim_2.1; stim_2.2`    |
+| `TES`    | **Multiple electrodes** involved in one stimulation | `stim_2.1; stim_2.2`    |
 | `TUS`    | **Single target**, **multiple entry points**        | `stim_3.1; stim_3.2`    |
 
 - stim_id's can be **semicolon-separated** to indicate multi-point involvement.
@@ -124,7 +124,7 @@ Further elaboration and demonstration of these principles are provided in the ac
 
 A _coordsystem.json file is used to specify the fiducials, the location of anatomical landmarks, and the coordinate system and units in which the position of landmarks or TMS stimulation targets is expressed. 
 Anatomical landmarks are locations on a research subject such as the nasion (for a detailed definition see the coordinate system appendix).
-The _coordsystem.json file is REQUIRED for navigated TMS, tES, TUS stimulation datasets. If a corresponding anatomical MRI is available, the locations of anatomical landmarks in that scan should also be stored in the _T1w.json file which accompanies the TMS, tES, TUS data.
+The _coordsystem.json file is REQUIRED for navigated TMS, TES, TUS stimulation datasets. If a corresponding anatomical MRI is available, the locations of anatomical landmarks in that scan should also be stored in the _T1w.json file which accompanies the TMS, TES, TUS data.
 
 ```
 | Field                                           | Type    | Description                                                                                                                                                                                                                                                                     
@@ -147,35 +147,8 @@ The _coordsystem.json file is REQUIRED for navigated TMS, tES, TUS stimulation d
 | `AnatomicalLandmarkRmsDeviationDescription`     | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                         		
 ```
 
-#### Example *_coordsystem.json:
+**  A complete example is included in Appendix A.
 
-```
-{
-  "ImageData": "NIFTI",
-  "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz",
-  "AnatomicalLandmarkCoordinateSystem": "Individual",
-  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
-  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: origin halfway between LPA and RPA; x-axis points to RPA, y-axis orthogonal through NAS, z-axis orthogonal to xy-plane.",
-  "AnatomicalLandmarkCoordinates": {
-    "NAS": [12.7, 21.3, 13.9],
-    "LPA": [5.2, 11.3, 9.6],
-    "RPA": [20.2, 11.3, 9.1]
-  },
-  "AnatomicalLandmarkCoordinatesDescription": "[x, y, z] coordinates of anatomical landmarks: NAS (nasion), LPA (left preauricular), RPA (right preauricular)",
-  "DigitizedHeadPoints": "sub-01_acq-HEAD_headshape.pos",
-  "DigitizedHeadPointsNumber": 1200,
-  "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
-  "DigitizedHeadPointsUnits": "mm",
-  "AnatomicalLandmarkRmsDeviation": {
-    "NAS": [0.7],
-    "LPA": [0.3],
-    "RPA": [0.4],
-    "RMS": [0.5]
-  },
-  "AnatomicalLandmarkRmsDeviationUnits": "mm",
-  "AnatomicalLandmarkRmsDeviationDescription": "Root Mean Square deviation for fiducial points"
-}
-```
 ### TUS-specific transducer coordinate metadata fields (*_coordsystem.json)
 
 These optional fields are recommended for transcranial ultrasound stimulation (TUS) datasets when the spatial position and/or orientation of the ultrasound transducer is known or fixed (e.g., in neuronavigated or modeled setups). 
@@ -299,9 +272,7 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 | `MagneticFieldGradient`				|number	| Gradient of the magnetic field at a specific depth (typically in kT/s).
 ```
 
-### Example:
-
-1. CoilSet description
+#### Coil set description example
 
 ```
 "CoilSet": [
@@ -334,6 +305,9 @@ This structure allows precise modeling, reproducibility, and harmonization of co
   }
 ]
 ```
+
+**  A complete example is included in Appendix A.
+
 The _nibs.json follows standard BIDS JSON conventions and is essential for validator support, automated parsing, and multimodal integration (e.g., aligning stimulation parameters with EEG or MRI metadata).
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
@@ -442,6 +416,7 @@ Grouping fields this way improves readability and aligns with practical data col
 | `timestamp`                  	| string  | (Optional) timestamp in ISO 8601 format.       
 ```
 
+**  A complete example is included in Appendix A.
 
 ## NIBS: Transcranial Electrical Stimulation section.
 
@@ -502,9 +477,7 @@ This structure allows precise modeling, reproducibility, and harmonization of el
 | `ContactMedium`						|string	| Interface material: gel, saline, paste, dry, etc.
 ```
 
-### Example:
-
-1. Electrode set description
+#### Electrode set description
 
 ```
 "ElectrodeSet": [
@@ -527,6 +500,8 @@ This structure allows precise modeling, reproducibility, and harmonization of el
   }
 ]
 ```
+
+**  A complete example is included in Appendix A.
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
 
@@ -614,6 +589,8 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `current_statistics`			|string | (Optional) Summary of current over session: e.g., mean=0.8;max=1.2;min=0.4
 | `timestamp`					|string | (Optional) ISO 8601 timestamp for the event or setting
 ```
+
+**  A complete example is included in Appendix A.
 
 
 ## NIBS: Transcranial Ultrasound Stimulation section.
@@ -708,9 +685,7 @@ This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes
 | `ContactMedium`				| string | Coupling method between the transducer and the scalp, such as gel, membrane, water bag, or dry contact.
 ```
 
-** Example:**
-
-1. Transducer set description
+#### Transducer set description:
 
 ```
 "TransducerSet": [
@@ -747,6 +722,8 @@ This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes
   }
 ]
 ```
+
+**  A complete example is included in Appendix A.
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
 
@@ -838,4 +815,138 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `measured_pulse_intensity`	|number | (Optional) Actual measured intensity of the stimulation pulse, in the same units as PulseIntensity. Used if different from the planned value.
 | `transducer_rms_deviation`	|number | (Optional) Root-mean-square deviation of the transducer position during stimulation, in millimeters.
 | `timestamp`               	|string | (Optional) Timestamp in ISO 8601 format. 
+```
+
+**  A complete example is included in Appendix A.
+
+## Appendix A: Examples
+
+### Example *_coordsystem.json:
+
+```
+{
+  "ImageData": "NIFTI",
+  "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz",
+  "AnatomicalLandmarkCoordinateSystem": "Individual",
+  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
+  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: origin halfway between LPA and RPA; x-axis points to RPA, y-axis orthogonal through NAS, z-axis orthogonal to xy-plane.",
+  "AnatomicalLandmarkCoordinates": {
+    "NAS": [12.7, 21.3, 13.9],
+    "LPA": [5.2, 11.3, 9.6],
+    "RPA": [20.2, 11.3, 9.1]
+  },
+  "AnatomicalLandmarkCoordinatesDescription": "[x, y, z] coordinates of anatomical landmarks: NAS (nasion), LPA (left preauricular), RPA (right preauricular)",
+  "DigitizedHeadPoints": "sub-01_acq-HEAD_headshape.pos",
+  "DigitizedHeadPointsNumber": 1200,
+  "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
+  "DigitizedHeadPointsUnits": "mm",
+  "AnatomicalLandmarkRmsDeviation": {
+    "NAS": [0.7],
+    "LPA": [0.3],
+    "RPA": [0.4],
+    "RMS": [0.5]
+  },
+  "AnatomicalLandmarkRmsDeviationUnits": "mm",
+  "AnatomicalLandmarkRmsDeviationDescription": "Root Mean Square deviation for fiducial points"
+}
+```
+
+### Example *_markers.tsv (TMS-section):
+
+```
+stim_id		target_x	target_y	target_z	entry_x	entry_y	entry_z	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z
+marker1.1	125.43		210.11		64.38		120.09	200.19	79.56	126.08	211.03	65.43	0.68		41275		0.44		-0.07		-0.19		0.13
+marker1.2	125.29		210.57		65.48		120.33	199.84	80.38	125.61	210.88	65.76	0.54		45659		-1.03		-0.26		-0.31		0.36
+marker1.3	125.34		209.63		65.11		120.02	199.67	81.07	126.32	209.99	66.09	0.17		46753		-0.5		-0.66		0.75		45717
+
+```
+
+### Examples *_nibs.json (TMS-section):
+
+```
+{
+  "TaskName": "Example tadk",
+  "TaskDescription": "Free text tsk description",
+  "Manufacturer": "MagVenture",
+  "ManufacturersModelName": "MagProX100 MAGOPTION",
+  "SoftwareVersion": "...",
+  "DeviceSerialNumber": "...",
+  "Navigation": "...",
+  "NavigationModelName": "...",
+  "NavigationSoftwareVersion": "...",
+
+  "CoilSet": [
+  {
+    "CoilID": "coil_1",
+    "CoilType": "CB60",
+	"CoilSerialNumber": "2H54-321",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }
+    }],
+
+  "coil_id": {
+    "Description": "Coil identifier. Should be described in Hardware part in json sidecar."
+  },  
+  "tms_stim_mode": {
+    "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
+    "Levels": {
+      "single": "Single pulse",
+      "power": "Power mode single pulse",
+      "twin": "Twin pulse",
+      "dual": "Dual pulse",
+	  "sequence": "Sequence stimulation"
+    }
+  },
+  "waveform": {
+    "Description": "Shape of the TMS pulse (e.g. monophasic, biphasic, etc).",
+    "Levels": {
+      "monophasic": "Monophasic pulse",
+      "biphasic": "Biphasic pulse",
+      "halfsine": "Halfsine"
+    }
+  },
+  "stim_id": {
+    "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
+  },
+  "pulse_intensity": {
+    "Description": "An expression for the power output level as a percentage of maximum stimulator power",
+    "Units": "%"
+  },
+  "rmt_intensity": {
+    "Description": "Resting motor threshold as a percentage of maximum stimulator output"
+  },
+  "pulse_intensity_rmt": {
+    "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  }
+}
+```
+
+### Examples *_nibs.tsv (TMS-section):
+
+```
+coil_id		tms_stim_mode	waveform	stim_id		pulse_intensity	rmt_intensity	pulse_intensity_rmt
+coil_1		single			biphasic	marker1.1	55				50				110.0
+coil_1		single			biphasic	marker1.2	55				50				110.0
+coil_1		single			biphasic	marker1.3	55				50				110.0
 ```

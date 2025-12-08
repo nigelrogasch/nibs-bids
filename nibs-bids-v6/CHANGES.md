@@ -84,3 +84,7 @@ README_tES.md -> merged with README.md
 ### 4.
 
 added "(Optional)" to descriptions
+
+### 5.
+
+added Appendix A: Examples
