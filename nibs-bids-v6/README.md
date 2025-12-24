@@ -1,7 +1,9 @@
-# NIBS-BIDS proposal v.6 (Scalable Structure for Non-Invasive Brain Stimulation)
+# NIBS-BIDS proposal v.6+ (Scalable Structure for Non-Invasive Brain Stimulation)
 
-This document presents a concise overview of our proposed scalable structure for organizing **non-invasive brain stimulation (NIBS)** data in BIDS. 
-It is designed to precede and accompany real-life examples and comparative demonstrations.
+### This document presents a concise overview of our proposed scalable structure for organizing **non-invasive brain stimulation (NIBS)** data in BIDS. 
+
+### It is designed to precede and accompany real-life examples and comparative demonstrations.
+
 
 ## 1. NIBS as a Dedicated `datatype`
 
@@ -15,12 +17,15 @@ It is designed to precede and accompany real-life examples and comparative demon
 sub-<label>/
     └──[ses-<label>/]
         └──nibs/
-			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>]_coordsystem.json
-			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.tsv
-            ├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.json
-			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.tsv
-            └──sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.json
+			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>]_coordsystem.json
+			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_nibs.tsv
+            ├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_nibs.json
+			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_markers.tsv
+            ├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_markers.json
+			├─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_events.tsv
+            └─sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_rel-<label>][_acq-<label>][_run-<index>]_events.json
 ```
+
 
 ## 2. Supported Stimulation Modalities
 
@@ -29,83 +34,146 @@ sub-<label>/
   * Transcranial Magnetic Stimulation (**TMS**)
   * Transcranial Electrical Stimulation (**TES**, e.g., tDCS, tACS)
   * Transcranial Ultrasound Stimulation (**TUS**)
-* At this stage, the file templates and parameters are modeled based on **TMS**, while allowing future extensibility to other modalities.
-
+  `* Peripheral Nerve Stimulation (**PNS**) -> under development`
+  
+  
 ## 3. Modality-Specific Suffix via `stimsys`
 
-* To distinguish between different stimulation systems, we introduce the suffix `stimsys`, analogous to `tracksys` in the `motion/` datatype.
-* The `stimsys` suffix can take values like `tms`, `tes`, or `tus`.
+* To distinguish between different stimulation systems, we introduce the suffix `stimsys` (kind of analogous to `tracksys` in the `/motion` datatype).
+* The `stimsys` suffix can take values like `tms`, `tes`, `tus` or `pns`.
 
-The stimsys-<label> entity can be used as a key-value pair to label _nibs.tsv and _nibs.json files. 
-It can also be used to label _markers.tsv; _markers.tsv or _coordsystem.json files when they belong to a specific stimulation system.
-This entity corresponds to the "StimulationSystemName" metadata field in a _nibs.json file. stimsys-<label> entity is a concise string whereas "StimulationSystemName" may be longer and more human readable.
+The `stimsys-<label>` entity can be used as a key-value pair to label `*_nibs.tsv` and `*_nibs.json` files. 
+It can also be used to label `*_markers.tsv`; `*_markers.json` or `*_coordsystem.json` files when they belong to a specific stimulation system.
+This entity corresponds to the `StimulationSystemType` metadata field in a `*_nibs.json` file. `stimsys-<label>` entity is a concise string whereas `StimulationSystemType` may be longer and more human readable.
+
 
 ## 4. Online vs Offline Experiments
 
 NIBS paradigms can be applied either concurrently with the acquisition of neuroimaging and/or behavioral data, or in a temporally separated (offline) manner.
+The distinction between online and offline stimulation is fundamental in NIBS research and widely used in the TMS and TES communities.
 To reflect this distinction in BIDS-compatible datasets, we recommend the use of acquisition labels:
 
-*_acq-online_* — for online paradigms, where NIBS is delivered concurrently with behavioral and/or neuroimaging acquisition.
+*rel-<label>* — Relationship to Data Acquisition
 
-*_acq-offline_* — for offline paradigms, where NIBS is applied before or after other data recordings, but not during them.
+The 'rel-' entity specifies the temporal relationship between the delivery of non-invasive brain stimulation (NIBS) and the acquisition of neuroimaging and/or behavioral data.
+This entity is intended to distinguish whether stimulation was applied concurrently with data acquisition or separately in time, without overloading the acq- entity, which is reserved for acquisition-specific parameters.
 
-These acquisition suffixes can be applied to any relevant BIDS modality (e.g., EEG, fMRI, MEG, NIRS, etc.) as well as to NIBS-related files such as *_nibs.tsv.
+Allowed values:
+
+*_rel-online_* — for online paradigms, where NIBS is delivered concurrently with behavioral and/or neuroimaging acquisition.
+
+*_rel-offline_* — for offline paradigms, where NIBS is applied before or after other data recordings, but not during them.
+
+The 'rel-' entity MUST only be used with files belonging to the nibs datatype (e.g., *_nibs.tsv).
 
 ```
 Example:
-sub-01_ses-01_task-motor_stimsys-tms_acq-online_nibs.tsv
-sub-01_ses-01_task-motor_stimsys-tes_acq-offline_nibs.tsv
+
+	sub-01_ses-01_task-motor_stimsys-tms_rel-online_nibs.tsv
+	sub-01_ses-01_task-motor_stimsys-tes_rel-offline_nibs.tsv
 ```
 
 This avoids the need for new fields in metadata files while maintaining clear, machine-readable semantics.
 
-## 5. Synchronizing NIBS Data Across Modalities (*_events.tsv)
+
+## 5. Synchronizing NIBS Data Across Modalities (`*_events.tsv`)
 
 ### Core Idea 
 
-Every stimulation event recorded in `*_nibs.tsv` and spatially described in `*_markers.tsv` can be **referenced from other modalities** (e.g., `eeg/`, `nirs/`, `beh/`) using the following fields:
+Each row in a `*_nibs.tsv` file represents one stimulation instance, defined as a single delivered stimulation event or stimulation block applied to the participant.
 
-| Column Name      | Description                                                                							   		|
-|------------------|----------------------------------------------------------------------------------------------------------------|
-| `stim_count` 	   | Corresponds to the unique stimulation row in `*_nibs.tsv` (Recommended for online sessions without navigation) |
-| `stim_id`        | One or more marker IDs from `*_markers.tsv` & `*_nibs.tsv` (Sessions with navigation)							   						|
+Every single delivered stimulation event recorded in `*_nibs.tsv` might be spatially described in `*_markers.tsv` and can be **referenced from other modalities** (e.g., `eeg/`, `nirs/`, `beh/`).
+
+```
+| Column Name      | Description                                                                							   																																												|
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `stim_id`        | Identifier of a stimulation configuration or stimulation pattern. stim_id defines how stimulation is delivered, independently of where it is applied. 																																	|
+| `target_id`	   | Identifier of a spatial stimulation target or target group. target_id links spatial information in `*_markers.tsv` (and its coordinate system in `*_coordsystem.json`) to stimulation records in `*_nibs.tsv` and time-locked annotations in `*_events.tsv` (Sessions with navigation).|
+| `stim_count` 	   | Counter indicating the number of times a stimulation instance with the same stim_id has been delivered to the same target_id. 																																							|
+```
+
+#### `stim_id`
+
+* Uniqueness and scope:
+
+`stim_id` MUST be unique within the context of a given `*_nibs.json` description. The same `stim_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same stimulation configuration is applied repeatedly.
+
+* File usage 
+
+`*_nibs.tsv`: stim_id is required for each stimulation instance.
+
+`*_nibs.json`: stim_id is used to define stimulation configuration metadata associated with entries in `*_nibs.tsv`.
+
+`*_events.tsv`: stim_id MAY be included to reference the stimulation configuration associated with an event.
+
+#### `target_id`
+
+* Uniqueness and scope:
+
+`target_id` MUST be unique within a given coordinate-system context (i.e., the set of spatial targets defined under the same `*_coordsystem.json`). The same target_id MAY be reused across runs/sessions when the same spatial target definition applies.
+
+* Grouping convention (optional):
+
+`target_id` MAY use a dotted notation (e.g., target_1.1, target_1.2, …) to represent multiple spatial points belonging to the same target group.
+
+* File usage 
+
+`*_markers.tsv`: target_id is required (primary identifier for spatial entries).
+
+`*_nibs.tsv`: target_id is required whenever stimulation is associated with a spatial target.
+
+`*_events.tsv`: target_id is included when an event refers to a specific spatial target or target group.
+
+#### `stim_count`
+
+* Uniqueness and scope:
+
+`stim_count` is interpreted within the context of a given (`stim_id`, `target_id`) combination. Values typically start at 1 and increment monotonically for successive deliveries of the same stimulation configuration to the same spatial target.
+
+* File usage 
+
+`*_nibs.tsv`: `stim_count` is optional, but RECOMMENDED when identical stimulation configurations are delivered repeatedly.
+
+`*_events.tsv`: stim_count MAY be used to align stimulation instances with time-resolved events.
+
 
 ### Modality-Specific Considerations
 
-| Modality | stim_id Usage                                   	 | Example Format            |
-|----------|-----------------------------------------------------|---------------------------|
-| `TMS`    | Typically **one marker** per stimulation            | `stim_1.1`               |
-| `TES`    | **Multiple electrodes** involved in one stimulation | `stim_2.1; stim_2.2`    |
-| `TUS`    | **Single target**, **multiple entry points**        | `stim_3.1; stim_3.2`    |
+| Modality | target_id Usage                                   	 | Example Format           |
+|----------|-----------------------------------------------------|--------------------------|
+| `TMS`    | Typically **one marker** per stimulation            | `target_1.1`             |
+| `TES`    | **Multiple electrodes** involved in one stimulation | `target_2.1; target_2.2` |
+| `TUS`    | **Single target**, **multiple entry points**        | `target_3.1; target_3.2` |
+| `PNS`    | **Multiple electrodes** involved in one stimulation | `target_4.1; target_4.2` | -> UNDER DEVELOPMENT
 
-- stim_id's can be **semicolon-separated** to indicate multi-point involvement.
+- target_id's can be **semicolon-separated** to indicate multi-point involvement.
 - This preserves **readability** and avoids complex hierarchical structures.
 
 ** Example: *_events.tsv**
 
 ``` 
-onset	duration	trial_type	stim_count	stim_id
-12.500	0.001	    stim_tms	1	        stim_1.1
-17.300	0.001	    stim_tes	2	        stim_2.1; stim_2.2
-23.700	0.001	    stim_tus	3	        stim_3.1; stim_3.2; stim_3.3
+onset	duration	trial_type	stim_id		target_id				stim_count
+12.500	0.001	    stim_tms	stim_1		target_1.1				1
+17.300	0.001	    stim_tes	stim_2      target_2.1;target_2.2	2
+23.700	0.001	    stim_tus	stim_3      target_3.1;target_3.2	3
 ```
 
 ## 6. Scalable File Naming Convention
 
 The following files are used to organize stimulation-related data:
 
-* `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>]_nibs.tsv`
-* `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>]_nibs.json`
+** `sub-<label>_task-<label>[_stimsys-<label>][_rel-<label>]_nibs.tsv` **
+** `sub-<label>_task-<label>[_stimsys-<label>][_rel-<label>]_nibs.json` **
 
   * Contains stimulation protocol and pulse parameters + metadata.
 
-* `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>]_markers.tsv`
-* `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>]_markers.json`
+** `sub-<label>_task-<label>[_stimsys-<label>][_rel-<label>]_markers.tsv` **
+** `sub-<label>_task-<label>[_stimsys-<label>][_rel-<label>]_markers.json` **
 
   * Contains 3D coordinates of stimulation points (entry, target, etc.), coil spatial orientation, and electric field vectors + metadata.	
   * Equivalent to similar `*_electrodes.tsv or _optodes.tsv`.
   
-* `sub-<label>_task-<label>[_stimsys-<label>]_coordsystem.json`
+** `sub-<label>_task-<label>[_stimsys-<label>][_rel-<label>]_coordsystem.json` **
 
   * Describes the coordinate system used in the stimulation session.
   * Equivalent to the former `*_coordsystem.json`.
@@ -138,6 +206,9 @@ The _coordsystem.json file is REQUIRED for navigated TMS, TES, TUS stimulation d
 | `AnatomicalLandmarkCoordinateSystemDescription` | string  | Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.                                                                                                                          		
 | `AnatomicalLandmarkCoordinates`                 | object  | Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the `AnatomicalLandmarkCoordinateSystem`. Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order.			
 | `AnatomicalLandmarkCoordinatesDescription`      | string  | `[x, y, z]` coordinates of anatomical landmarks. NAS — nasion, LPA — left preauricular point, RPA — right preauricular point                                                                                                                                                    				
+| `HeadMeasurements`							  | object  | Object containing one or more head measurement vectors relevant for 10–20–based navigation. Each value MUST be a numeric array.
+| `HeadMeasurementsUnits`						  | string  | Units used for all values stored in HeadMeasurements (e.g., "mm").
+| `HeadMeasurementsDescription`					  | string  | Free-form description of how HeadMeasurements were obtained (e.g., tape/geodesic along scalp vs. Euclidean), including any conventions (landmark definitions, repetitions, averaging).
 | `DigitizedHeadPoints`                           | string  | Relative path to the file containing the locations of digitized head points collected during the session. (for example, `"sub-01_headshape.pos"`)                                                                                                                               	
 | `DigitizedHeadPointsNumber`                     | integer | Number of digitized head points during co-registration.                                                                                                                                                                                                                       		
 | `DigitizedHeadPointsDescription`                | string  | Free-form description of digitized points.                                                                                                                                                                                                                                      			
@@ -147,7 +218,7 @@ The _coordsystem.json file is REQUIRED for navigated TMS, TES, TUS stimulation d
 | `AnatomicalLandmarkRmsDeviationDescription`     | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                         		
 ```
 
-**  A complete example is included in Appendix A.
+
 
 ### TUS-specific transducer coordinate metadata fields (*_coordsystem.json)
 
@@ -198,8 +269,8 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 ```
 | Field                		| Type   | Description                                                                                                 			
 | --------------------------| ------ | ------------------------------------------------------------------------------------------------------- 				
-| `stim_id`			   		| string | Unique identifier for each marker. This column must appear first in the file.                           				
-| `target_name`   	   		| string | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.).
+| `target_id`		   		| string | Unique identifier of a spatial stimulation target or target group. This column must appear first in the file.                           				
+| `target_name`   	   		| string | (Optional) Name of the cortical target, anatomical label, or stimulation site (purely human-readable label such as: M1_hand, DLPFC, etc.).
 | `peeling_depth`       	| number | (Optional )Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker. 				
 | `target_x`           		| number | X-coordinate of the target point in millimeters.                                                        					
 | `target_y`           		| number | Y-coordinate of the target point in millimeters.                                                        
@@ -223,41 +294,52 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | `timestamp`          		| string | (Optional) timestamp of the stimulation event in ISO 8601 format.                                                  
 ```
 
+* timestamp in _markers.tsv, when present, reflects the time at which spatial data were recorded or updated (e.g., neuronavigation update), not necessarily the time of stimulus delivery.
+
 ### Field Ordering Rationale
 
-The _markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. When designing this structure, we drew partial inspiration from existing BIDS files such as _electrodes.tsv (EEG), which capture electrode positions. 
+The _markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. 
+When designing this structure, we drew partial inspiration from existing BIDS files such as `*_electrodes.tsv` (/eeg), which capture electrode positions. 
 However, no existing modality in BIDS explicitly supports the full specification required for navigated TMS — including stimulation coordinates, orientation vectors, and electric field estimates.
-This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
-- Identification: stim_id appears first, enabling structured referencing in the _nibs.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
-- Spatial Coordinates: target_, entry_ and peeling_depth  describe the position of the stimulation point in the selected coordinate system. coil(x,y,z) describe the position of the TMS coil in the selected coordinate system.
-- Orientation Vectors: normal_ and direction_ vectors or transformation matrix ("coil_transform") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
-- Electric Field (optional): electric_field_max_ defines where the electric field is maximized.
 
-This design supports both minimal and advanced use cases: basic datasets can include just the spatial coordinates, while high-resolution multimodal studies can specify full coil orientation and field modeling parameters.
+This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
+
+	- Identification: `target_id` appears first, enabling structured referencing in the `*_nibs.tsv` file. 
+	- Spatial Coordinates:` target_`, `entry_` and `peeling_depth`  describe the position of the stimulation point in the selected coordinate system. `coil(x,y,z)` describe the position of the TMS coil in the selected coordinate system.
+	- Orientation Vectors: `normal_` and `direction_` vectors or transformation matrix `coil_transform` define the coil orientation in 3D space — a critical factor in modeling TMS effects.
+	- Electric Field (optional): `electric_field_max_` defines where the electric field is maximized.
+
+This design is scalable and supports both minimal and advanced use cases: basic datasets can include just the spatial coordinates, while high-resolution multimodal studies can specify full coil orientation and field modeling parameters.
 
 ### 1.2 `*_nibs.json` — Sidecar JSON 
 
-	The _nibs.json file is a required sidecar accompanying the _nibs.tsv file. 
+The `*_nibs.json` file is a required sidecar accompanying the `*_nibs.tsv` file. 
 It serves to describe the columns in the tabular file, define units and levels for categorical variables, and—crucially—provide structured metadata about the stimulation device, task, and context of the experiment.
 
-Like other BIDS modalities, this JSON file includes:
+* Like other BIDS modalities, this JSON file includes:
 
-**Task information:**
+**Task information**
 
 - TaskName, TaskDescription, Instructions
  
-**Institutional context:**
+**Institutional context**
 
 - InstitutionName, InstitutionAddress, InstitutionalDepartmentName
 
-**Device metadata:**
+**Device metadata**
 
-- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, Navigation, NavigationModelName, NavigationSoftwareVersion
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber.
 
-Additionally, the _nibs.json file introduces a dedicated hardware block called 'CoilSet', which captures detailed physical and electromagnetic parameters of one or more stimulation coils used in the session. 
+**Additional options**
+
+- CoilSet, StimulusSet, StimulationSystemType, Navigation, NavigationModelName, NavigationSoftwareVersion.
+
+The `*_nibs.json` file introduces a dedicated hardware block called `CoilSet`, which captures detailed physical and electromagnetic parameters of one or more stimulation coils used in the session. 
+
 This structure allows precise modeling, reproducibility, and harmonization of coil-related effects across studies.
 
-* Each entry in 'CoilSet' is an object with the following fields:
+#### `CoilSet` 
+
 ```
 |Field									|Type   | Description	
 |---------------------------------------|-------|-----------------------------------
@@ -272,7 +354,7 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 | `MagneticFieldGradient`				|number	| Gradient of the magnetic field at a specific depth (typically in kT/s).
 ```
 
-#### Coil set description example
+#### `CoilSet` description example
 
 ```
 "CoilSet": [
@@ -306,19 +388,100 @@ This structure allows precise modeling, reproducibility, and harmonization of co
 ]
 ```
 
-**  A complete example is included in Appendix A.
+#### `StimulusSet` 
 
-The _nibs.json follows standard BIDS JSON conventions and is essential for validator support, automated parsing, and multimodal integration (e.g., aligning stimulation parameters with EEG or MRI metadata).
+`StimulusSet` defines reusable stimulation configurations referenced by `stim_id` in `*_nibs.tsv`.
+Structural type of a single stimulation instance associated with stim_id (e.g., single-pulse, paired-pulse, multi-pulse, burst). This field replaces tms_stim_mode in `*_nibs.tsv`.
+Each entry describes the internal structure of a stimulation instance, including the number of pulses and rules for interpreting pulse-specific parameters.
+StimulusSet does not store trial-specific stimulation values, which remain in `*_nibs.tsv`.
+
+```
+|Field									|Type   | Description	
+|---------------------------------------|-------|-----------------------------------
+| `StimID`								|string	| Identifier of the stimulation configuration or stimulation pattern. (StimID/stim_id) defines how stimulation is delivered, independently of where it is applied.
+| `StimulusType`						|string	| High-level structural type of stimulation (single, twin, dual, triple, quadruple, burst, sequence).
+| `StimulusPulsesNumber`				|number	| Number of pulses delivered within a single stimulation instance.
+| `PulseWaveform`						|string	| Shape of the stimulation pulse waveform produced by the stimulator (e.g., monophasic, biphasic, custom). This field describes the pulse shape for the stimulation configuration referenced by stim_id.
+| `PulseWidth`							|string	| (Optional) Duration of a single pulse, measured from pulse onset to pulse offset. This field describes the pulse width for the stimulation configuration referenced by stim_id.
+| `PulseWidthUnits`						|string	| Units of PulseWidth (e.g., ms, µs).
+| `PulseIntensityScalingType`			|string | Defines how pulse-specific intensities are derived from the base intensity specified in *_nibs.tsv. Type of scaling rule applied (multiplicative, additive). 
+| `PulseIntensityScalingVector`			|string	| Vector of scaling coefficients, ordered by pulse occurrence within the stimulus.
+| `PulseIntensityScalingUnits`			|string	| Units of the scaling vector when PulseIntensityScalingType is additive (i.e., offsets). If omitted, offsets are assumed to use the same units as the base pulse intensity in *_nibs.tsv. MUST be provided when PulseIntensityScalingType is `additive` and SHOULD be omitted when `multiplicative` scaling is used.
+| `PulseIntensityScalingDescription`	|string	| Free-form description clarifying how scaling is applied and how pulse order is defined for the stimulation instance.
+| `PulseCurrentDirection`				|string	| Direction of the induced current for the stimulation pulse (e.g., normal, reverse). The interpretation depends on the stimulator and coil model and how “normal/reverse” are defined by the device. Defined per stim_id within StimulusSet. PulseCurrentDirection is defined per stimulation configuration (stim_id) and therefore stored in StimulusSet, even if the same direction is reused across multiple stimulation instances.
+| `PulseCurrentDirectionDescription`	|string	| Free-form text description specifying how PulseCurrentDirection is defined and interpreted for the given stimulator and coil configuration (e.g., reference orientation, polarity convention, or manufacturer-specific definition).
+```
+
+#### `StimulusSet` description example
+
+```
+"StimulusSet": [
+    {
+      "StimID": "stim_1",
+      "StimulusType": "quadruple",
+      "StimulusPulsesNumber": 4,
+	  "PulseWaveform": "monophasic",
+	  "PulseWidth": "200",
+	  "PulseWidthUnits": "µs",
+      "PulseIntensityScalingType": "multiplicative",
+      "PulseIntensityScalingVector": [1.0, 1.0, 1.0, 1.1],
+      "PulseIntensityScalingDescription": "Pulse-specific intensities are derived by multiplying the base intensity in `*_nibs.tsv by` the corresponding scaling coefficient (ordered by pulse occurrence within the stimulus). The vector length MUST match StimulusPulsesNumber.",
+      "PulseCurrentDirection": "normal",
+	  "PulseCurrentDirectionDescription": "Free-form text description"
+	  },
+	{
+      "StimID": "stim_2",
+      "StimulusType": "triple",
+      "StimulusPulsesNumber": 3,
+	  "PulseWaveform": "biphasic",
+	  "PulseWidth": "200",
+	  "PulseWidthUnits": "µs",
+      "PulseIntensityScalingType": "additive",
+      "PulseIntensityScalingVector": [0.0, 0.0, 5.0],
+      "PulseIntensityScalingUnits": "%MSO",
+      "PulseIntensityScalingDescription": "Pulse-specific intensities are computed by adding the corresponding offset to the base pulse intensity in *_nibs.tsv (ordered by pulse occurrence within the stimulus). Vector length MUST match StimulusPulsesNumber.",
+	  "PulseCurrentDirection": "normal",
+	  "PulseCurrentDirectionDescription": "Free-form text description"
+	 }
+	]
+```
+
+
+The `*_nibs.json` follows standard BIDS JSON conventions and is essential for validator support, automated parsing, and multimodal integration (e.g., aligning stimulation parameters with EEG or MRI metadata).
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
 
-This section describes all possible fields that may appear in *_nibs.tsv files. 
+* Conceptual definition
+
+Each row in a `*_nibs.tsv` file represents one stimulation instance, defined as a single delivered stimulation event or stimulation block applied to the participant.
+
+A stimulation instance corresponds to one execution of a stimulation command, which may consist of:
+
+	- a single pulse,
+	- a paired or multi-pulse stimulus,
+	- a burst or train of pulses delivered as a single programmed unit.
+
+* Stimulation instances may be delivered:
+
+	- manually by the experimenter,
+	- automatically by the stimulation device,
+	- or triggered externally (e.g., by experimental software, behavioral task, or physiological event).
+
+All stimulation parameters recorded in a given row describe the configuration and properties of that specific stimulation instance. 
+Repeated delivery of the same stimulation configuration MUST be represented by multiple rows, optionally indexed using stim_count or time-locked via `*_events.tsv`.
+
+This section describes all possible fields that may appear in `*_nibs.tsv` files. 
 The fields are grouped into logical sections based on their function and purpose. 
 All fields are optional unless stated otherwise, but some are strongly recommended.
+
 The order of parameters in _nibs.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. 
 Parameters are grouped into three logical blocks.
 This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. 
 Grouping fields this way improves readability and aligns with practical data collection workflows.
+
+In `*_nibs.tsv`, each row corresponds to a single stimulus instance as defined by the stimulation protocol.
+A stimulus instance may consist of one or multiple pulses (e.g., single-pulse, paired-pulse, or multi-pulse sequences), which are fully described within a single row.
+When stimulation is applied repeatedly, each stimulus instance is represented by a separate row if its parameters differ, or may be represented by a single row if parameters are constant across repetitions.
 
 **Stimulator Device & Coil Configuration**
 
@@ -327,8 +490,6 @@ Grouping fields this way improves readability and aligns with practical data col
 |-----------------------|-------|-----------------------------------
 | `coil_id`				|string	| Coil identifier (e.g. coil\_1, coil\_2). Should be described in Hardware part in json sidecar `CoilID`.
 | `targeting_method`	|string	| (Optional) Method used to guide targeting of the coil positioning	(manual, fixed, cobot, robot)
-| `tms_stim_mode`		|string	| Type of stimulation (single, twin, dual, burst, etc.) Depends on Stimulator options.
-| `current_direction`	|string	| (Optional) Direction of induced current	(e.g. normal, reverse) (Depends on the stimulator model described in _nibs.json).  
 ```
 
 **Protocol Metadata** 
@@ -337,6 +498,7 @@ Grouping fields this way improves readability and aligns with practical data col
 |Field					|Type   | Description	
 |-----------------------|-------|-----------------------------------
 | `protocol_name`       |string | The protocol unique name (e.g. sici, lici, custom, etc).
+| `stim_id`             |string | Identifier of a stimulation configuration or stimulation pattern.     
 ```
 
 **Stimulation Timing Parameters**
@@ -344,67 +506,86 @@ Grouping fields this way improves readability and aligns with practical data col
 ```
 | Field                        | Type    | Description                                                                                   
 | ---------------------------- | ------- | --------------------------------------
-| `waveform`				   | string  | Pulse shape	(e.g. monophasic, biphasic, etc).      
-| `inter_trial_interval`       | string  | (Optional) Interval between simple trials 
-| `inter_stimulus_interval`    | number  | (Optional) (ISI)  Time from start of first to start of second pulse (twin or dual).                      
-| `inter_pulse_interval`       | number  | (Optional) Interval between pulses within a train.                                                      
-| `burst_pulses_number`        | number  | (Optional) Number of pulses in a burst. 
-| `burst_duration`             | number  | (Optional) Duration of a single burst block
-| `pulse_rate`                 | number  | (Optional) Number of pulses per second.                                                                   
-| `train_pulses`               | number  | (Optional) Number of pulses in each train.                                                                
-| `repetition_rate`            | number  | (Optional) Frequency of trains.                                                                           
-| `inter_repetition_interval`  | number  | (Optional) Time between start of burst N and N+1.                                                        
-| `train_duration`             | number  | (Optional) Duration of the full train.                                                                    
-| `train_number`               | number  | (Optional) Number of trains in sequence.                                                                 
-| `inter_train_interval`       | number  | (Optional) Time from last pulse of one train to first of next.                                            
-| `inter_train_interval_delay` | number  | (Optional) Per-train delay override.                                                             
-| `train_ramp_up`              | number  | (Optional) Gradual amplitude increase per train.                                                          
-| `train_ramp_up_number`       | number  | (Optional) Number of trains for ramp-up.
-| `ramp_up_duration`		   | number  | (Optional) Time (in seconds) over which the stimulation amplitude is gradually increased at the start of a stimulation block or train.
-| `train_ramp_down`            | number  | (Optional) Gradual amplitude decrease per train.
-| `train_ramp_down_number`     | number  | (Optional) Number of trains for ramp-down.
-| `ramp_down_duration`         | number  | (Optional) Time (in seconds) for decreasing stimulation amplitude at the end of a stimulation block or train.
-| `stimulation_duration`	   | number  | (Optional) Total duration of the stimulation block
-```
+| `inter_trial_interval`       | number  | (Optional) Time from the onset (start) of one stimulation trial to the onset (start) of the next stimulation trial (start-to-start / onset-to-onset). A “trial” refers to one stimulation instance represented by a single row in *_nibs.tsv (which may contain a single pulse or a programmed multi-pulse construct). In the special case where each trial contains a single pulse, this corresponds to the pulse-to-pulse onset asynchrony.
+| `trial_rate`				   | number  | (Optional) Nominal repetition rate of stimulation trials, defined as the inverse of inter_trial_interval when trials are delivered periodically. Expressed in Hz. A trial corresponds to one stimulation instance represented by a single row in *_nibs.tsv.
+| `stimulus_pulse_interval`    | number  | (Optional) Within-stimulus paired-pulse spacing. Time from the onset (start) of the first pulse to the onset (start) of the second pulse within the same stimulus (start-to-start / onset-to-onset) for twin/paired/dual mode.                      
+| `burst_pulse_interval`       | number  | (Optional) Time from the onset (start) of one pulse to the onset (start) of the next pulse within the same burst (start-to-start / onset-to-onset). This is an onset-to-onset measure (not end-to-start). For periodic bursts, the implied pulse rate is the inverse of burst_pulse_interval, independent of PulseWidth.                                                      
+| `burst_pulse_number`         | number  | (Optional) Number of pulses in a single burst. 
+| `burst_pulse_rate`           | number  | (Optional) Pulse repetition rate defined as the inverse of the onset-to-onset interval between consecutive pulses (inter_pulse_interval) when pulses are periodic. In protocols where each trial contains a single pulse, pulse_rate may be used as an equivalent representation of stimulus periodicity, where pulse_rate = 1 / inter_trial_interval. Expressed in Hz. 
+| `train_burst_number`         | number  | (Optional) Number of bursts delivered within a single stimulation train.                                                                
+| `train_burst_rate`           | number  | (Optional) Burst repetition rate within a stimulation train, defined as the inverse of the onset-to-onset time between consecutive bursts (when periodic). Expressed in Hz.              
+| `inter_burst_interval`  	   | number  | (Optional) Time from the onset (start) of one burst to the onset (start) of the next burst within the same stimulation train (onset-to-onset).                                                                                                                          
+| `train_number`               | number  | (Optional) Total number of trains delivered in the stimulation sequence (count).                                                                 
+| `inter_train_pulse_interval` | number  | (Optional) Time from the onset (start) of the last pulse in one train to the onset (start) of the first pulse in the next train (onset-to-onset across train boundaries).                                            
+| `inter_train_interval_delay` | number  | (Optional) Per-train additive offset applied to the nominal inter_train_pulse_interval, allowing non-uniform onset-to-onset timing between the last pulse of one train and the first pulse of the next train. The effective interval is computed as: effective interval = inter_train_pulse_interval + inter_train_interval_delay.                                                             
+| `train_ramp_up`              | number  | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping).                                                          
+| `train_ramp_up_number`       | number  | (Optional) Number of initial trains over which the ramp-up is applied.
+| `train_ramp_down`            | number  | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping).
+| `train_ramp_down_number`     | number  | (Optional) Number of final trains over which the ramp-down is applied.
+| `stimulation_duration`	   | number  | (Optional) Total wall-clock duration of the stimulation block.
+```     
+
+* Timing hierarchy note: 
+
+1. 
+
+`*_nibs.tsv` distinguishes timing parameters across two levels.
+
+	(1) Between stimulation instances (trials): inter_trial_interval describes onset-to-onset timing between consecutive stimulation trials (i.e., consecutive rows).
+	(2) Within a stimulation instance: when a single trial contains multiple pulses, onset-to-onset timing between pulses is described either by stimulus_pulse_interval (for multi-pulse stimuli without burst grouping) or by burst_pulse_interval (for pulses within burst-structured stimuli). 
+
+Only the field(s) applicable to the stimulus structure SHOULD be populated!
+
+2. 
+
+	(1) When both `trial_rate` and `inter_trial_interval` are provided, they MUST be mathematically consistent. If trials are not delivered periodically, trial_rate SHOULD be omitted.
+	(2) When both `burst_pulse_interval` and `burst_pulse_rate` are provided, they MUST be mathematically consistent.
+
+3. 
+
+	(1) In burst-based and train-based protocols, each row in `*_nibs.tsv` represents at most one train. Pulse- and burst-level timing is described parametrically, while the timing of delivered trains is recorded via `*_events.tsv`.
 
 **Spatial & Targeting Information**
 
 ```
 | Field                        | Type    | Description                                                                                    
 | ---------------------------- | ------- | --------------------------------------
-| `stim_id`                    | string  | Identifier of stimulation target.       
-| `target_name`                | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site (M1_hand, DLPFC, etc.)                        
-| `stim_count`				   | integer | (Optional) Number of stimulation steps or repetitions delivered at spatial location or total count.
+| `target_id`				   | string  | Identifier of a spatial stimulation target or target group.
+| `target_name`                | string  | (Optional) Name of the cortical target, anatomical label, or stimulation site                       
 | `coil_handle_direction`	   | string  | (Optional) Сoplanar handle direction (sometimes used in protocols without navigation). 
 ```
 
 **Amplitude & Thresholds**
 
 ```
-| Field                        | Type    | Description                                                                                                 
-| ---------------------------- | ------- | --------------------------------------
-| `pulse_intensity`            | number  | Intensity of the first or single pulse (% of maximum stimulator output).                      
-| `second_pulse_intensity`     | number  | (Optional) Intensity of the second pulse (dual mode).                                                  
-| `pulse_intensity_ratio`      | number  | (Optional) Amplitude ratio of two pulses (B/A).                                                           
-| `rmt_intensity`              | number  | Resting motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
-| `amt_intensity`              | number  | (Optional) Active motor threshold as a percentage of maximum stimulator output. Constant value per session or run.
-| `pulse_intensity_rmt`        | number  | Intensity of first/single pulse as % of RMT.                                                   
-| `second_pulse_intensity_rmt` | number  | (Optional) Intensity of second pulse as % of RMT.                                                         
-| `pulse_intensity_amt`        | number  | (Optional) Intensity of first/single pulse as % of AMT.                                                
-| `second_pulse_intensity_amt` | number  | (Optional) Intensity of second pulse as % of AMT.   
+| Field                        		| Type    | Description                                                                                                 
+| --------------------------------- | ------- | --------------------------------------
+| `base_pulse_intensity`			| number  | Base pulse intensity expressed as percentage of maximum stimulator output (%MSO). For multi-pulse stimuli, pulse-specific intensities may be derived from this value as defined by stim_id in StimulusSet.                     
+| `threshold_pulse_intensity`		| number  | Intensity of the stimulation pulse expressed relative to the threshold defined by threshold_type. Typically reported as a percentage of the threshold value (e.g., 110% of threshold). Units: percentage of the threshold value.
+| `threshold_type`					| string  | Type of threshold used as a reference for stimulation dosing (e.g., resting motor threshold, active motor threshold, phosphene threshold, inhibition threshold, pain/discomfort threshold, active_isometric, active_movement, custom). This field defines what physiological or perceptual endpoint the threshold refers to.
+| `threshold_reference_intensity`	| number  | Stimulator output value corresponding to the threshold defined by threshold_type. This value provides the reference intensity used for dosing or normalization within the run/session. SHOULD be defined consistently for the given stimulator/system (e.g., %MSO for TMS). If a different unit is used, this MUST be clearly stated in the dataset documentation or sidecar metadata.
+| `threshold_criterion`				| string  | Criterion used to define the threshold endpoint (e.g., “1 mV MEP”, “0.2 mV MEP”, “visible twitch”, “perceptible phosphene”, “50% inhibition”, custom). This field specifies what counts as meeting the threshold.
+| `threshold_algorithm`				| string  | Algorithm or procedure used to estimate the threshold (e.g., “5/10”, “10/20”, “76% probability (PEST)”, staircase, adaptive method, custom). This field specifies how the threshold was obtained from repeated trials.
+| `threshold_measurement_method`	| string  | Measurement modality/method used to assess the response underlying the threshold (e.g., EMG-based MEP, visible twitch observation, participant report, behavioral endpoint, custom). This field clarifies how the threshold endpoint was measured.
 ```
 
+* Notes
+
+	(1) When threshold-based dosing is used, threshold_pulse_intensity specifies the stimulation intensity relative to the threshold defined by threshold_type, while base_pulse_intensity stores the corresponding absolute stimulator output value.
+	(2) If both threshold_pulse_intensity and base_pulse_intensity are provided, they MUST be numerically consistent with threshold_reference_intensity.
+	
 **Derived / Device-Generated Parameters**
 
 ```
 | Field                        	| Type    | Description                                                                                   
 | ------------------------------| ------- | --------------------------------------
+| `stim_count`				    | integer | (Optional) Number of stimulation steps or repetitions delivered at spatial location or total count.
 | `stim_validation`             | string  | (Optional) Was the stimulation verified / observed.
 | `current_gradient`           	| number  | (Optional) Measured gradient of coil current.                                                            
 | `electric_field_target`      	| number  | (Optional) Electric field at stimulation target.                                                          
 | `electric_field_max`         	| number  | (Optional) Peak electric field at any location.                                                        
-| `motor_response`             	| number  | (Optional) Motor-evoked potential (MEP) amplitude.                                                      
-| `latency`                    	| number  | (Optional) Delay between stimulation and response.                                                    
+| `motor_response`             	| number  | (Optional) Aggregate motor response metric reported by the stimulation system or experimenter and used for stimulation calibration (e.g., motor threshold determination). This value represents a summary measure of the motor-evoked response (e.g., amplitude or magnitude) as provided by the device or protocol, and does not describe the full EMG waveform. Units and computation method are device- or protocol-dependent and may be proprietary.                                                      
+| `latency`                    	| number  | (Optional) Device- or procedure-reported delay between stimulus delivery and the detected motor response, as used during the experiment (e.g., for threshold estimation). This value reflects a summary timing measure and does not imply a standardized EMG onset detection method.                                                    
 | `response_channel_name`      	| string  | (Optional) Name of recorded EMG/EEG/MEG channel.                                                         
 | `response_channel_type`      	| string  | (Optional) Type of channel (e.g. emg, eeg).                                                              
 | `response_channel_description`| string  | (Optional) Description of the response channel.                                                           
@@ -416,7 +597,11 @@ Grouping fields this way improves readability and aligns with practical data col
 | `timestamp`                  	| string  | (Optional) timestamp in ISO 8601 format.       
 ```
 
-**  A complete example is included in Appendix A.
+* Motor response–related parameters in the NIBS-BIDS specification are intended to store procedure-level or device-reported summary values that were used during stimulation setup (e.g., motor threshold determination).
+* They are not intended to replace or describe EMG recordings or waveform-level analyses, which should be represented using dedicated EMG data types and extensions when available.
+
+
+
 
 ## NIBS: Transcranial Electrical Stimulation section.
 
@@ -501,7 +686,7 @@ This structure allows precise modeling, reproducibility, and harmonization of el
 ]
 ```
 
-**  A complete example is included in Appendix A.
+
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
 
@@ -590,7 +775,7 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `timestamp`					|string | (Optional) ISO 8601 timestamp for the event or setting
 ```
 
-**  A complete example is included in Appendix A.
+
 
 
 ## NIBS: Transcranial Ultrasound Stimulation section.
@@ -723,7 +908,7 @@ This structure mirrors the approach used in 'CoilSet' (TMS-section) and includes
 ]
 ```
 
-**  A complete example is included in Appendix A.
+
 
 ### 1.3 `*_nibs.tsv` — Stimulation Parameters
 
@@ -817,136 +1002,183 @@ Parameters are grouped into three logical blocks. Grouping fields this way impro
 | `timestamp`               	|string | (Optional) Timestamp in ISO 8601 format. 
 ```
 
-**  A complete example is included in Appendix A.
 
-## Appendix A: Examples
+
+## Appendix A: Examples of “protocol recipes”:
+
+### 1. Single-pulse TMS (manual/triggered)
+
+** StimulusSet (*_nibs.json)
+
+* Used to define the stimulation structure referenced by stim_id.
+
+	- StimID = stim_01
+	- StimulusType = single
+	- StimulusPulsesNumber = 1
+	- PulseWaveform = (monophasic/biphasic)
+	- PulseWidth = (optional)
+	- PulseCurrentDirection = (optional)
+
+** `*_nibs.tsv`
+
+* Each row corresponds to one delivered single pulse.
+
+Typical fields:
+
+	- stim_id
+	- target_id (optional; if spatial targeting is used)
+	- base_pulse_intensity
+	- (optional threshold-based dosing)
+		- threshold_type
+		- threshold_reference_intensity
+		- threshold_pulse_intensity
+		- threshold_criterion
+		- threshold_algorithm
+		- threshold_measurement_method
+	- inter_trial_interval (optional; if pulses are delivered periodically)
+
+** `*_events.tsv`
+
+* Used to record the timing of each delivered pulse (onset), linked via stim_id and target_id.
+
+### 2. Paired-pulse TMS (e.g., SICI / ICF)
+
+* Description
+
+A paired-pulse stimulation protocol in which each delivered stimulation instance consists of two pulses separated by a fixed onset-to-onset interval. 
+The paired-pulse stimulation may be repeated multiple times across a run.
+
+** StimulusSet (*_nibs.json)
+
+* Defines the paired-pulse structure.
+	
+	- StimID = stim_01
+	- StimulusType = (paired/twin/dual)
+	- StimulusPulsesNumber = 2
+	- PulseWaveform = (monophasic/biphasic)
+	- PulseWidth = (optional)
+	- PulseCurrentDirection = (optional)
+	- PulseIntensityScalingType = multiplicative
+	- PulseIntensityScalingVector = [1.0, 1.1]
+	(used to define relative intensities of the two pulses)
+
+** `*_nibs.tsv`
+
+* Each row represents one paired-pulse stimulation instance.
+
+Typical fields:
+
+	- stim_id
+	- target_id
+	- base_pulse_intensity
+	(reference intensity to which scaling is applied)
+	- stimulus_pulse_interval
+	(onset-to-onset interval between the two pulses)
+	- (optional threshold-based dosing)
+		- threshold_type
+		- threshold_reference_intensity
+		- threshold_pulse_intensity
+		- threshold_criterion
+		- threshold_algorithm
+		- threshold_measurement_method
+	- inter_trial_interval (if paired-pulse trials are repeated)
+	(onset-to-onset interval between consecutive paired-pulse trials, if periodic)
+
+** `*_events.tsv`
+
+* Used to record the timing (onset) of each delivered paired-pulse stimulation instance, linked via stim_id and target_id.
+
+### 3. Burst-based stimulation (e.g., TBS-like constructs)
+
+* Description
+
+A burst-based stimulation protocol in which each delivered stimulation instance corresponds to a single train composed of one or more bursts. 
+No per-burst or per-pulse logs are required.
+
+** StimulusSet (*_nibs.json)
+
+* Defines pulse-level properties common to all bursts.
+
+	- StimID = stim_01
+	- StimulusType = burst
+	- StimulusPulsesNumber (optional; total pulses per stimulation instance)
+	- PulseWaveform = (monophasic/biphasic)
+	- PulseWidth = (optional)
+	- PulseCurrentDirection = (optional)
+	(optional) PulseIntensityScalingType / Vector
+	(used if pulses within a burst have systematic relative intensity differences)
+
+** `*_nibs.tsv`
+
+* Each row represents one delivered train.
+
+	- stim_id
+	- target_id
+	- base_pulse_intensity
+	- burst_pulses_number
+	(number of pulses per burst)
+	- burst_pulse_interval
+	(onset-to-onset interval between pulses within a burst)
+	- train_bursts_number
+	(number of bursts within the train)
+	- inter_train_pulse_interval
+	(onset-to-onset interval between the last pulse of one train and the first pulse of the next train, if trains are repeated)
+	- inter_train_interval_delay
+	(optional additive delay applied to the base inter-train interval for a specific train)
+	- threshold-related fields (if applicable)
+
+** `*_events.tsv`
+
+* Used to record the onset time of each delivered train. When multiple trains are delivered sequentially, each train is represented as a separate event linked via stim_id and target_id.
+
+### 4. Threshold-based dosing using non-motor thresholds
+
+*Description
+
+Stimulation intensity is defined relative to a non-motor threshold (e.g., phosphene threshold, inhibition threshold).
+
+** `*_nibs.tsv`
+
+* Threshold definition and dosing are recorded explicitly.
+
+Typical fields:
+
+	- stim_id
+	- target_id
+	- base_pulse_intensity (optional; if absolute value is recorded)
+	- threshold_type
+	(e.g., phosphene, inhibition, pain, custom)
+	- threshold_reference_intensity
+	- threshold_pulse_intensity
+	- threshold_criterion
+	(e.g., perceptible phosphene, 50% inhibition)
+	- threshold_algorithm
+	(e.g., 5/10, PEST)
+	- threshold_measurement_method
+	(e.g., participant report, EMG-based MEP)
+
+## Appendix B: Examples 
 
 ### Example *_coordsystem.json:
 
 ```
-{
-  "ImageData": "NIFTI",
-  "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz",
-  "AnatomicalLandmarkCoordinateSystem": "Individual",
-  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
-  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: origin halfway between LPA and RPA; x-axis points to RPA, y-axis orthogonal through NAS, z-axis orthogonal to xy-plane.",
-  "AnatomicalLandmarkCoordinates": {
-    "NAS": [12.7, 21.3, 13.9],
-    "LPA": [5.2, 11.3, 9.6],
-    "RPA": [20.2, 11.3, 9.1]
-  },
-  "AnatomicalLandmarkCoordinatesDescription": "[x, y, z] coordinates of anatomical landmarks: NAS (nasion), LPA (left preauricular), RPA (right preauricular)",
-  "DigitizedHeadPoints": "sub-01_acq-HEAD_headshape.pos",
-  "DigitizedHeadPointsNumber": 1200,
-  "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
-  "DigitizedHeadPointsUnits": "mm",
-  "AnatomicalLandmarkRmsDeviation": {
-    "NAS": [0.7],
-    "LPA": [0.3],
-    "RPA": [0.4],
-    "RMS": [0.5]
-  },
-  "AnatomicalLandmarkRmsDeviationUnits": "mm",
-  "AnatomicalLandmarkRmsDeviationDescription": "Root Mean Square deviation for fiducial points"
-}
+
 ```
 
 ### Example *_markers.tsv (TMS-section):
 
 ```
-stim_id		target_x	target_y	target_z	entry_x	entry_y	entry_z	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z
-marker1.1	125.43		210.11		64.38		120.09	200.19	79.56	126.08	211.03	65.43	0.68		41275		0.44		-0.07		-0.19		0.13
-marker1.2	125.29		210.57		65.48		120.33	199.84	80.38	125.61	210.88	65.76	0.54		45659		-1.03		-0.26		-0.31		0.36
-marker1.3	125.34		209.63		65.11		120.02	199.67	81.07	126.32	209.99	66.09	0.17		46753		-0.5		-0.66		0.75		45717
 
 ```
 
 ### Examples *_nibs.json (TMS-section):
 
 ```
-{
-  "TaskName": "Example tadk",
-  "TaskDescription": "Free text tsk description",
-  "Manufacturer": "MagVenture",
-  "ManufacturersModelName": "MagProX100 MAGOPTION",
-  "SoftwareVersion": "...",
-  "DeviceSerialNumber": "...",
-  "Navigation": "...",
-  "NavigationModelName": "...",
-  "NavigationSoftwareVersion": "...",
 
-  "CoilSet": [
-  {
-    "CoilID": "coil_1",
-    "CoilType": "CB60",
-	"CoilSerialNumber": "2H54-321",
-    "CoilShape": "figure-of-eight",
-	"CoilCooling": "air",
-    "CoilDiameter": {
-      "Value": 75,
-      "Units": "mm",
-	  "Description": "Diameter of the outer winding of the coil."
-    },
-    "MagneticFieldPeak": {
-        "Value": 1.9,
-        "Units": "Tesla",
-		"Description": "Peak magnetic field at the surface of the coil."
-    },
-	"MagneticFieldPenetrationDepth": {
-		"Value": 18,
-		"Units": "mm",
-		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
-    },
-    "MagneticFieldGradient": {
-        "Value": 160,
-        "Units": "kT/s",
-        "Description": "Magnetic field gradient at 20 mm below the coil center."
-    }
-    }],
-
-  "coil_id": {
-    "Description": "Coil identifier. Should be described in Hardware part in json sidecar."
-  },  
-  "tms_stim_mode": {
-    "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
-    "Levels": {
-      "single": "Single pulse",
-      "power": "Power mode single pulse",
-      "twin": "Twin pulse",
-      "dual": "Dual pulse",
-	  "sequence": "Sequence stimulation"
-    }
-  },
-  "waveform": {
-    "Description": "Shape of the TMS pulse (e.g. monophasic, biphasic, etc).",
-    "Levels": {
-      "monophasic": "Monophasic pulse",
-      "biphasic": "Biphasic pulse",
-      "halfsine": "Halfsine"
-    }
-  },
-  "stim_id": {
-    "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
-  },
-  "pulse_intensity": {
-    "Description": "An expression for the power output level as a percentage of maximum stimulator power",
-    "Units": "%"
-  },
-  "rmt_intensity": {
-    "Description": "Resting motor threshold as a percentage of maximum stimulator output"
-  },
-  "pulse_intensity_rmt": {
-    "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT).",
-    "Units": "%"
-  }
-}
 ```
 
 ### Examples *_nibs.tsv (TMS-section):
 
 ```
-coil_id		tms_stim_mode	waveform	stim_id		pulse_intensity	rmt_intensity	pulse_intensity_rmt
-coil_1		single			biphasic	marker1.1	55				50				110.0
-coil_1		single			biphasic	marker1.2	55				50				110.0
-coil_1		single			biphasic	marker1.3	55				50				110.0
+
 ```
