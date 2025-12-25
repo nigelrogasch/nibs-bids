@@ -400,7 +400,7 @@ StimulusSet does not store trial-specific stimulation values, which remain in `*
 |---------------------------------------|-------|-----------------------------------
 | `StimID`								|string	| Identifier of the stimulation configuration or stimulation pattern. (StimID/stim_id) defines how stimulation is delivered, independently of where it is applied.
 | `StimulusType`						|string	| High-level structural type of stimulation (single, twin, dual, triple, quadruple, burst, sequence).
-| `StimulusPulsesNumber`				|number	| Number of pulses delivered within a single stimulation instance.
+| `StimulusPulsesNumber`				|number	| Number of pulses contained in a single stimulus atom defined by stim_id. A stimulus atom is the smallest stimulation unit that may be repeated within bursts, trains, or sequences (e.g., single-pulse: 1; paired-pulse: 2; multi-pulse: N).
 | `PulseWaveform`						|string	| Shape of the stimulation pulse waveform produced by the stimulator (e.g., monophasic, biphasic, custom). This field describes the pulse shape for the stimulation configuration referenced by stim_id.
 | `PulseWidth`							|string	| (Optional) Duration of a single pulse, measured from pulse onset to pulse offset. This field describes the pulse width for the stimulation configuration referenced by stim_id.
 | `PulseWidthUnits`						|string	| Units of PulseWidth (e.g., ms, µs).
@@ -418,7 +418,7 @@ StimulusSet does not store trial-specific stimulation values, which remain in `*
 "StimulusSet": [
     {
       "StimID": "stim_1",
-      "StimulusType": "quadruple",
+      "StimulusType": "quadri",
       "StimulusPulsesNumber": 4,
 	  "PulseWaveform": "monophasic",
 	  "PulseWidth": "200",
@@ -453,35 +453,37 @@ The `*_nibs.json` follows standard BIDS JSON conventions and is essential for va
 
 * Conceptual definition
 
-Each row in a `*_nibs.tsv` file represents one stimulation instance, defined as a single delivered stimulation event or stimulation block applied to the participant.
+Each row in a `*_nibs.tsv` file represents one stimulation instance, defined as a single delivered execution of a stimulation command applied to the participant.
 
-A stimulation instance corresponds to one execution of a stimulation command, which may consist of:
+A stimulation instance corresponds to one execution of a stimulation configuration referenced by `stim_id`.
+Depending on the protocol, a stimulation instance may consist of:
 
-	- a single pulse,
-	- a paired or multi-pulse stimulus,
-	- a burst or train of pulses delivered as a single programmed unit.
+	- a single stimulus atom (e.g., single-pulse TMS),
 
-* Stimulation instances may be delivered:
+	- a paired- or multi-pulse stimulus atom,
+
+	- a burst- or train-based construct composed of repeated stimulus atoms delivered as a single programmed unit.
+
+* A stimulus atom is the smallest repeating stimulation unit defined by `stim_id` and described in `StimulusSet` (e.g., single-pulse, paired-pulse, or multi-pulse structures).
+
+Stimulation instances may be delivered:
 
 	- manually by the experimenter,
+
 	- automatically by the stimulation device,
-	- or triggered externally (e.g., by experimental software, behavioral task, or physiological event).
 
-All stimulation parameters recorded in a given row describe the configuration and properties of that specific stimulation instance. 
-Repeated delivery of the same stimulation configuration MUST be represented by multiple rows, optionally indexed using stim_count or time-locked via `*_events.tsv`.
+	- or triggered externally (e.g., by experimental software, behavioral tasks, or physiological events).
 
-This section describes all possible fields that may appear in `*_nibs.tsv` files. 
-The fields are grouped into logical sections based on their function and purpose. 
+All stimulation parameters recorded in a given row describe the configuration, timing, and properties of that specific stimulation instance.
+Repeated delivery of the same stimulation configuration SHOULD be represented by multiple rows when individual deliveries are logged or time-locked (e.g., via `*_events.tsv`).
+Alternatively, when stimulation is delivered as a predefined block without per-instance logging, a single row MAY be used to describe the entire stimulation block, provided that parameters remain constant across repetitions.
+
+This section describes all possible fields that may appear in `*_nibs.tsv` files.
+Fields are grouped into logical sections based on their functional role and expected variability during an experiment.
 All fields are optional unless stated otherwise, but some are strongly recommended.
 
-The order of parameters in _nibs.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. 
-Parameters are grouped into three logical blocks.
-This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. 
-Grouping fields this way improves readability and aligns with practical data collection workflows.
-
-In `*_nibs.tsv`, each row corresponds to a single stimulus instance as defined by the stimulation protocol.
-A stimulus instance may consist of one or multiple pulses (e.g., single-pulse, paired-pulse, or multi-pulse sequences), which are fully described within a single row.
-When stimulation is applied repeatedly, each stimulus instance is represented by a separate row if its parameters differ, or may be represented by a single row if parameters are constant across repetitions.
+The order and grouping of parameters in `*_nibs.tsv` reflect a hierarchical organization of stimulation metadata, progressing from device and configuration parameters, through protocol and timing definitions, to spatial targeting and derived measures.
+This structure mirrors practical stimulation workflows and supports both manual and automated data acquisition scenarios.
 
 **Stimulator Device & Coil Configuration**
 
@@ -504,47 +506,59 @@ When stimulation is applied repeatedly, each stimulus instance is represented by
 **Stimulation Timing Parameters**
 
 ```
-| Field                        | Type    | Description                                                                                   
-| ---------------------------- | ------- | --------------------------------------
-| `inter_trial_interval`       | number  | (Optional) Time from the onset (start) of one stimulation trial to the onset (start) of the next stimulation trial (start-to-start / onset-to-onset). A “trial” refers to one stimulation instance represented by a single row in *_nibs.tsv (which may contain a single pulse or a programmed multi-pulse construct). In the special case where each trial contains a single pulse, this corresponds to the pulse-to-pulse onset asynchrony.
-| `trial_rate`				   | number  | (Optional) Nominal repetition rate of stimulation trials, defined as the inverse of inter_trial_interval when trials are delivered periodically. Expressed in Hz. A trial corresponds to one stimulation instance represented by a single row in *_nibs.tsv.
-| `stimulus_pulse_interval`    | number  | (Optional) Within-stimulus paired-pulse spacing. Time from the onset (start) of the first pulse to the onset (start) of the second pulse within the same stimulus (start-to-start / onset-to-onset) for twin/paired/dual mode.                      
-| `burst_pulse_interval`       | number  | (Optional) Time from the onset (start) of one pulse to the onset (start) of the next pulse within the same burst (start-to-start / onset-to-onset). This is an onset-to-onset measure (not end-to-start). For periodic bursts, the implied pulse rate is the inverse of burst_pulse_interval, independent of PulseWidth.                                                      
-| `burst_pulse_number`         | number  | (Optional) Number of pulses in a single burst. 
-| `burst_pulse_rate`           | number  | (Optional) Pulse repetition rate defined as the inverse of the onset-to-onset interval between consecutive pulses (inter_pulse_interval) when pulses are periodic. In protocols where each trial contains a single pulse, pulse_rate may be used as an equivalent representation of stimulus periodicity, where pulse_rate = 1 / inter_trial_interval. Expressed in Hz. 
-| `train_burst_number`         | number  | (Optional) Number of bursts delivered within a single stimulation train.                                                                
-| `train_burst_rate`           | number  | (Optional) Burst repetition rate within a stimulation train, defined as the inverse of the onset-to-onset time between consecutive bursts (when periodic). Expressed in Hz.              
-| `inter_burst_interval`  	   | number  | (Optional) Time from the onset (start) of one burst to the onset (start) of the next burst within the same stimulation train (onset-to-onset).                                                                                                                          
-| `train_number`               | number  | (Optional) Total number of trains delivered in the stimulation sequence (count).                                                                 
-| `inter_train_pulse_interval` | number  | (Optional) Time from the onset (start) of the last pulse in one train to the onset (start) of the first pulse in the next train (onset-to-onset across train boundaries).                                            
-| `inter_train_interval_delay` | number  | (Optional) Per-train additive offset applied to the nominal inter_train_pulse_interval, allowing non-uniform onset-to-onset timing between the last pulse of one train and the first pulse of the next train. The effective interval is computed as: effective interval = inter_train_pulse_interval + inter_train_interval_delay.                                                             
-| `train_ramp_up`              | number  | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping).                                                          
-| `train_ramp_up_number`       | number  | (Optional) Number of initial trains over which the ramp-up is applied.
-| `train_ramp_down`            | number  | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping).
-| `train_ramp_down_number`     | number  | (Optional) Number of final trains over which the ramp-down is applied.
-| `stimulation_duration`	   | number  | (Optional) Total wall-clock duration of the stimulation block.
+| Field                        		| Type    | Description                                                                                   
+| --------------------------------- | ------- | --------------------------------------
+| `inter_trial_interval`       		| number  | (Optional) Time from the onset (start) of one stimulation trial to the onset (start) of the next stimulation trial (start-to-start / onset-to-onset). A “trial” refers to one stimulation instance represented by a single row in *_nibs.tsv (which may contain a single pulse or a programmed multi-pulse construct). In the special case where each trial contains a single pulse, this corresponds to the pulse-to-pulse onset asynchrony.
+| `trial_rate`				   		| number  | (Optional) Nominal repetition rate of stimulation trials, defined as the inverse of inter_trial_interval when trials are delivered periodically. Expressed in Hz. A trial corresponds to one stimulation instance represented by a single row in *_nibs.tsv.
+| `stimulus_pulse_interval`    		| number  | (Optional) Within-stimulus paired-pulse spacing. Time from the onset (start) of the first pulse to the onset (start) of the second pulse within the same stimulus (start-to-start / onset-to-onset) for twin/paired/dual mode.                      
+| `burst_stimuli_interval`     		| number  | (Optional) Within-burst stimulus-to-stimulus onset spacing. Time from the onset (start) of one stimulus atom to the onset (start) of the next stimulus atom within the same burst (start-to-start / onset-to-onset). This parameter describes spacing between repeated stimulus atoms (as defined by stim_id), regardless of how many pulses each atom contains.                                                      
+| `burst_stimuli_number`       		| number  | (Optional) Number of stimulus atoms delivered within a single burst. Each stimulus atom is a repetition of the stimulation structure referenced by stim_id. 
+| `burst_stimuli_rate`         		| number  | (Optional) Rate of stimulus atoms within a burst, defined as the inverse of burst_stimuli_interval when spacing is periodic. Expressed in Hz. If both burst_stimuli_rate and burst_stimuli_interval are provided, they MUST be mathematically consistent.
+| `train_burst_number`         		| number  | (Optional) Number of bursts delivered within a single stimulation train.                                                                
+| `train_burst_rate`           		| number  | (Optional) Burst repetition rate within a stimulation train, defined as the inverse of the onset-to-onset time between consecutive bursts (when periodic). Expressed in Hz.              
+| `inter_burst_interval`  	 		| number  | (Optional) Time from the onset (start) of one burst to the onset (start) of the next burst within the same stimulation train (onset-to-onset).                                                                                                                          
+| `train_number`               		| number  | (Optional) Total number of trains delivered in the stimulation sequence (count).                                                                 
+| `inter_train_pulse_interval` 	    | number  | (Optional) Time from the onset (start) of the last pulse in one train to the onset (start) of the first pulse in the next train (onset-to-onset across train boundaries).                                            
+| `inter_train_interval_delay` 		| number  | (Optional) Per-train additive offset applied to the nominal inter_train_pulse_interval, allowing non-uniform onset-to-onset timing between the last pulse of one train and the first pulse of the next train. The effective interval is computed as: effective interval = inter_train_pulse_interval + inter_train_interval_delay.                                                             
+| `train_ramp_up`              		| number  | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping).                                                          
+| `train_ramp_up_number`       		| number  | (Optional) Number of initial trains over which the ramp-up is applied.
+| `train_ramp_down`            		| number  | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping).
+| `train_ramp_down_number`     		| number  | (Optional) Number of final trains over which the ramp-down is applied.
+| `stimulation_duration`	   		| number  | (Optional) Total wall-clock duration of the stimulation block.
 ```     
 
-* Timing hierarchy note: 
+* Timing hierarchy note
 
 1. 
 
-`*_nibs.tsv` distinguishes timing parameters across two levels.
+`*_nibs.tsv` distinguishes timing parameters across two hierarchical levels:
 
-	(1) Between stimulation instances (trials): inter_trial_interval describes onset-to-onset timing between consecutive stimulation trials (i.e., consecutive rows).
-	(2) Within a stimulation instance: when a single trial contains multiple pulses, onset-to-onset timing between pulses is described either by stimulus_pulse_interval (for multi-pulse stimuli without burst grouping) or by burst_pulse_interval (for pulses within burst-structured stimuli). 
+** Between stimulation instances (trials):
+	
+inter_trial_interval describes onset-to-onset timing between consecutive stimulation instances (i.e., between consecutive rows in *_nibs.tsv).
 
-Only the field(s) applicable to the stimulus structure SHOULD be populated!
+** Within a stimulation instance:
+
+When a single stimulation instance contains multiple elements, onset-to-onset timing is described at the appropriate structural level:
+
+	- stimulus_pulse_interval is used to describe pulse-to-pulse onset spacing within a single stimulus atom (e.g., paired- or multi-pulse stimuli without burst grouping).
+
+	- burst_stimuli_interval is used to describe onset-to-onset spacing between repeated stimulus atoms within a burst.
+
+Only the field(s) applicable to the stimulation structure referenced by stim_id SHOULD be populated.
 
 2. 
 
-	(1) When both `trial_rate` and `inter_trial_interval` are provided, they MUST be mathematically consistent. If trials are not delivered periodically, trial_rate SHOULD be omitted.
-	(2) When both `burst_pulse_interval` and `burst_pulse_rate` are provided, they MUST be mathematically consistent.
+Consistency rules apply when timing parameters are expressed in both interval and rate form:
+
+	- When both trial_rate and inter_trial_interval are provided, they MUST be mathematically consistent. If stimulation instances are not delivered periodically, trial_rate SHOULD be omitted.
+
+	- When both burst_stimuli_interval and burst_stimuli_rate are provided, they MUST be mathematically consistent.
 
 3. 
 
-	(1) In burst-based and train-based protocols, each row in `*_nibs.tsv` represents at most one train. Pulse- and burst-level timing is described parametrically, while the timing of delivered trains is recorded via `*_events.tsv`.
-
+In burst-based and train-based protocols, each row in *_nibs.tsv represents at most one train.
+Pulse-level and stimulus-atom-level timing within the train is described parametrically using timing fields in *_nibs.tsv, while the timing of delivered trains (i.e., the onset of each stimulation instance) is recorded via *_events.tsv.
 **Spatial & Targeting Information**
 
 ```
@@ -1101,7 +1115,7 @@ No per-burst or per-pulse logs are required.
 
 	- StimID = stim_01
 	- StimulusType = burst
-	- StimulusPulsesNumber (optional; total pulses per stimulation instance)
+	- StimulusPulsesNumber (optional; total pulses per stimulation atom instance)
 	- PulseWaveform = (monophasic/biphasic)
 	- PulseWidth = (optional)
 	- PulseCurrentDirection = (optional)
@@ -1117,7 +1131,7 @@ No per-burst or per-pulse logs are required.
 	- base_pulse_intensity
 	- burst_pulses_number
 	(number of pulses per burst)
-	- burst_pulse_interval
+	- burst_stimuli_interval
 	(onset-to-onset interval between pulses within a burst)
 	- train_bursts_number
 	(number of bursts within the train)
