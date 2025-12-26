@@ -1,4 +1,4 @@
-# NIBS-BIDS proposal v.6+ (Scalable Structure for Non-Invasive Brain Stimulation)
+# NIBS-BIDS proposal v.6.2 (Scalable Structure for Non-Invasive Brain Stimulation)
 
 ### This document presents a concise overview of our proposed scalable structure for organizing **non-invasive brain stimulation (NIBS)** data in BIDS. 
 
