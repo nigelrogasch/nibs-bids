@@ -1,49 +1,96 @@
-# Framework for describing rTMS timing parameters - v1
+# Framework for describing rTMS timing parameters - v2
 
 The current methods for describing the timing of TMS interventions are often imprecise and ambiguous, meaning there are often multiple different interpretations of how the timing could be implemented.
 
-Below I describe a method for accurately describing the timing of common rTMS paradigms. 6 parameters are defined which allows 3 nested timings (bursts, trains, protocol). Nested timings refer to grouping of pulses. This allows the description of protocols with 3 levels of nesting (e.g., iTBS: 50 Hz burst repeated at 5 Hz train repeated at 10 s intervals over protocol), 2 levels of nesting (e.g., cTBS, 10 Hz rTMS, QPS, iTMS) and 1 level of nesting (e.g., 1 Hz rTMS). 
+Below I describe a method for accurately describing the timing of common rTMS paradigms. The structure is based on the ITRUSST recommendations for TUS which can also be applied to TMS and likely tES protocols. In this approach, a table is constructed which can describe simple and nested rTMS protocols.
 
-Importantly, only intervals (in seconds) and number of pulses  are described, which prevents ambiguity from describing combinations of frequency of stimulation and duration of stimulation.
+The term 'burst' is deliberately avoided as this can be ambiguous. Frequency is also avoided as this can suffer from rounding errors and is therefore imprecise. Also, the number of pulses is avoided to avoid the potential for further ambiguity when describing protocols. This can instead be calculated form the interval and duration.
 
-* `inter-pulse-interval` = time in seconds between the first pulse and subsequent pulse.
-* `pulses-in-burst` = first level of nesting - describes the number of pulses in a burst.
-* `inter-burst-interval` = time in seconds between first pulse in first burst and first pulse in subsequent burst.
-* `bursts-in-train` = second level of nesting - describes the number of bursts in a train.
-* `inter-train-interval` = time in seconds between first pulse in first train and first pulse in subsequent train.
-* `trains-in-protocol` = third level of nesting - describes the number of trains in a protocol.
+## **rTMS protocols with no nesting (e.g., 1 Hz)**
 
-*Note:* I've used the term `interval` above, but perhaps `period` might be more appropriate as it describes the time taken to complete a full cycle including stimuli and gaps.
+`pulse_duration` = time during which current is passed through the TMS coil (also called `pulse width`).
 
-From these parameters, two additional features can be calculated:
-* Total pulses = total number of pulses in protocol
-* Total duration = time in seconds from first pulse to end of cycle (I think it is better to calculate total period - i.e., the time taken to complete all cycles - it's easier to calculate and is perhaps more intuitive).
+`pulse_reptition_interval` = time from the onset of the first pulse to the onset of the subsequent pulse.
+
+`pulse_train_duration` = time to complete all pulses in train (including all intervals).
+
+
+## **rTMS protocols with one level of nesting (e.g., 10 Hz, cTBS, QPS, iTMS)**
+
+`pulse_train_repeat_interval` = time from the onset of the first train to the onset of the subsequent train.
+
+`pulse_train_repeat_duration` = time to complete all trains in repeat 1 (including all intervals).
+
+## **rTMS protocols with multiple levels of nesting (e.g., iTBS)**
+
+`repeat2_interval` = time from the onset of repeat 1 to the onset of the subsequent repeat.
+
+`repeat2_duration` = time to complete all repeats in repeat 2 (including all intervals).
+
+## **Additional levels of nesting (if required)**
+
+`repeat<n>_interval` = time from the onset of repeat `<n>` to the onset of the subsequent repeat.
+
+`repeat<n>_duration` = time to complete all repeats in repeat <n> (including all intervals).
+
+## **Derived measurements**
+
+The following are additional parameters that can be derived from the above parameters that may be of interest to report:
+
+`pulse_repetition_frequency` = 1/`pulse_reptition_interval`.
+
+`pulse_train_repetition_frequency` = 1/`pulse_train_repeat_interval`.
+
+`repeat1_frequency` = 1/`repeat2_interval`.
+
+`total_pulses` = (`pulse_train_duration` / `pulse_reptition_interval`) * (`pulse_train_repeat_duration` * `pulse_train_repetition_interval`) *  ( `repeat2_duration` * `pulse_train_repeat_repetition_interval) etc.
+
+## **Examples**
 
 Here are the settings for some common protocols.
 
-| **Protocol** | **pulses-in-burst**      | **inter-pulse-interval** | **bursts-in-train** | **inter-burst-interval** | **trains-in-protocol** | **inter-train-interval** |
-|--------------|--------------------------|---------------------|--------------------------|---------------------|--------------------------|------------------------|
-| iTBS         | 3                        | 0.02                | 10                       |0.2                  |20                        | 10                     |
-| cTBS         | 3                        | 0.02                | 200                      |0.2                  |1                         | 0                      |
-| 10 Hz        | 40                       | 0.1                 | 75                       |30                   |1                         | 0                      |
-| 1 Hz         | 600                      | 1                   | 1                        |0                    |1                         | 0                      |
-| QPS          | 4                        | 0.005               | 360                      |5                    |1                         | 0                      |
-| iTMS         | 2                        | 0.0015              | 180                      |5                    |1                         | 0                      |
+**Protocol:** 1 Hz rTMS
 
-I've written a basic script `tms_intervention_builder.m` to show how these settings can build the protocols and calculate total pulses and total duration.
+|             | **_duration**  | **_repetition_interval** |
+|-------------|----------------|--------------------------|
+| pulse       | 200 µs         | 1 s                      |
+| pulse_train | 600 s          |                          |
 
-## Text description of TMS intervention parameters
+**Protocol:** 10 Hz rTMS
 
-I've given some examples of writing these protocols out in text form. Note that other descriptors like frequency can be described, however the 6 descriptors are required and take precedence. If a descriptor is not described it is automatically condsidered to = 1 (for no-repeats) or 0 (for interval). 
+|             | **_duration**  | **_repetition_interval** |
+|-------------|----------------|--------------------------|
+| pulse       | 200 µs         | 0.1 s                      |
+| pulse_train | 4 s          |   30 s                       |
+| pulse_train_repeat | 2,250 s        |                          |
 
-*iTBS:*  
-iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 10) for 2 seconds with an 8 seconds gap (inter-train-interval = 10 s; trains-in-protocol = 20) for a total of 600 pulses over 200 seconds. 
+**Protocol:** cTBS
 
-*cTBS:*  
-cTBS iTBS consisted of 3 pulses at 50 Hz (inter-pulse-interval = 0.02 s; pulses-in-burst = 3) repeated at 5 Hz (inter-burst-interval = 0.2 s; bursts-in-train = 200) for a total of 600 pulses over 40 seconds.
+|             | **_duration**  | **_repetition_interval** |
+|-------------|----------------|--------------------------|
+| pulse       | 200 µs         | 0.02 s                      |
+| pulse_train | 0.06 s          |   0.2 s                       |
+| pulse_train_repeat | 40 s        |                          |
 
-*10 Hz rTMS:*  
-rTMS was given at 10 Hz for 4 s (inter-pulse-interval = 0.1 s; pulses-in-burst = 40) followed by a 26 s gap (inter-burst-interval = 30; burst-in-train = 75) for a total of 3000 pulses over 37 mins and 30 seconds.
+**Protocol:** QPS (5 ms ISI)
 
-*1 Hz rTMS:*  
-rTMS was given at 1 Hz for 10 minutes (inter-pulse-interval = 1; pulses-in-burst = 600).
+|             | **_duration**  | **_repetition_interval** |
+|-------------|----------------|--------------------------|
+| pulse       | 200 µs         | 0.005 s                      |
+| pulse_train | 0.02 s          |   5 s                       |
+| pulse_train_repeat | 1800 s        |                          |
+
+
+**Protocol:** iTBS 
+
+|             | **_duration**  | **_repetition_interval** |
+|-------------|----------------|--------------------------|
+| pulse       | 200 µs         | 0.2 s                      |
+| pulse_train | 0.06 s          |   0.2 s                       |
+| pulse_train_repeat | 2 s        |  10 s                        |
+| repeat_2 | 200 s        |                         |
+
+## Additional ramping variables
+
+Although not common in rTMS, ramping (i.e., a gradual increase and decreases in stimulation intensity) can also be described.
+
