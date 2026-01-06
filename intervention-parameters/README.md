@@ -1,4 +1,4 @@
-# Framework for describing TMS intervention parameters
+# Framework for describing rTMS timing parameters (v1)
 
 The current methods for describing the timing of TMS interventions are often imprecise and ambiguous, meaning there are often multiple different interpretations of how the timing could be implemented.
 
