@@ -93,4 +93,63 @@ Here are the settings for some common protocols.
 ## Additional ramping variables
 
 Although not common in rTMS, ramping (i.e., a gradual increase and decreases in stimulation intensity) can also be described.
+`_ramp_duration` = time of ramp from 0 to peak intensity.
+`_ramp_shape` = describes the shape of the ramp (e.g., rectangular, Tukey).
 
+# Application to tES
+
+The same timing framework can be used to describe tES protocols.
+
+**Protocol:** tDCS (transcranial direct current stimulation)
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------|-----------------|--------------------------|
+| pulse       | 1800 s         | 30 s               | Tukey           |                          |
+
+**Protocol:** tACS (transcranial alternating current stimulation)
+
+An additional parameter for frequency is required:
+
+`pulse_frequency` = the frequency of the alternating current.
+
+Note: will need to define starting phase individually for each electrode.
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------|-----------------|--------------------------|
+| pulse       | 1800 s         | 0               | None           |                          |
+
+**Protocol:** tRNS (transcranial random noise stimulation)
+
+An additional parameter for noise is required:
+
+`pulse_noise` = type of noise (for tRNS) (white, pink, band-limited, custom).
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------|-----------------|--------------------------|
+| pulse       | 1800 s         | 0               | None           |                          |
+
+**Protocol:** tPCS (transcranial pulsed current stimulation)
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------|-----------------|--------------------------|
+| pulse       | 140 µs        | 0               | Rectangular           |  0.0025 s                        |
+| pulse_train | 1200 s          |                          | | |
+
+# Application to TUS
+
+Below are the examples from the ITRUSST guidelines for TUS.
+
+**Protocol:** TUS (transcranial ultrasound stimulation) - single pulse
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------|-----------------|--------------------------|
+| pulse       | 0.002  s      | 0               | Rectangular           |  0.004 s                        |
+| pulse_train | 0.3 s          |                |                       | |
+
+**Protocol:** TUS (transcranial ultrasound stimulation) - patterned repetitive TUS
+
+|             | **_duration**  | **_ramp_duration** | **_ramp_shape** | **_repetition_interval** |
+|-------------|----------------|--------------------------|--------------------|-----------------|
+| pulse       | 0.00032 s       | 0               | Rectangular            | 0.001 s                      |
+| pulse_train | 0.5 s          | 0               | Rectangular           |   1.6 s                       |
+| pulse_train_repeat | 80 s        |                          |||
