@@ -85,7 +85,7 @@ Here are the settings for some common protocols.
 
 |             | **_duration**  | **_repetition_interval** |
 |-------------|----------------|--------------------------|
-| pulse       | 200 µs         | 0.2 s                      |
+| pulse       | 200 µs         | 0.02 s                      |
 | pulse_train | 0.06 s          |   0.2 s                       |
 | pulse_train_repeat | 2 s        |  10 s                        |
 | repeat_2 | 200 s        |                         |
