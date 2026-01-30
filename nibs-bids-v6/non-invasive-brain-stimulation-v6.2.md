@@ -564,7 +564,23 @@ The order and grouping of parameters in `*_nibs.tsv` reflect a hierarchical orga
 | `stim_id` | string | Identifier of a stimulation configuration/pattern. References `StimID` entries in `StimulusSet` within `*_nibs.json`. |
 
 
-**Stimulation Timing Parameters**
+**Stimulation Timing Parameters** (Nigel suggestion - not finished as of 30/1/02026
+| Field | Type | Description |
+|---|---:|---|
+| `pulse_duration` | number | (Optional) time during which current is passed through the TMS coil (also called `pulse width`). |
+| `pulse_count` | number | (Optional) Number of pulses indicated by an event (*I think this definition needs tightening*). |
+| `pulse_repetition_interval` | number | (Optional) time from the onset of the first pulse to the onset of the subsequent pulse. This includes pulse duration plus time between pulses. |
+| `train_duration` | number | (Optional) Time to complete all pulses in train (including interval following final pulse). |
+| `train_count` | number | (Optional) Number of trains indicated by an event. |
+| `train_repeition_interval` | number | (Optional) Time from the onset of the first train to the onset of the subsequent train. |
+| `repeat_duration` | number | (Optional) Time to complete all trains in repeat (including interval after final train).|
+| `repeat_count` | number | (Optional) Number of repeats indicated by an event. |
+| `repeat_repeition_interval` | number | (Optional) Time from the onset of the first repeat to the onset of the subsequent repeat. |
+| `train_ramp_up` | number | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping). |
+| `train_ramp_up_number` | number | (Optional) Number of initial trains over which the ramp-up is applied. |
+| `train_ramp_down` | number | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping). |
+| `train_ramp_down_number` | number | (Optional) Number of final trains over which the ramp-down is applied. |
+| `stimulation_duration` | number | (Optional) Total wall-clock duration of the stimulation block. |
 
 | Field | Type | Description |
 |---|---:|---|
