@@ -28,3 +28,9 @@
 4. `targeting_method` -> `coil_positioning_method`
 5. `NavigationSystem` (new) 
 6. `stimulus_pulse_interval` -> `IntraPulseInterval` (StimulusSet)
+
+## Update_270226 --------------- 27.02.2026  ---------------
+
+1. protocol_name -> event_name
+2. `Non-navigated coil placement/orientation` section added in nibs.tsv
+3. `target_name` -> `target_label` + `target_description`
