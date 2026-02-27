@@ -646,8 +646,11 @@ These fields support studies without neuronavigation, where coil placement and o
 | `stim_count` | integer | (Optional) Counter indicating the number of times a stimulation instance with the same `stim_id` has been delivered to the same `target_id` within the current file/session. Intended for counting deliveries to a target; MUST NOT be used for synchronization across modalities. Values typically start at 1 and increment monotonically for successive deliveries of the same (`stim_id`, `target_id`) combination. |
 | `stim_validation` | string | (Optional) Free-form indication of whether stimulation delivery/positioning was verified or observed (e.g., `verified`, `observed`, `not_verified`, `unknown`). |
 | `current_gradient` | number | (Optional) Device-reported measured gradient of coil current (units device-dependent). |
-| `electric_field_target` | number | (Optional) Estimated or measured electric field at the stimulation target (units and model/device-dependent). |
-| `electric_field_max` | number | (Optional) Peak electric field value (units and model/device-dependent). |
+| `electric_field_target` | number | (Optional) Electric-field magnitude at the stimulation target, as reported by the stimulation/navigation system during acquisition or derived from an explicit field model. This value is not a direct measurement of tissue current. |
+| `electric_field_max` | number | (Optional) Maximum (peak) electric-field magnitude within the modeled/reported region, as reported during acquisition or derived from an explicit field model. This value is not a direct measurement of tissue current. |
+| `electric_field_units` | string | (Optional) Units for `electric_field_target` and `electric_field_max` (free-form; recommended: `V/m`). SHOULD be provided when any `electric_field_*` value is present. |
+| `electric_field_model_name` | string | (Optional) Name of the model/system used to obtain `electric_field_*` values (e.g., navigation software name, field estimation model name). SHOULD be provided when any `electric_field_*` value is present. |
+| `electric_field_model_version` | string | (Optional) Version of the model/system used to obtain `electric_field_*` values (free-form vendor/version string). SHOULD be provided when any `electric_field_*` value is present. |
 | `motor_response` | number | (Optional) Aggregate motor response metric reported by the stimulation system or experimenter and used during stimulation setup/calibration (e.g., threshold determination). This is a procedure-level summary value (e.g., amplitude/magnitude) and does not represent the full EMG waveform. Units and computation method are device- or protocol-dependent and may be proprietary. |
 | `latency` | number | (Optional) Device- or procedure-reported delay between stimulus delivery and the detected motor response, as used during the experiment (e.g., for threshold estimation). This is a summary timing value and does not imply a standardized onset detection method. |
 | `response_channel_name` | string | (Optional) Name/label of the recorded channel used to derive the response metric (e.g., EMG channel name). |
@@ -660,9 +663,13 @@ These fields support studies without neuronavigation, where coil placement and o
 | `intended_for` | string | (Optional) BIDS-style reference/URI to a recorded data file associated with the response/measurement (example: `bids::sub-01/ses-01/eeg/sub-01_ses-01_task-..._eeg.eeg`). |
 | `timestamp` | string | (Optional) Timestamp in ISO 8601 format. |
 
-* Motor response–related parameters in the NIBS-BIDS specification are intended to store procedure-level or device-reported summary values used during stimulation setup (e.g., motor threshold determination).
-* They are not intended to replace or describe EMG recordings or waveform-level analyses, which should be represented using dedicated EMG data types and extensions when available.
+* Notes
 
+- Motor response–related parameters in the NIBS-BIDS specification are intended to store procedure-level or device-reported summary values used during stimulation setup (e.g., motor threshold determination).
+
+- They are not intended to replace or describe EMG recordings or waveform-level analyses, which should be represented using dedicated EMG data types and extensions when available.
+
+- If `electric_field_*` values are computed offline as part of post-processing, they SHOULD be stored in a derived dataset (or accompanied by sufficient provenance metadata to reproduce the computation).
 
 ### 1.4 `*_nibs.json` & `*_nibs.tsv` hierarchy logic
 
