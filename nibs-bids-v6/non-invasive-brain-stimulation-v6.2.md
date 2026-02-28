@@ -413,7 +413,7 @@ Each entry describes the stimulation instance in terms of the number of physical
 | `PulseWaveform` | string | Shape of the stimulation pulse waveform produced by the stimulator (e.g., monophasic, biphasic, custom). Defined per `StimID`. |
 | `PulseDuration` | number | (Optional) Duration of a single pulse, measured from pulse onset to pulse offset. Defined per `StimID`. |
 | `PulseDurationUnits` | string | Units of `PulseDuration` (e.g., ms, µs). |
-| `PulseRepetitionInterval` | number | (Optional) Within-instance pulse-to-pulse onset spacing (onset-to-onset) for stimulation instances with more than one physical pulse (`StimulusPulsesNumber > 1`). Assumed uniform across consecutive pulses within the instance. |
+| `PulseRepetitionInterval` | number | (Optional) Within-instance pulse-to-pulse onset spacing (onset-to-onset) for stimulation instances with more than one physical pulse (`PulseCount` > 1). Assumed uniform across consecutive pulses within the instance. |
 | `PulseRepetitionIntervalUnits` | string | Units of `PulseRepetitionInterval` (e.g., ms, µs). |
 | `PulseIntensityScalingType` | string | Defines how pulse-specific intensities are derived from the base intensity specified in `*_nibs.tsv` (e.g., multiplicative, additive). |
 | `PulseIntensityScalingVector` | array[number] | Vector of scaling coefficients, ordered by pulse occurrence within the stimulation instance. Length MUST match `StimulusPulsesNumber`. |
@@ -579,10 +579,10 @@ These fields support studies without neuronavigation, where coil placement and o
 |---|---:|---|
 | `train_duration` | number | (Optional) Time to complete all pulses in train (including interval following final pulse). |
 | `train_count` | number | (Optional) Number of trains indicated by an event. |
-| `train_repeition_interval` | number | (Optional) Time from the onset of the first train to the onset of the subsequent train. |
+| `train_repetition_interval` | number | (Optional) Time from the onset of the first train to the onset of the subsequent train. |
 | `repeat_duration` | number | (Optional) Time to complete all trains in repeat (including interval after final train).|
 | `repeat_count` | number | (Optional) Number of repeats indicated by an event. |
-| `repeat_repeition_interval` | number | (Optional) Time from the onset of the first repeat to the onset of the subsequent repeat. |
+| `repeat_repetition_interval` | number | (Optional) Time from the onset of the first repeat to the onset of the subsequent repeat. |
 | `train_ramp_up` | number | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping). |
 | `train_ramp_up_count` | number | (Optional) Number of initial trains over which the ramp-up is applied. |
 | `train_ramp_down` | number | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping). |
@@ -733,7 +733,7 @@ This example defines a single-pulse stimulation instance.
 Each row corresponds to one delivered single pulse.
 
 ```
-event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  repeat_repeition_interval
+event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  repeat_repetition_interval
 event_1   stim_1   target_1   1           55                    resting_motor     50                             110                        5
 event_2   stim_1   target_1   2           55                    resting_motor     50                             110                        5
 event_3   stim_1   target_1   3           55                    resting_motor     50                             110                        5
@@ -741,9 +741,9 @@ event_3   stim_1   target_1   3           55                    resting_motor   
 
 * Timing note
 
-	- If pulses are manually triggered or irregular, onsets SHOULD be recorded in *_events.tsv (linked via event_id), and repeat_repeition_interval MAY be omitted.
+	- If pulses are manually triggered or irregular, onsets SHOULD be recorded in *_events.tsv (linked via event_id), and repeat_repetition_interval MAY be omitted.
 
-	- If pulses are delivered periodically and per-event time-locking is not required, repeat_repeition_interval MAY be used.
+	- If pulses are delivered periodically and per-event time-locking is not required, repeat_repetition_interval MAY be used.
 
 ### Example 2 — Paired-pulse TMS (e.g., SICI / ICF)
 
@@ -850,14 +850,14 @@ This example defines a triple-pulse stimulation instance, which is repeated with
 
 		- repeat_count
 
-		- repeat_repeition_interval
+		- repeat_repetition_interval
 
 * Stimulation instances (*_nibs.tsv)
 
 Each row corresponds to one delivered burst/train-based stimulation event described parametrically.
 
 ```
-event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  train_count  train_repetition_interval	repeat_count	repeat_repeition_interval
+event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  train_count  train_repetition_interval	repeat_count	repeat_repetition_interval
 event_1   stim_1   target_1   1           55                   	resting_motor     50                             110                        10           0.2						20				10
 ```
 
