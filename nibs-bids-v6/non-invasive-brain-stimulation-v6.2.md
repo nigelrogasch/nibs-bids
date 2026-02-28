@@ -409,12 +409,12 @@ Each entry describes the stimulation instance in terms of the number of physical
 |---|---:|---|
 | `StimID` | string | Identifier of the stimulation instance or stimulation pattern. Referenced from `*_nibs.tsv` via `stim_id`. Defines how stimulation is delivered, independently of where it is applied. |
 | `StimulusType` | string | High-level type describing the number of physical pulses in a single stimulation instance. Allowed values: `single`, `paired`, `triple`, `quadruple`, `multi` (for N>4). |
-| `StimulusPulsesNumber` | integer | Number of physical pulses contained in a single stimulation instance defined by `StimID` (e.g., single: 1; paired: 2; triple: 3; quadruple: 4; multi: N). |
+| `PulseCount` | integer | Number of physical pulses contained in a single stimulation instance defined by `StimID` (e.g., single: 1; paired: 2; triple: 3; quadruple: 4; multi: N). |
 | `PulseWaveform` | string | Shape of the stimulation pulse waveform produced by the stimulator (e.g., monophasic, biphasic, custom). Defined per `StimID`. |
-| `PulseWidth` | number | (Optional) Duration of a single pulse, measured from pulse onset to pulse offset. Defined per `StimID`. |
-| `PulseWidthUnits` | string | Units of `PulseWidth` (e.g., ms, µs). |
-| `IntraPulseInterval` | number | (Optional) Within-instance pulse-to-pulse onset spacing (onset-to-onset) for stimulation instances with more than one physical pulse (`StimulusPulsesNumber > 1`). Assumed uniform across consecutive pulses within the instance. |
-| `IntraPulseIntervalUnits` | string | Units of `IntraPulseInterval` (e.g., ms, µs). |
+| `PulseDuration` | number | (Optional) Duration of a single pulse, measured from pulse onset to pulse offset. Defined per `StimID`. |
+| `PulseDurationUnits` | string | Units of `PulseDuration` (e.g., ms, µs). |
+| `PulseRepetitionInterval` | number | (Optional) Within-instance pulse-to-pulse onset spacing (onset-to-onset) for stimulation instances with more than one physical pulse (`StimulusPulsesNumber > 1`). Assumed uniform across consecutive pulses within the instance. |
+| `PulseRepetitionIntervalUnits` | string | Units of `PulseRepetitionInterval` (e.g., ms, µs). |
 | `PulseIntensityScalingType` | string | Defines how pulse-specific intensities are derived from the base intensity specified in `*_nibs.tsv` (e.g., multiplicative, additive). |
 | `PulseIntensityScalingVector` | array[number] | Vector of scaling coefficients, ordered by pulse occurrence within the stimulation instance. Length MUST match `StimulusPulsesNumber`. |
 | `PulseIntensityScalingReference` | string | Specifies which per-event intensity field in `*_nibs.tsv` is used as the reference for applying `PulseIntensityScalingVector` when pulse-specific intensities differ within an instance. Allowed values: `base`, `threshold`. |
@@ -429,12 +429,12 @@ Each entry describes the stimulation instance in terms of the number of physical
   {
     "StimID": "stim_1",
     "StimulusType": "quadruple",
-    "StimulusPulsesNumber": 4,
+    "PulseCount": 4,
     "PulseWaveform": "monophasic",
-    "PulseWidth": 200,
-    "PulseWidthUnits": "µs",
-	"IntraPulseInterval": 10,
-	"IntraPulseIntervalUnits": "ms",
+    "PulseDuration": 200,
+    "PulseDurationUnits": "µs",
+	"PulseRepetitionInterval": 10,
+	"PulseRepetitionIntervalUnits": "ms",
     "PulseIntensityScalingType": "multiplicative",
     "PulseIntensityScalingVector": [1.0, 1.0, 1.0, 1.1],
     "PulseIntensityScalingReference": "base",
@@ -445,12 +445,12 @@ Each entry describes the stimulation instance in terms of the number of physical
   {
     "StimID": "stim_2",
     "StimulusType": "triple",
-    "StimulusPulsesNumber": 3,
+    "PulseCount": 3,
     "PulseWaveform": "biphasic",
-    "PulseWidth": 200,
-    "PulseWidthUnits": "µs",
-	"IntraPulseInterval": 10,
-	"IntraPulseIntervalUnits": "ms",
+    "PulseDuration": 200,
+    "PulseDurationUnits": "µs",
+	"PulseRepetitionInterval": 10,
+	"PulseRepetitionIntervalUnits": "ms",
     "PulseIntensityScalingType": "additive",
     "PulseIntensityScalingVector": [0.0, 0.0, 5.0],
     "PulseIntensityScalingReference": "threshold",
@@ -577,34 +577,16 @@ These fields support studies without neuronavigation, where coil placement and o
 **Stimulation Timing Parameters** (Nigel suggestion - not finished as of 30/1/02026
 | Field | Type | Description |
 |---|---:|---|
-| `pulse_duration` | number | (Optional) time during which current is passed through the TMS coil (also called `pulse width`). |
-| `pulse_count` | number | (Optional) Number of pulses indicated by an event (*I think this definition needs tightening*). |
-| `pulse_repetition_interval` | number | (Optional) time from the onset of the first pulse to the onset of the subsequent pulse. This includes pulse duration plus time between pulses. |
 | `train_duration` | number | (Optional) Time to complete all pulses in train (including interval following final pulse). |
 | `train_count` | number | (Optional) Number of trains indicated by an event. |
 | `train_repeition_interval` | number | (Optional) Time from the onset of the first train to the onset of the subsequent train. |
 | `repeat_duration` | number | (Optional) Time to complete all trains in repeat (including interval after final train).|
 | `repeat_count` | number | (Optional) Number of repeats indicated by an event. |
 | `repeat_repeition_interval` | number | (Optional) Time from the onset of the first repeat to the onset of the subsequent repeat. |
-
-
-| Field | Type | Description |
-|---|---:|---|
-| `inter_trial_interval` | number | (Optional) Time from the onset (start) of one stimulation instance to the onset (start) of the next stimulation instance (start-to-start / onset-to-onset). A stimulation instance corresponds to one logical stimulation event represented by a single row in `*_nibs.tsv` (which may contain a single pulse or a programmed multi-pulse construct). In the special case where each instance contains a single pulse, this corresponds to pulse-to-pulse onset asynchrony. |
-| `trial_rate` | number | (Optional) Nominal repetition rate of stimulation instances, defined as the inverse of `inter_trial_interval` when instances are delivered periodically. Expressed in Hz. A stimulation instance corresponds to one row in `*_nibs.tsv`. |
-| `burst_stimuli_interval` | number | (Optional) Within-burst onset-to-onset spacing between consecutive stimulation instances within the same burst (start-to-start / onset-to-onset). This parameter describes spacing between repeated stimulation instances using the same stimulation configuration referenced by `stim_id`, regardless of how many pulses each instance contains. |
-| `burst_stimuli_number` | number | (Optional) Number of stimulation instances delivered within a single burst. Each instance is delivered using the stimulation configuration referenced by `stim_id`. |
-| `burst_stimuli_rate` | number | (Optional) Rate of stimulation instances within a burst, defined as the inverse of `burst_stimuli_interval` when spacing is periodic. Expressed in Hz. If both `burst_stimuli_rate` and `burst_stimuli_interval` are provided, they MUST be mathematically consistent. |
-| `train_burst_number` | number | (Optional) Number of bursts delivered within a single stimulation train. |
-| `train_burst_rate` | number | (Optional) Burst repetition rate within a stimulation train, defined as the inverse of the onset-to-onset time between consecutive bursts (when periodic). Expressed in Hz. |
-| `inter_burst_interval` | number | (Optional) Time from the onset (start) of one burst to the onset (start) of the next burst within the same stimulation train (onset-to-onset). |
-| `train_number` | number | (Optional) Total number of trains delivered in the stimulation sequence (count). |
-| `inter_train_pulse_interval` | number | (Optional) Time from the onset (start) of the last pulse in one train to the onset (start) of the first pulse in the next train (onset-to-onset across train boundaries). |
-| `inter_train_interval_delay` | number | (Optional) Per-train additive offset applied to the nominal `inter_train_pulse_interval`, allowing non-uniform onset-to-onset timing across train boundaries. The effective interval is computed as: `effective interval = inter_train_pulse_interval + inter_train_interval_delay`. |
 | `train_ramp_up` | number | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping). |
-| `train_ramp_up_number` | number | (Optional) Number of initial trains over which the ramp-up is applied. |
+| `train_ramp_up_count` | number | (Optional) Number of initial trains over which the ramp-up is applied. |
 | `train_ramp_down` | number | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping). |
-| `train_ramp_down_number` | number | (Optional) Number of final trains over which the ramp-down is applied. |
+| `train_ramp_down_count` | number | (Optional) Number of final trains over which the ramp-down is applied. |
 | `stimulation_duration` | number | (Optional) Total wall-clock duration of the stimulation block. |
    
 
@@ -613,7 +595,7 @@ These fields support studies without neuronavigation, where coil placement and o
 | Field | Type | Description |
 |---|---:|---|
 | `target_id` | string | Identifier of a spatial stimulation target (stimulation-level target identifier). Links `*_nibs.tsv` to spatial target definitions in `*_markers.tsv`. |
-| `target_name` | string | (Optional) Human-readable name of the cortical target, anatomical label, or stimulation site. |
+| `target_label` | string | (Optional) Human-readable name of the cortical target, anatomical label, or stimulation site. |
 
 
 **Amplitude & Thresholds**
@@ -686,9 +668,9 @@ Hierarchy (structure + repetition):
 
 `StimulusSet` (in `*_nibs.json`)
 - `StimID = "stim_A"` defines the internal structure of a stimulation instance:
-  - number of physical pulses in the instance: `StimulusPulsesNumber = N`
-  - within-instance pulse spacing (uniform, if `N > 1`): `IntraPulseInterval` (+ `IntraPulseIntervalUnits`)
-  - pulse properties: `PulseWaveform`, `PulseWidth`, `PulseCurrentDirection`
+  - number of physical pulses in the instance: `PulseCount = N`
+  - within-instance pulse spacing (uniform, if `N > 1`): `PulseRepetitionInterval` (+ `PulseRepetitionIntervalUnits`)
+  - pulse properties: `PulseWaveform`, `PulseDuration`, `PulseCurrentDirection`
   - pulse-intensity rules (optional): `PulseIntensityScalingType`, `PulseIntensityScalingVector`, `PulseIntensityScalingReference`
 
 **Within a logical stimulation event (recorded in `*_nibs.tsv`)**
@@ -706,7 +688,6 @@ Hierarchy (structure + repetition):
 
 **Between stimulation events (across rows)**
 
-- `inter_trial_interval` (and, when applicable, `trial_rate`) describes onset-to-onset spacing between consecutive logical stimulation events (row-to-row), when applicable.
 - When time-locked onsets are provided, they SHOULD be recorded in `*_events.tsv` and linked via `event_id`.
 
 
@@ -729,10 +710,10 @@ This example defines a single-pulse stimulation instance.
   {
     "StimID": "stim_1",
     "StimulusType": "single",
-    "StimulusPulsesNumber": 1,
+    "PulseCount": 1,
     "PulseWaveform": "monophasic",
-    "PulseWidth": 0.2,
-    "PulseWidthUnits": "ms",
+    "PulseDuration": 0.2,
+    "PulseDurationUnits": "ms",
     "PulseCurrentDirection": "normal",
     "PulseCurrentDirectionDescription": "Defined according to manufacturer-specific coil orientation convention"
   }
@@ -743,7 +724,7 @@ This example defines a single-pulse stimulation instance.
 
 	- StimID defines the stimulation-instance structure referenced by stim_id.
 
-	- The instance contains exactly one physical pulse (StimulusPulsesNumber = 1).
+	- The instance contains exactly one physical pulse (`PulseCount` = 1).
 
 	- Pulse-level properties are fixed for this configuration and therefore belong in *_nibs.json.
 
@@ -752,7 +733,7 @@ This example defines a single-pulse stimulation instance.
 Each row corresponds to one delivered single pulse.
 
 ```
-event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  inter_trial_interval
+event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  repeat_repeition_interval
 event_1   stim_1   target_1   1           55                    resting_motor     50                             110                        5
 event_2   stim_1   target_1   2           55                    resting_motor     50                             110                        5
 event_3   stim_1   target_1   3           55                    resting_motor     50                             110                        5
@@ -760,9 +741,9 @@ event_3   stim_1   target_1   3           55                    resting_motor   
 
 * Timing note
 
-	- If pulses are manually triggered or irregular, onsets SHOULD be recorded in *_events.tsv (linked via event_id), and inter_trial_interval MAY be omitted.
+	- If pulses are manually triggered or irregular, onsets SHOULD be recorded in *_events.tsv (linked via event_id), and repeat_repeition_interval MAY be omitted.
 
-	- If pulses are delivered periodically and per-event time-locking is not required, inter_trial_interval or trial_rate MAY be used.
+	- If pulses are delivered periodically and per-event time-locking is not required, repeat_repeition_interval MAY be used.
 
 ### Example 2 — Paired-pulse TMS (e.g., SICI / ICF)
 
@@ -780,12 +761,12 @@ This example defines a paired-pulse stimulation instance.
   {
     "StimID": "stim_1",
     "StimulusType": "paired",
-    "StimulusPulsesNumber": 2,
-    "IntraPulseInterval": 0.003,
-    "IntraPulseIntervalUnits": "s",
+    "PulseCount": 2,
+    "PulseRepetitionInterval": 2,
+    "PulseRepetitionIntervalUnits": "ms",
     "PulseWaveform": "biphasic",
-    "PulseWidth": 0.2,
-    "PulseWidthUnits": "ms",
+    "PulseDuration": 0.2,
+    "PulseDurationUnits": "ms",
     "PulseIntensityScalingType": "multiplicative",
     "PulseIntensityScalingVector": [0.8, 1.1],
     "PulseIntensityScalingReference": "threshold",
@@ -798,33 +779,33 @@ This example defines a paired-pulse stimulation instance.
 
 * Interpretation
 
-	- StimID = stim_1 defines the stimulation-instance structure referenced by stim_id.
+	- `StimID` = stim_1 defines the stimulation-instance structure referenced by `stim_id`.
 
-	- The instance contains two physical pulses (StimulusPulsesNumber = 2).
+	- The instance contains two physical pulses (`PulseCount` = 2).
 
-	- The within-instance pulse spacing is defined by IntraPulseInterval in StimulusSet.
+	- The within-instance pulse spacing is defined by `PulseRepetitionInterval` in `StimulusSet`.
 
-	- Pulse-level properties (waveform, width, direction) are fixed for this configuration and belong in *_nibs.json.
+	- Pulse-level properties are fixed for this configuration and belong in *_nibs.json.
 
-	- Pulse-specific intensity rules are defined in StimulusSet via the scaling fields.
+	- Pulse-specific intensity rules are defined in `StimulusSet` via the scaling fields.
 
 * Stimulation instances (*_nibs.tsv)
 
 Each row corresponds to one delivered paired-pulse stimulation instance.
 
 ```
-event_id  stim_id  target_id  stim_count  threshold_type    threshold_reference_intensity  inter_trial_interval
-event_1   stim_1   target_1   1           resting_motor     55                             6
-event_2   stim_1   target_1   2           resting_motor     55                             6
-event_3   stim_1   target_1   3           resting_motor     55                             6
+event_id  stim_id  target_id  stim_count  threshold_type    threshold_reference_intensity
+event_1   stim_1   target_1   1           resting_motor     55                   
+event_2   stim_1   target_1   2           resting_motor     55                             
+event_3   stim_1   target_1   3           resting_motor     55                             
 ```
 
 * Timing note
 
 - The paired-pulse structure is fully defined by::
 
-	- StimulusPulsesNumber = 2 (JSON)
-	- IntraPulseInterval (JSON)
+	- `PulseCount` = 2 (JSON)
+	- `PulseRepetitionInterval` = 0.003 (JSON)
 
 If paired-pulse instances are delivered irregularly or task-triggered, onsets SHOULD be recorded in *_events.tsv (linked via event_id).
 
@@ -832,59 +813,55 @@ If paired-pulse instances are delivered irregularly or task-triggered, onsets SH
 
 * Conceptual meaning
 
-A stimulation instance corresponds to the delivery of a burst/train-based construct executed as a single initiated unit (one logical stimulation event).  
-A train is composed of repeated bursts, and each burst contains repeated stimulation instances defined by the configuration referenced by `stim_id`.  
-A delivered burst/train-based construct can be represented by one row in `*_nibs.tsv` (with its internal repetition described parametrically).
+A stimulation instance corresponds to the delivery of a train-based construct executed as a single initiated unit (one logical stimulation event).  
+A train is composed of repeated stimulation instances defined by the configuration referenced by `stim_id`.  
+A delivered train-based construct can be represented by one row in `*_nibs.tsv` (with its internal repetition described parametrically).
 
 * Stimulus definition (`*_nibs.json` → `StimulusSet`)
 
-This example defines a single-pulse stimulation instance, which is repeated within bursts and trains.
+This example defines a triple-pulse stimulation instance, which is repeated within trains.
 
 ```
 "StimulusSet": [
   {
     "StimID": "stim_1",
-    "StimulusType": "single",
-    "StimulusPulsesNumber": 1,
+    "StimulusType": "triple",
+    "PulseCount": 3,
     "PulseWaveform": "biphasic",
-    "PulseWidth": 0.2,
-    "PulseWidthUnits": "ms"
+    "PulseDuration": 0.2,
+    "PulseDurationUnits": "ms",
+	"PulseRepetitionInterval": 0.02,
+    "PulseRepetitionIntervalUnits": "s",
   }
 ]
 ```
 
 * Interpretation
 
-	- `StimID defines the stimulation-instance structure referenced by stim_id in *_nibs.tsv.
-
-	- The burst structure is defined parametrically by:
-
-		- burst_stimuli_number
-
-		- burst_stimuli_interval or burst_stimuli_rate
+	- `StimID` defines the stimulation-instance structure referenced by `stim_id` in *_nibs.tsv.
 
 	- The train structure (burst repetition) is defined parametrically by:
 
-		- train_burst_number
+		- train_count
 
-		- inter_burst_interval or train_burst_rate
+		- train_repetition_interval and train_duration
 
 	- If trains are repeated as a higher-level pattern, repetition MAY be encoded by:
 
-		- train_number
+		- repeat_count
 
-		- inter_train_pulse_interval
+		- repeat_repeition_interval
 
 * Stimulation instances (*_nibs.tsv)
 
 Each row corresponds to one delivered burst/train-based stimulation event described parametrically.
 
 ```
-event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  burst_stimuli_number  burst_stimuli_interval  train_burst_number  inter_burst_interval
-event_1   stim_1   target_1   1           55                   	resting_motor     50                             110                        3                     0.02                    200                 0.2
+event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  train_count  train_repetition_interval	repeat_count	repeat_repeition_interval
+event_1   stim_1   target_1   1           55                   	resting_motor     50                             110                        10           0.2						20				10
 ```
 
 * Timing note
 
-- If bursts/trains are delivered irregularly or externally triggered, onsets SHOULD be recorded in *_events.tsv (linked via event_id).
-- If the construct is executed as programmed and periodic, the burst/train parameters above are sufficient to reconstruct the intended temporal pattern.
+- If trains are delivered irregularly or externally triggered, onsets SHOULD be recorded in *_events.tsv (linked via event_id).
+- If the construct is executed as programmed and periodic, the train parameters above are sufficient to reconstruct the intended temporal pattern.

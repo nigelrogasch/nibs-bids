@@ -34,3 +34,4 @@
 1. protocol_name -> event_name
 2. `Non-navigated coil placement/orientation` section added in nibs.tsv
 3. `target_name` -> `target_label` + `target_description`
+4. `Stimulation Timing Parameters` + examples (Appendix A)
