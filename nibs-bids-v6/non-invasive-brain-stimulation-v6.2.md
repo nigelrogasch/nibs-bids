@@ -577,18 +577,19 @@ These fields support studies without neuronavigation, where coil placement and o
 **Stimulation Timing Parameters** (Nigel suggestion - not finished as of 30/1/02026
 | Field | Type | Description |
 |---|---:|---|
-| `train_duration` | number | (Optional) Time to complete all pulses in train (including interval following final pulse). |
-| `train_count` | number | (Optional) Number of trains indicated by an event. |
-| `train_repetition_interval` | number | (Optional) Time from the onset of the first train to the onset of the subsequent train. |
-| `repeat_duration` | number | (Optional) Time to complete all trains in repeat (including interval after final train).|
-| `repeat_count` | number | (Optional) Number of repeats indicated by an event. |
-| `repeat_repetition_interval` | number | (Optional) Time from the onset of the first repeat to the onset of the subsequent repeat. |
+| `train_duration` | number | (Optional) Active duration of a train, from the onset of the first element in the train to the end of the last element in the train (onset-to-offset)(i.e., excludes any post-train gap). |
+| `train_count` | number | (Optional) Number of stimulation instances delivered within one train (count). |
+| `train_repetition_interval` | number | (Optional) Onset-to-onset interval between consecutive stimulation instances within a train (used together with `train_count`). |
+| `repeat_duration` | number | (Optional) Active duration of a repeat block, from the onset of the first train in the repeat to the end of the last train in the repeat (onset-to-offset)(i.e., excludes any post-repeat gap). || `repeat_count` | number | (Optional) Number of repeats indicated by an event. |
+| `repeat_count` | number | (Optional) Number of trains (train windows) delivered within one repeat block (count). |
+| `repeat_repetition_interval` | number | (Optional) Onset-to-onset interval between consecutive trains (train windows) within a repeat block (used together with `repeat_count`). |
 | `train_ramp_up` | number | (Optional) Gradual increase of stimulation amplitude applied across successive trains at the beginning of a stimulation block (train-to-train ramping). |
 | `train_ramp_up_count` | number | (Optional) Number of initial trains over which the ramp-up is applied. |
 | `train_ramp_down` | number | (Optional) Gradual decrease of stimulation amplitude applied across successive trains at the end of a stimulation block (train-to-train ramping). |
 | `train_ramp_down_count` | number | (Optional) Number of final trains over which the ramp-down is applied. |
 | `stimulation_duration` | number | (Optional) Total wall-clock duration of the stimulation block. |
    
+*Timing hierarchy note:* In this scheme, `PulseCount`/`PulseRepetitionInterval` define the within-instance pulse structure in `StimulusSet` (`*_nibs.json`). At the event level (`*_nibs.tsv`), `train_*` parameters describe repetition of stimulation instances within a train window, and `repeat_*` parameters describe repetition of train windows within a higher-level repeat block.
 
 **Spatial & Targeting Information**
 
@@ -857,8 +858,8 @@ This example defines a triple-pulse stimulation instance, which is repeated with
 Each row corresponds to one delivered burst/train-based stimulation event described parametrically.
 
 ```
-event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  train_count  train_repetition_interval	repeat_count	repeat_repetition_interval
-event_1   stim_1   target_1   1           55                   	resting_motor     50                             110                        10           0.2						20				10
+event_id  stim_id  target_id  stim_count  base_pulse_intensity  threshold_type    threshold_reference_intensity  threshold_pulse_intensity  train_count  train_repetition_interval  train_duratino	repeat_count	repeat_repetition_interval  repeat_duration
+event_1   stim_1   target_1   1           55                   	resting_motor     50                             110                        10           0.2						0.06			20				10							2
 ```
 
 * Timing note
