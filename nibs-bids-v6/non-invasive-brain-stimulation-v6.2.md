@@ -102,12 +102,12 @@ Links to time-locked annotations (via `*_events.tsv`) are described in the synch
 
 Some modalities (e.g., TES, TUS) require multiple spatial points to describe one stimulation target. In such cases, `*_markers.tsv` MAY contain multiple rows with the same `target_id` to represent all points belonging to that composite target.
 
-- When multiple rows share the same `target_id`, `*_markers.tsv` MUST include an additional column (e.g., `target_part`) to disambiguate points within that target.
-- The pair (`target_id`, `target_part`) MUST be unique within `*_markers.tsv`.
-- `target_part` values SHOULD start at 1 and increment monotonically (1..N) for all points belonging to a given `target_id`.
+- When multiple rows share the same `target_id`, `*_markers.tsv` MUST include an additional column (e.g., `target_index`) to disambiguate points within that target.
+- The pair (`target_id`, `target_index`) MUST be unique within `*_markers.tsv`.
+- `target_index` values SHOULD start at 1 and increment monotonically (1..N) for all points belonging to a given `target_id`.
 - A modality-specific role column MAY be used to label points within a composite target (e.g., `anode`/`cathode` for TES, `target`/`entry` for TUS).
 
-For TMS, `target_id` typically references a single spatial point; in this case `target_part` is usually not required.
+For TMS, `target_id` typically references a single spatial point; in this case `target_index` is usually not required.
 
 
 ### Synchronizing NIBS Data Across Modalities (`*_events.tsv`)
@@ -127,17 +127,6 @@ In the NIBS datatype, synchronization is performed using a dedicated event ident
   - `*_nibs.tsv`: `event_id` is REQUIRED for each logical stimulation event record.
   - `*_events.tsv`: `event_id` MAY be included to reference the corresponding stimulation event(s) described in `*_nibs.tsv`.
 - **Uniqueness and scope:** `event_id` MUST be unique within a single `*_nibs.tsv` file (i.e., within the recording/session scope of that file).
-
-##### `event_part` (optional)
-
-Some logical stimulation events cannot be represented as a single row in `*_nibs.tsv` (e.g., when a complex protocol must be split into multiple configuration segments). In such cases, multiple rows MAY share the same `event_id`.
-
-- **Definition:** `event_part` is an index that disambiguates multiple `*_nibs.tsv` rows belonging to the same `event_id`.
-- **File usage:**
-  - `*_nibs.tsv`: `event_part` is OPTIONAL, but MUST be present when more than one row shares the same `event_id`.
-  - `*_events.tsv`: `event_part` is not required and is typically omitted.
-- **Uniqueness constraint:** For any given `event_id`, `event_part` MUST be unique across all rows sharing that `event_id`.
-- **Recommended convention:** `event_part` values SHOULD start at 1 and increment monotonically (1..N) for all rows belonging to the same `event_id`.
 
 #### Notes on other identifiers
 
@@ -160,7 +149,7 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
 │                        *_nibs.tsv                         │
 │  (logical stimulation events; may be split into parts)    │
 │  Required:  event_id                                      │
-│  Optional:  event_part (only if multiple rows share event)│
+│  │
 │  Links:     coil_id, stim_id, target_id                   │
 │  Count:     stim_count (NOT for synchronization)          │
 └─────────────┬───────────────────────────────┬─────────────┘
@@ -170,9 +159,9 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
               ▼                               ▼
 ┌──────────────────────────┐        ┌────────────────────────┐
 │       *_markers.tsv      │        │       *_events.tsv     │
-│  target_id  target_part  │        │  onset/duration/...    │
+│  target_id  target_index  │        │  onset/duration/...    │
 │  (target_id can repeat;  │        │  MAY include event_id  │
-│   (target_id,target_part)│        │  (time-locking)        │
+│   (target_id,target_index)│        │  (time-locking)        │
 │   unique)                │        │  MUST NOT include      │
 └─────────────┬────────────┘        │  target_id             │
               │                     └────────────────────────┘
@@ -186,11 +175,11 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
 
 Read it like this:
 
-- `*_nibs.tsv` describes what was executed (logical stimulation events and, if needed, their event_parts), and links to configuration (`*_nibs.json`) and space (`*_markers.tsv`).
+- `*_nibs.tsv` describes what was executed (logical stimulation events), and links to configuration (`*_nibs.json`) and space (`*_markers.tsv`).
 
 - `*_events.tsv` describes when it happened (time-locking) via `event_id`.
 
-- `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows sharing `target_id`, disambiguated by `target_part`.
+- `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows sharing `target_id`, disambiguated by `target_index`.
 
 
 # Detailed overview of data structure
@@ -295,7 +284,7 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | Field | Type | Description |
 |---|---|---|
 | `target_id` | string | `target_id` identifies a stimulation target at the stimulation level. A target MAY be represented by a single point (one row) or by multiple points (multiple rows) sharing the same `target_id`. |
-| `target_part` | integer | (Optional) Index of a point within a composite target sharing the same `target_id`. REQUIRED when a `target_id` corresponds to multiple rows in `*_markers.tsv`; OPTIONAL otherwise. Values SHOULD start at 1 and increment monotonically (1..N). (For typical TMS targets represented by a single point (stimulation with one coil), `target_part` is usually not required.) |
+| `target_index` | integer | (Optional) Index of a point within a composite target sharing the same `target_id`. REQUIRED when a `target_id` corresponds to multiple rows in `*_markers.tsv`; OPTIONAL otherwise. Values SHOULD start at 1 and increment monotonically (1..N). (For typical TMS targets represented by a single point (stimulation with one coil), `target_index` is usually not required.) |
 | `target_label` | string | (Optional) Short human-readable label for the stimulation target. Intended for standardized target naming when available (e.g., 10–20 position labels such as `C3`, `F3`, `Cz`, or common anatomical/site labels such as `M1_hand`, `DLPFC`). Interpretation is in the coordinate context defined by `*_coordsystem.json`. |
 | `target_description` | string | (Optional) Free-form description of the stimulation target (e.g., anatomical location, rationale, landmark-based description, or notes on how the target was selected). Interpretation is in the coordinate context defined by `*_coordsystem.json` when coordinate-system conventions apply (e.g., 10–20 naming). |
 | `peeling_depth` | number | (Optional) Depth/distance from cortex surface to the target point OR from the entry marker to the target marker. |
@@ -318,10 +307,7 @@ Stores stimulation target coordinates and optional coil's orientation informatio
 | `electric_field_max_x` | number | (Optional) X-coordinate of the maximum electric-field point. |
 | `electric_field_max_y` | number | (Optional) Y-coordinate of the maximum electric-field point. |
 | `electric_field_max_z` | number | (Optional) Z-coordinate of the maximum electric-field point. |
-| `timestamp` | string | (Optional) Timestamp of the stimulation event in ISO 8601 format. |
 
-
-* timestamp in _markers.tsv, when present, reflects the time at which spatial data were recorded or updated (e.g., neuronavigation update), not necessarily the time of stimulus delivery.
 
 ### Field Ordering Rationale
 
@@ -331,7 +317,7 @@ However, no existing BIDS modality explicitly supports the full specification re
 
 This makes `_markers.tsv` a novel file type tailored to NIBS needs. Fields are ordered to reflect their functional roles:
 
-- Identification: `target_id` appears first, enabling structured referencing from `*_nibs.tsv`. For composite targets (multiple spatial points describing one stimulation target), `target_part` is used to disambiguate rows sharing the same `target_id`.
+- Identification: `target_id` appears first, enabling structured referencing from `*_nibs.tsv`. For composite targets (multiple spatial points describing one stimulation target), `target_index` is used to disambiguate rows sharing the same `target_id`.
 - Spatial coordinates: `target_`, `entry_`, and `peeling_depth` describe the position of stimulation-related points in the selected coordinate system (modality-dependent). `coil(x,y,z)` describe the position of the TMS coil in the selected coordinate system.
 - Orientation / pose: `normal_` and `direction_` vectors or the transformation matrix `coil_transform` define the coil orientation/pose in 3D space — a critical factor in modeling TMS effects.
 - Electric field (optional): `electric_field_max_` defines where the electric field is maximized.
@@ -544,7 +530,7 @@ Depending on the paradigm, a stimulation instance may consist of:
 - a paired- or multi-pulse instance (as defined in `StimulusSet`),
 - a device-programmed execution delivering repeated stimulation as a single initiated unit (e.g., a train/burst delivered as one command), when represented as one logical event.
 
-If representing a single logical stimulation event requires more than one stimulation configuration (e.g., changes in `stim_id` within the same initiated execution), it MUST be split across multiple rows (one per configuration segment). Rows belonging to the same logical event MUST share the same `event_id` and MUST be disambiguated using `event_part`.
+If representing a single logical stimulation event requires more than one stimulation configuration (e.g., changes in `stim_id` within the same initiated execution), it MUST be split across multiple rows (one per configuration segment). Rows belonging to the same logical event MUST share the same `event_id`.
 
 Logical stimulation events may be delivered:
 
@@ -585,8 +571,6 @@ These fields support studies without neuronavigation, where coil placement and o
 |---|---:|---|
 | `event_id` | string | Identifier of a single logical stimulation event. Used for linkage to time-locked annotations in `*_events.tsv`. MUST be unique within a given `*_nibs.tsv` file. |
 | `event_name` | string | (Optional) Human-readable protocol label (e.g., SICI, LICI, custom). Intended for readability; MUST NOT be used for machine linkage. |
-| `event_part` | integer | (Optional) Index disambiguating multiple `*_nibs.tsv` rows that belong to the same `event_id` when a single logical event must be split into multiple configuration segments. MUST be present when more than one row shares the same `event_id`. For a given `event_id`, `event_part` MUST be unique. Recommended values are 1..N. |
-
 
 **Stimulation Configuration Reference**
 
@@ -617,8 +601,6 @@ These fields support studies without neuronavigation, where coil placement and o
 | Field | Type | Description |
 |---|---:|---|
 | `target_id` | string | Identifier of a spatial stimulation target (stimulation-level target identifier). Links `*_nibs.tsv` to spatial target definitions in `*_markers.tsv`. |
-| `target_label` | string | (Optional) Human-readable name of the cortical target, anatomical label, or stimulation site. |
-
 
 **Amplitude & Thresholds**
 
@@ -649,7 +631,7 @@ These fields support studies without neuronavigation, where coil placement and o
 |---|---:|---|
 | `stim_count` | integer | (Optional) Counter indicating the number of times a stimulation instance with the same `stim_id` has been delivered to the same `target_id` within the current file/session. Intended for counting deliveries to a target; MUST NOT be used for synchronization across modalities. Values typically start at 1 and increment monotonically for successive deliveries of the same (`stim_id`, `target_id`) combination. |
 | `stim_validation` | string | (Optional) Free-form indication of whether stimulation delivery/positioning was verified or observed (e.g., `verified`, `observed`, `not_verified`, `unknown`). |
-| `current_gradient` | number | (Optional) Device-reported measured gradient of coil current (units device-dependent). |
+| `measured_current_gradient` | number | (Optional) Device-reported measured gradient of coil current (units device-dependent). |
 | `electric_field_target` | number | (Optional) Electric-field magnitude at the stimulation target, as reported by the stimulation/navigation system during acquisition or derived from an explicit field model. This value is not a direct measurement of tissue current. |
 | `electric_field_max` | number | (Optional) Maximum (peak) electric-field magnitude within the modeled/reported region, as reported during acquisition or derived from an explicit field model. This value is not a direct measurement of tissue current. |
 | `electric_field_units` | string | (Optional) Units for `electric_field_target` and `electric_field_max` (free-form; recommended: `V/m`). SHOULD be provided when any `electric_field_*` value is present. |
@@ -663,6 +645,8 @@ These fields support studies without neuronavigation, where coil placement and o
 | `response_channel_reference` | string | (Optional) Reference channel name/label if applicable. |
 | `response_channel_status` | string | (Optional) Free-form indication of data/measurement quality observed on the response channel. |
 | `response_channel_status_description` | string | (Optional) Free-form description of noise/artifact affecting data quality on the response channel. |
+| `status` | string  | (Optional) Data quality observed on the channel.                                               
+| `status_description` | string  | (Optional) Freeform text description of noise or artifact affecting data quality on the channel.                                               
 | `subject_feedback` | string | (Optional) Participant-reported perception, discomfort, or other feedback related to stimulation. |
 | `intended_for` | string | (Optional) BIDS-style reference/URI to a recorded data file associated with the response/measurement (example: `bids::sub-01/ses-01/eeg/sub-01_ses-01_task-..._eeg.eeg`). |
 | `timestamp` | string | (Optional) Timestamp in ISO 8601 format. |
@@ -682,7 +666,6 @@ Legend:
 - `stim_id` → references a `StimulusSet` entry in `*_nibs.json` (`StimID`)
 - row → one row in `*_nibs.tsv` (a stimulation record)
 - logical event → one initiated stimulation execution that completes as a whole, indexed by `event_id`
-- segment → a configuration segment within a logical event, indexed by `event_part` (only when a logical event must be split across multiple rows)
 
 Hierarchy (structure + repetition):
 
@@ -704,13 +687,294 @@ Hierarchy (structure + repetition):
 
 - If a single logical event requires more than one stimulation configuration (e.g., changes in `stim_id` within the same initiated execution), it MUST be split across multiple rows:
   - all rows share the same `event_id`
-  - each row is disambiguated by `event_part = 1..N` (one configuration segment per row)
+
 
 - Paradigm-level repetition described as a single initiated execution (e.g., burst/train delivered as one command) MAY be represented as one logical event. In such cases, repetition timing is described parametrically in `*_nibs.tsv` using the applicable timing fields (e.g., `burst_stimuli_number`, `burst_stimuli_interval`, `train_burst_number`, `inter_burst_interval`, etc.).
 
 **Between stimulation events (across rows)**
 
 - When time-locked onsets are provided, they SHOULD be recorded in `*_events.tsv` and linked via `event_id`.
+
+
+
+## NIBS: Transcranial Electrical Stimulation section (TES).
+
+### 1.1 `*_markers.tsv` — Stimulation Site Coordinates (optional sidecar `_markers.json` )
+
+Stores stimulation target coordinates. Supports multiple navigation systems via flexible fields. 
+
+| Field | Type | Description |
+|---|---|---|
+| `target_id` | string | Identifier of a TES montage (stimulation-level target). A single montage is typically represented by multiple rows (one per electrode/contact) sharing the same `target_id`. |
+| `target_index` | integer | Index of an electrode/contact within a montage sharing the same `target_id`. REQUIRED when a `target_id` corresponds to multiple rows; OPTIONAL otherwise. Values SHOULD start at 1 and increment monotonically (1..N). |
+| `target_label` | string | (Optional) Short human-readable label for the stimulation target. Intended for standardized target naming when available (e.g., 10–20 position labels such as `C3`, `F3`, `Cz`, or common anatomical/site labels such as `M1_hand`, `DLPFC`). Interpretation is in the coordinate context defined by `*_coordsystem.json`. |
+| `target_description` | string | (Optional) Free-form description of the montage/target rationale (e.g., anatomical rationale, selection notes). |
+| `peeling_depth` | number | (Optional. For TES, peeling_depth is typically not used.) Depth/distance from cortex surface to the target point OR from an entry marker to a target marker (if applicable for the coordinate definition). |
+| `entry_x` | number | X-coordinate of the electrode/contact position on the scalp (TES primary spatial point). |
+| `entry_y` | number | Y-coordinate of the electrode/contact position on the scalp (TES primary spatial point). |
+| `entry_z` | number | Z-coordinate of the electrode/contact position on the scalp (TES primary spatial point). |
+| `target_x` | number | (Optional) X-coordinate of an intracranial target point associated with the montage (e.g., model-derived). |
+| `target_y` | number | (Optional) Y-coordinate of an intracranial target point associated with the montage (e.g., model-derived). |
+| `target_z` | number | (Optional) Z-coordinate of an intracranial target point associated with the montage (e.g., model-derived). |
+| `electric_field_max_x` | number | (Optional) X-coordinate of the location where `electric_field_max` was obtained (model-/system-derived). Coordinate frame and units are defined by `*_coordsystem.json` / `NIBSCoordinateUnits`. |
+| `electric_field_max_y` | number | (Optional) Y-coordinate of the location where `electric_field_max` was obtained (model-/system-derived). Coordinate frame and units are defined by `*_coordsystem.json` / `NIBSCoordinateUnits`. |
+| `electric_field_max_z` | number | (Optional) Z-coordinate of the location where `electric_field_max` was obtained (model-/system-derived). Coordinate frame and units are defined by `*_coordsystem.json` / `NIBSCoordinateUnits`. |
+
+* Notes
+
+For TES, electrode/contact locations are recorded as `entry_x`, `entry_y`, `entry_z` (scalp surface points).  
+`target_x`, `target_y`, `target_z` are OPTIONAL and may be used to store an intracranial target point associated with the montage (e.g., a model-derived target used for field estimation). If `target_*` values are derived offline, they SHOULD be stored in a derived dataset (or accompanied by explicit provenance metadata).
+
+#### Example *_markers.tsv
+
+```
+target_id	target_index	target_label	target_description				    entry_x  entry_y  entry_z
+tes_01     	1  		        F3				"... montage description ..."	    ...      ...      ...
+tes_01     	2            	Cz				"... montage description ..."	    ...      ...      ...
+tes_01     	3            	C3				"... montage description ..."	    ...      ...      ...
+tes_01     	4            	C4				"... montage description ..."	    ...      ...      ...
+
+```
+
+### 1.2 `*_nibs.json` — Sidecar JSON 
+
+The _nibs.json file is a required sidecar accompanying the _nibs.tsv file. 
+It serves to describe the columns in the tabular file, define units and levels for categorical variables, and—crucially—provide structured metadata about the stimulation device, task, and context of the experiment.
+
+Like other BIDS modalities, this JSON file includes:
+
+**Task information:**
+
+- TaskName, TaskDescription, Instructions
+
+**Institutional context:**
+
+- InstitutionName, InstitutionAddress, InstitutionalDepartmentName
+
+**Device metadata:**
+
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber
+
+**Additional options**
+
+- `ElectrodeSet`, `StimulusSet`, `StimulationSystem`, `NavigationSystem` 
+
+Additionally, the _nibs.json file introduces a dedicated hardware block called 'ElectrodeSet', which captures detailed physical and electromagnetic parameters of one or more stimulation electrodes used in the session. 
+This structure allows precise modeling, reproducibility, and harmonization of electrode-related effects across studies.
+
+#### `ElectrodeSet`
+
+`ElectrodeSet` defines reusable TES **electrode/contact hardware entries** used within montages (“what was used”), independently of spatial placement (`*_markers.tsv`) and per-event stimulation values (`*_nibs.tsv`).
+
+`ElectrodeSet` is an array of definitions. Each entry is identified by `ElectrodeID`, which is referenced from `*_nibs.tsv` via `electrode_id`.
+
+| Field | Type | Description |
+|---|---:|---|
+| `ElectrodeID` | string | Unique identifier of an electrode montage hardware configuration, referenced from `*_nibs.tsv` via `electrode_id`. |
+| `ElectrodeRole` | string | REQUIRED. Role within the montage (e.g., `anode`, `cathode`, `return`, `ground`, `other`). |
+| `ElectrodeManufacturer` | string | (Optional) Manufacturer name. |
+| `ElectrodeModelName` | string | (Optional) Model name/number. |
+| `ElectrodeSerialNumber` | string | (Optional) Serial number (if applicable). |
+| `ElectrodeNotes` | string | (Optional) Free-form notes. |
+| `ElectrodeShape` | string | (Optional) Physical shape (e.g., rectangular, circular, ring, segmented). |
+| `ElectrodeArea` | object | (Optional) Contact area with units (recommended: `cm^2`). |
+| `ElectrodeSize` | object | (Optional) Contact size/dimensions with units. |
+| `ElectrodeThickness` | object | (Optional) Total thickness with units. |
+| `ElectrodeMaterial` | string | (Optional) Material in direct contact with skin (e.g., Ag/AgCl, rubber, carbon). |
+| `ElectrodeContactMedium` | string | (Optional) Interface medium (e.g., gel, saline, paste, dry). |
+| `ElectrodePreparation` | string | (Optional) Free-form preparation notes. |
+
+#### Example JSON `ElectrodeSet` (different contacts within one montage)
+
+```
+"ElectrodeSet": [
+  {
+    "ElectrodeID": "elec_1",
+    "ElectrodeRole": "anode",
+    "ElectrodeManufacturer": "ExampleManufacturer",
+    "ElectrodeModelName": "ExampleModel",
+    "ElectrodeSerialNumber": "SN-001",
+    "ElectrodeShape": "rectangular",
+    "ElectrodeArea": { "Value": 25, "Units": "cm^2" },
+    "ElectrodeSize": { "Value": "5x5", "Units": "cm" },
+    "ElectrodeThickness": { "Value": 5, "Units": "mm" },
+    "ElectrodeMaterial": "carbon rubber",
+    "ElectrodeContactMedium": "saline",
+    "ElectrodePreparation": "Saline-soaked sponge",
+    "ElectrodeNotes": "Anode electrode definition"
+  },
+  {
+    "ElectrodeID": "elec_2",
+    "ElectrodeRole": "cathode",
+    "ElectrodeManufacturer": "ExampleManufacturer",
+    "ElectrodeModelName": "ExampleModel",
+    "ElectrodeSerialNumber": "SN-002",
+    "ElectrodeShape": "rectangular",
+    "ElectrodeArea": { "Value": 25, "Units": "cm^2" },
+    "ElectrodeSize": { "Value": "5x5", "Units": "cm" },
+    "ElectrodeThickness": { "Value": 5, "Units": "mm" },
+    "ElectrodeMaterial": "carbon rubber",
+    "ElectrodeContactMedium": "saline",
+    "ElectrodePreparation": "Saline-soaked sponge",
+    "ElectrodeNotes": "Cathode electrode definition"
+  }
+]
+```
+
+#### Linking rule to *_markers.tsv
+
+For TES montages represented by multiple contacts:
+
+- *_nibs.tsv references the montage hardware via electrode_id → ElectrodeSet.ElectrodeID.
+
+- *_nibs.tsv references the montage geometry via target_id → rows in *_markers.tsv.
+
+- *_markers.tsv represents a montage as multiple rows sharing the same target_id, disambiguated by target_index.
+
+**  A complete example is included in Appendix A.
+
+
+#### `StimulusSet` (TES)
+
+`StimulusSet` defines reusable TES stimulation configurations referenced from `*_nibs.tsv` via `stim_id`. Each entry describes the signal form and control characteristics of a TES stimulation instance/template (not event-specific dosing values).
+
+| Field | Type | Description |
+|---|---:|---|
+| `StimID` | string | Identifier of the TES stimulation configuration/template. Referenced from `*_nibs.tsv` via `stim_id`. MUST be unique within `*_nibs.json`. |
+| `StimulusType` | string | TES stimulation mode/type (e.g., `tDCS`, `tACS`, `tRNS`, `tPCS`). |
+| `StimulusControlMode` | string | Stimulator control mode (what the device regulates). Recommended values: `current-controlled`, `voltage-controlled`. |
+| `StimulusWaveform` | string | Type of waveform used to deliver stimulation (e.g., `sine`, `square`, `pulse`, `custom`). |
+| `StimulusFrequency` | number | (Optional) Waveform frequency in Hz (applicable to periodic waveforms such as `tACS` / some `tPCS`; typically omitted for `tDCS`). |
+| `StimulusNoiseType` | string | (Optional) Noise specification for `tRNS` (e.g., `white`, `pink`, `band-limited`, `custom`). |
+
+##### tPCS-specific (transcranial Pulsed Current Stimulation) metadata fields 
+
+| Field | Type | Description |
+|---|---:|---|
+| `PulseWaveform` | string | (Optional; applicable to `tPCS`) Pulse waveform/polarity (e.g., `monophasic`, `biphasic`). |
+| `PulseCount` | integer | (Optional; applicable to `tPCS`) Number of pulses within one stimulation instance/template. |
+| `PulseDuration` | number | (Optional; applicable to `tPCS`) Duration of a single pulse (pulse width). |
+| `PulseDurationUnits` | string | (Optional; applicable to `tPCS`) Units of `PulseDuration` (e.g., ms, µs). |
+| `PulseRepetitionInterval` | number | (Optional; applicable to `tPCS`) Pulse onset-to-onset interval between consecutive pulses within the same stimulation instance/template. SHOULD be provided when `PulseCount > 1`. |
+| `PulseRepetitionIntervalUnits` | string | (Optional; applicable to `tPCS`) Units of `PulseRepetitionInterval` (e.g., ms, s). |
+
+**Notes**
+- For `tPCS`, pulse timing within an instance is described via `PulseRepetitionInterval` (analogous to the TMS `StimulusSet` logic). `StimulusFrequency` SHOULD NOT be used to encode the within-instance pulse rate for `tPCS`.
+- Event-level repetition and block timing (train/repeat/duration parameters) are described in `*_nibs.tsv`.
+
+
+### 1.3 `*_nibs.tsv` — Stimulation Parameters
+
+#### Conceptual definition
+
+In TES, a single logical stimulation event may involve multiple simultaneous electrode contacts (e.g., anode + cathode + returns). Therefore, `*_nibs.tsv` MAY contain multiple rows with the same `event_id`. Each row encodes per-contact/per-channel parameters for the same logical event.
+
+- `event_id` (integer) is the primary linkage key to `*_events.tsv`.
+- Rows sharing the same `event_id` represent contacts used simultaneously for that event.
+- Within a given `event_id`, rows are disambiguated by distinct `electrode_id` values (anode/cathode/return), as defined in `ElectrodeSet`.
+- `electrode_id` links to `ElectrodeSet` (hardware + role such as anode/cathode/return).
+- `stim_id` links to `StimulusSet` (stimulation template).
+- Spatial montage geometry is linked via `target_id` in the **Spatial & Targeting Information** section (references `*_markers.tsv`).
+
+#### Core linkage fields
+
+**Stimulator Configuration**
+
+| Field | Type | Description |
+|---|---:|---|
+| `electrode_id` | string | References `ElectrodeSet.ElectrodeID` in `*_nibs.json` (includes `ElectrodeRole`). |
+
+**Protocol / Event Metadata**
+
+| Field | Type | Description |
+|---|---:|---|
+| `event_id` | integer | Identifier of a logical stimulation event. Primary linkage key to `*_events.tsv`. Multiple rows MAY share the same `event_id` to encode per-contact parameters. |
+| `event_name` | string | (Optional) Human-readable event/protocol label. Intended for readability; MUST NOT be used for machine linkage. |
+
+**Stimulation Configuration Reference**
+
+| Field | Type | Description |
+|---|---:|---|
+| `stim_id` | string | References `StimulusSet.StimID` in `*_nibs.json`. |
+
+**Stimulation Timing Parameters (tDCS / tACS — continuous protocols)**
+
+For continuous TES protocols (e.g., tDCS, tACS), timing is typically described by the total stimulation duration and optional ramp phases. When stimulation is delivered in repeated on/off windows, the `repeat_*` fields define the repetition pattern.
+
+| Field | Type | Description |
+|---|---:|---|
+| `stimulation_duration` | number | (Optional) Total wall-clock duration of the stimulation block. **Includes** `ramp_up_duration` and `ramp_down_duration` phases if present. |
+| `ramp_up_duration` | number | (Optional) Duration of the amplitude ramp-up phase at the beginning of the stimulation block. This duration is a subcomponent of `stimulation_duration` when both are provided. |
+| `ramp_down_duration` | number | (Optional) Duration of the amplitude ramp-down phase at the end of the stimulation block. This duration is a subcomponent of `stimulation_duration` when both are provided. |
+| `repeat_duration` | number | (Optional) Active duration of one stimulation window (repeat unit), from onset to end (excludes any post-window gap). |
+| `repeat_count` | number | (Optional) Number of repeated stimulation windows delivered within the block (count).|
+| `repeat_repetition_interval` | number | (Optional) Onset-to-onset interval between consecutive stimulation windows (repeat units) within the block. |
+
+**Stimulation Timing Parameters tPCS (transcranial Pulsed Current Stimulation)**
+
+| Field | Type | Description |
+|---|---:|---|
+| `train_duration` | number | (Optional) Active duration of a train, from the onset of the first element in the train to the end of the last element in the train (onset-to-offset)(i.e., excludes any post-train gap). |
+| `train_count` | number | (Optional) Number of stimulation instances delivered within one train (count). |
+| `train_repetition_interval` | number | (Optional) Onset-to-onset interval between consecutive stimulation instances within a train (used together with `train_count`). |
+| `repeat_duration` | number | (Optional) Active duration of a repeat block, from the onset of the first train in the repeat to the end of the last train in the repeat (onset-to-offset)(i.e., excludes any post-repeat gap). |
+| `repeat_count` | number | (Optional) Number of trains (train windows) delivered within one repeat block (count). |
+| `repeat_repetition_interval` | number | (Optional) Onset-to-onset interval between consecutive trains (train windows) within a repeat block (used together with `repeat_count`). |
+
+**Spatial & Targeting Information**
+
+| Field | Type | Description |
+|---|---:|---|
+| `target_id` | string | Identifier of a TES montage geometry. Links `*_nibs.tsv` to montage/contact definitions in `*_markers.tsv` (electrode positions via `entry_*`). |
+
+**Amplitude & Thresholds (TES)**
+
+| Field | Type | Description |
+|---|---:|---|
+| `base_current_intensity` | number | (Optional) Commanded stimulation current amplitude for the event/contact. Applicable to current-controlled stimulation. Units SHOULD be documented (recommended: mA). |
+| `base_voltage_intensity` | number | (Optional) Commanded stimulation voltage amplitude for the event/contact. Applicable to voltage-controlled stimulation. Units SHOULD be documented (recommended: V). |
+| `base_pulse_intensity` | number | (Optional; applicable to `tPCS`) Commanded pulse intensity for pulsed stimulation. Units SHOULD be documented (recommended: mA for current-controlled, V for voltage-controlled). |
+| `threshold_type` | string | (Optional) Type of threshold used as a reference for dosing or safety limits. Recommended values include `sensation` (perceptual threshold) and `pain` (discomfort/pain threshold), or `custom`. |
+| `threshold_reference_current` | number | (Optional) Threshold reference value expressed as current amplitude (recommended units: mA). Intended for thresholds such as sensation/pain when defined in current units. |
+| `threshold_reference_voltage` | number | (Optional) Threshold reference value expressed as voltage amplitude (recommended units: V). Intended for thresholds such as sensation/pain when defined in voltage units. |
+
+
+**Derived / Device-Generated Parameters (TES)**
+
+| Field | Type | Description |
+|---|---:|---|
+| `contact_impedance` | number | (Optional) Measured contact impedance for this electrode/contact as reported during the session. Units MUST be documented (recommended: Ω or kΩ). |
+| `status` | string | (Optional) Free-form indication of device/channel measurement quality or status for this contact/event. |
+| `status_description` | string | (Optional) Free-form description of noise, artifact, safety limit, or any issue affecting this contact/event. |
+| `subject_feedback` | string | (Optional) Participant-reported perception or discomfort related to stimulation (e.g., tingling, itching, pain). |
+| `measured_current_intensity` | number | (Optional) Device-reported measured current amplitude for this contact/channel (when available). Units MUST be documented (recommended: mA). |
+| `measured_voltage_intensity` | number | (Optional) Device-reported measured voltage amplitude for this contact/channel (when available). Units MUST be documented (recommended: V). |
+| `current_statistics` | string | (Optional) Summary statistics reported by the device/software for delivered current (e.g., min/mean/max, stability metrics). Format and units are device-dependent and should be documented. |
+| `electric_field_target` | number | (Optional) Electric-field magnitude at the stimulation target, as reported during acquisition or derived from an explicit field model. Not a direct measurement of tissue current. |
+| `electric_field_max` | number | (Optional) Maximum (peak) electric-field magnitude within the modeled/reported region, as reported during acquisition or derived from an explicit field model. Not a direct measurement of tissue current. |
+| `electric_field_units` | string | (Optional) Units for `electric_field_target` and `electric_field_max` (recommended: `V/m`). SHOULD be provided when any `electric_field_*` value is present. |
+| `electric_field_model_name` | string | (Optional) Name of the model/system used to obtain `electric_field_*` values (e.g., navigation/software name, field estimation model name). SHOULD be provided when any `electric_field_*` value is present. |
+| `electric_field_model_version` | string | (Optional) Version of the model/system used to obtain `electric_field_*` values. SHOULD be provided when any `electric_field_*` value is present. |
+| `timestamp` | string | (Optional) Timestamp in ISO 8601 format. |
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
