@@ -245,14 +245,13 @@ This may be computed from optical tracking, neuronavigation logs, or mechanical 
 
 *These fields enable reproducible modeling, visualization, and interpretation of TUS targeting and acoustic beam propagation when precise transducer positioning is known.
 
-### Optional Headshape Files (*_headshape.<extension>)
+### (Optional) Headshape Files (*_headshape.<extension>)
 
-This file is RECOMMENDED.
 
 3D digitized head points  that describe the head shape and/or EEG electrode locations can be digitized and stored in separate files. 
 These files are typically used to improve the accuracy of co-registration between the stimulation target, anatomical data, etc. 
 
-** For example:**
+** Template:**
 
 ```
 sub-<label>/
@@ -263,6 +262,28 @@ sub-<label>/
 ```
 These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and DigitizedHeadPointsDescription fields in the corresponding _coordsystem.json file. 
 Their inclusion is especially useful when sharing datasets intended for advanced spatial analysis or electric field modeling.
+
+
+### (Optional) Landmark photos (*_photo.<extension>)
+
+Photos of the anatomical landmarks and/or fiducials.
+
+** Template:**
+
+```
+sub-<label>/
+└── [ses-<label>/]
+    └── nibs/
+        ├── sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>]_photo.jpg
+		├──	sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>]_photo.png
+		└──	sub-<label>[_ses-<label>]_task-<label>[_stimsys-<label>][_acq-<label>]_photo.tif
+
+```
+
+Photos of the anatomical landmarks and/or fiducials are OPTIONAL. Please note that the photos may need to be cropped or blurred to conceal identifying features prior to sharing, depending on the terms of the consent given by the participant.
+
+The acq-<label> entity can be used to indicate acquisition of different photos of the same face or body part.
+
 
 ## NIBS: Transcranial Magnetic Stimulation section
 
