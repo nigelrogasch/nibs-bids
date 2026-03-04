@@ -102,12 +102,12 @@ Links to time-locked annotations (via `*_events.tsv`) are described in the synch
 
 Some modalities (e.g., TES, TUS) require multiple spatial points to describe one stimulation target. In such cases, `*_markers.tsv` MAY contain multiple rows with the same `target_id` to represent all points belonging to that composite target.
 
-- When multiple rows share the same `target_id`, `*_markers.tsv` MUST include an additional column (e.g., `target_part`) to disambiguate points within that target.
-- The pair (`target_id`, `target_part`) MUST be unique within `*_markers.tsv`.
-- `target_part` values SHOULD start at 1 and increment monotonically (1..N) for all points belonging to a given `target_id`.
+- When multiple rows share the same `target_id`, `*_markers.tsv` MUST include an additional column (e.g., `target_index`) to disambiguate points within that target.
+- The pair (`target_id`, `target_index`) MUST be unique within `*_markers.tsv`.
+- `target_index` values SHOULD start at 1 and increment monotonically (1..N) for all points belonging to a given `target_id`.
 - A modality-specific role column MAY be used to label points within a composite target (e.g., `anode`/`cathode` for TES, `target`/`entry` for TUS).
 
-For TMS, `target_id` typically references a single spatial point; in this case `target_part` is usually not required.
+For TMS, `target_id` typically references a single spatial point; in this case `target_index` is usually not required.
 
 
 ### Synchronizing NIBS Data Across Modalities (`*_events.tsv`)
@@ -127,17 +127,6 @@ In the NIBS datatype, synchronization is performed using a dedicated event ident
   - `*_nibs.tsv`: `event_id` is REQUIRED for each logical stimulation event record.
   - `*_events.tsv`: `event_id` MAY be included to reference the corresponding stimulation event(s) described in `*_nibs.tsv`.
 - **Uniqueness and scope:** `event_id` MUST be unique within a single `*_nibs.tsv` file (i.e., within the recording/session scope of that file).
-
-##### `event_part` (optional)
-
-Some logical stimulation events cannot be represented as a single row in `*_nibs.tsv` (e.g., when a complex protocol must be split into multiple configuration segments). In such cases, multiple rows MAY share the same `event_id`.
-
-- **Definition:** `event_part` is an index that disambiguates multiple `*_nibs.tsv` rows belonging to the same `event_id`.
-- **File usage:**
-  - `*_nibs.tsv`: `event_part` is OPTIONAL, but MUST be present when more than one row shares the same `event_id`.
-  - `*_events.tsv`: `event_part` is not required and is typically omitted.
-- **Uniqueness constraint:** For any given `event_id`, `event_part` MUST be unique across all rows sharing that `event_id`.
-- **Recommended convention:** `event_part` values SHOULD start at 1 and increment monotonically (1..N) for all rows belonging to the same `event_id`.
 
 #### Notes on other identifiers
 
@@ -160,7 +149,6 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
 │                        *_nibs.tsv                         │
 │  (logical stimulation events; may be split into parts)    │
 │  Required:  event_id                                      │
-│  Optional:  event_part (only if multiple rows share event)│
 │  Links:     coil_id, stim_id, target_id                   │
 │  Count:     stim_count (NOT for synchronization)          │
 └─────────────┬───────────────────────────────┬─────────────┘
@@ -170,9 +158,9 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
               ▼                               ▼
 ┌──────────────────────────┐        ┌────────────────────────┐
 │       *_markers.tsv      │        │       *_events.tsv     │
-│  target_id  target_part  │        │  onset/duration/...    │
+│  target_id  target_index │        │  onset/duration/...    │
 │  (target_id can repeat;  │        │  MAY include event_id  │
-│   (target_id,target_part)│        │  (time-locking)        │
+│  (target_id,target_index)│        │  (time-locking)        │
 │   unique)                │        │  MUST NOT include      │
 └─────────────┬────────────┘        │  target_id             │
               │                     └────────────────────────┘
@@ -186,13 +174,13 @@ Some logical stimulation events cannot be represented as a single row in `*_nibs
 
 Read it like this:
 
-- `*_nibs.tsv` describes what was executed (logical stimulation events and, if needed, their event_parts), and links to configuration (`*_nibs.json`) and space (`*_markers.tsv`).
+- `*_nibs.tsv` describes what was executed (logical stimulation events), and links to configuration (`*_nibs.json`) and space (`*_markers.tsv`).
 
 - `*_events.tsv` describes when it happened (time-locking) via `event_id`.
 
-- `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows sharing `target_id`, disambiguated by `target_part`.
+- `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows sharing `target_id`, disambiguated by `target_index`.
 
 
-# Detailed overview of data structure
+## Detailed overview of data structure
 
 ### non-invasive-brain-stimulation-v6.2.md

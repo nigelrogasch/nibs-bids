@@ -149,7 +149,6 @@ In the NIBS datatype, synchronization is performed using a dedicated event ident
 │                        *_nibs.tsv                         │
 │  (logical stimulation events; may be split into parts)    │
 │  Required:  event_id                                      │
-│  │
 │  Links:     coil_id, stim_id, target_id                   │
 │  Count:     stim_count (NOT for synchronization)          │
 └─────────────┬───────────────────────────────┬─────────────┘
@@ -159,9 +158,9 @@ In the NIBS datatype, synchronization is performed using a dedicated event ident
               ▼                               ▼
 ┌──────────────────────────┐        ┌────────────────────────┐
 │       *_markers.tsv      │        │       *_events.tsv     │
-│  target_id  target_index  │        │  onset/duration/...    │
+│  target_id  target_index │        │  onset/duration/...    │
 │  (target_id can repeat;  │        │  MAY include event_id  │
-│   (target_id,target_index)│        │  (time-locking)        │
+│  (target_id,target_index)│        │  (time-locking)        │
 │   unique)                │        │  MUST NOT include      │
 └─────────────┬────────────┘        │  target_id             │
               │                     └────────────────────────┘
@@ -182,7 +181,7 @@ Read it like this:
 - `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows sharing `target_id`, disambiguated by `target_index`.
 
 
-# Detailed overview of data structure
+## Detailed overview of data structure
 
 ### `*_coordsystem.json` — Coordinate Metadata
 
@@ -190,28 +189,32 @@ A _coordsystem.json file is used to specify the fiducials, the location of anato
 Anatomical landmarks are locations on a research subject such as the nasion (for a detailed definition see the coordinate system appendix).
 The _coordsystem.json file is REQUIRED for navigated TMS, TES, TUS stimulation datasets. If a corresponding anatomical MRI is available, the locations of anatomical landmarks in that scan should also be stored in the _T1w.json file which accompanies the TMS, TES, TUS data.
 
-
-| Field                                           | Type    | Description                                                                                                                                                                                                                                                                     
-| ----------------------------------------------- | ------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
-| `IntendedFor`                                   | string  | Path to the anatomical file this coordinate system refers to. BIDS-style path. (example: `bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz`)                                                                                                                                          			
-| `NIBSCoordinateSystem`						  | string  | Name of the coordinate system used to define the spatial location of stimulation targets. Common values for TUS include: IndividualMRI, MNI152NLin2009cAsym, or CapTrak.																														
-| `NIBSCoordinateUnits`							  | string  | Units used to express spatial coordinates in *_markers.tsv. Typically mm (millimeters) for MRI-based spaces.																																												
-| `NIBSCoordinateSystemDescription`				  | string  | Free-text description providing details on how the coordinate system was defined. This may include registration methods (e.g., neuronavigation, manual annotation), whether coordinates represent the ultrasound focus or entry point, and how the space aligns with anatomical references.
-| `AnatomicalLandmarkCoordinateSystem`            | string  | Defines the coordinate system for the anatomical landmarks. See the Coordinate Systems Appendix for a list of restricted keywords for coordinate systems. If "Other", provide definition of the coordinate system in `AnatomicalLandmarkCoordinateSystemDescription`.           	
-| `AnatomicalLandmarkCoordinateSystemUnits`       | string  | Units of the coordinates of Anatomical Landmark Coordinate System. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                              	
-| `AnatomicalLandmarkCoordinateSystemDescription` | string  | Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.                                                                                                                          		
-| `AnatomicalLandmarkCoordinates`                 | object  | Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the `AnatomicalLandmarkCoordinateSystem`. Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order.			
-| `AnatomicalLandmarkCoordinatesDescription`      | string  | `[x, y, z]` coordinates of anatomical landmarks. NAS — nasion, LPA — left preauricular point, RPA — right preauricular point                                                                                                                                                    				
-| `HeadMeasurements`							  | object  | Object containing one or more head measurement vectors relevant for 10–20–based navigation. Each value MUST be a numeric array.
-| `HeadMeasurementsUnits`						  | string  | Units used for all values stored in HeadMeasurements (e.g., "mm").
-| `HeadMeasurementsDescription`					  | string  | Free-form description of how HeadMeasurements were obtained (e.g., tape/geodesic along scalp vs. Euclidean), including any conventions (landmark definitions, repetitions, averaging).
-| `DigitizedHeadPoints`                           | string  | Relative path to the file containing the locations of digitized head points collected during the session. (for example, `"sub-01_headshape.pos"`)                                                                                                                               	
-| `DigitizedHeadPointsNumber`                     | integer | Number of digitized head points during co-registration.                                                                                                                                                                                                                       		
-| `DigitizedHeadPointsDescription`                | string  | Free-form description of digitized points.                                                                                                                                                                                                                                      			
-| `DigitizedHeadPointsUnits`                      | string  | Unit type. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.                                                                                                                                                                                                                      		
-| `AnatomicalLandmarkRmsDeviation`                | object  | `{"RMS":[],"NAS":[],"LPA":[],"RPA":[]}` — deviation values per landmark                                                                                                                                                                                                         		
-| `AnatomicalLandmarkRmsDeviationUnits`           | string  | Unit of RMS deviation values.                                                                                                                                                                                                                                               			
-| `AnatomicalLandmarkRmsDeviationDescription`     | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                         		
+| Field | Type | Description |
+|---|---|---|
+| `IntendedFor`                                   | string  | Path to the anatomical file this coordinate system refers to. BIDS-style path. (example: `bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz`)        |                                                                                                                                  			
+| `NIBSCoordinateSystem`						  | string  | Name of the coordinate system used to define the spatial location of stimulation targets. Common values for TUS include: IndividualMRI, MNI152NLin2009cAsym, or CapTrak.		|																												
+| `NIBSCoordinateUnits`							  | string  | Units used to express spatial coordinates in *_markers.tsv. Typically mm (millimeters) for MRI-based spaces.																|																												
+| `NIBSCoordinateSystemDescription`				  | string  | Free-text description providing details on how the coordinate system was defined. This may include registration methods (e.g., neuronavigation, manual annotation), whether coordinates represent the ultrasound focus or entry point, and how the space aligns with anatomical references.|
+| `FiducialsDescription`							| string  | Free-form text description of how the fiducials such as vitamin-E capsules were placed relative to anatomical landmarks, and how the position of the fiducials were measured (for example, "both with Polhemus and with T1w MRI").|
+| `FiducialsCoordinates`							| object  | Key-value pairs of the labels and 3-D digitized position of anatomical landmarks, interpreted following the "FiducialsCoordinateSystem" (for example, {"NAS": [12.7,21.3,13.9], "LPA": [5.2,11.3,9.6], "RPA": [20.2,11.3,9.1]}). Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order.|
+| `FiducialsCoordinateSystem`						| string  | Defines the coordinate system for the fiducials. Preferably the same as the "NIBSCoordinateSystem". |
+| `FiducialsCoordinateUnits`						| string  |	Units in which the coordinates that are listed in the field "FiducialsCoordinateSystem" are represented. Must be one of: "m", "mm", "cm", "n/a".	|	
+| `FiducialsCoordinateSystemDescription`			| string  |	Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.	|
+| `AnatomicalLandmarkCoordinates`                 | object  | Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the `AnatomicalLandmarkCoordinateSystem`. Each array MUST contain three numeric values corresponding to x, y, and z axis of the coordinate system in that exact order.	|		
+| `AnatomicalLandmarkCoordinateSystem`            | string  | Defines the coordinate system for the anatomical landmarks. See the Coordinate Systems Appendix for a list of restricted keywords for coordinate systems. If "Other", provide definition of the coordinate system in `AnatomicalLandmarkCoordinateSystemDescription`.   |        	
+| `AnatomicalLandmarkCoordinateUnits`             | string  | Units of the coordinates of Anatomical Landmark Coordinate System. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.           |                                                                                                                                                   	
+| `AnatomicalLandmarkCoordinateSystemDescription` | string  | Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.  |                                                                                                                        		
+| `AnatomicalLandmarkCoordinatesDescription`      | string  | `[x, y, z]` coordinates of anatomical landmarks. NAS — nasion, LPA — left preauricular point, RPA — right preauricular point            |                                                                                                                                        				
+| `HeadMeasurements`							  | object  | Object containing one or more head measurement vectors relevant for 10–20–based navigation. Each value MUST be a numeric array.|
+| `HeadMeasurementsUnits`						  | string  | Units used for all values stored in HeadMeasurements (e.g., "mm").|
+| `HeadMeasurementsDescription`					  | string  | Free-form description of how HeadMeasurements were obtained (e.g., tape/geodesic along scalp vs. Euclidean), including any conventions (landmark definitions, repetitions, averaging).|
+| `DigitizedHeadPoints`                           | string  | Relative path to the file containing the locations of digitized head points collected during the session. (for example, `"sub-01_headshape.pos"`)          |                                                                                                                     	
+| `DigitizedHeadPointsNumber`                     | integer | Number of digitized head points during co-registration.      |                                                                                                                                                                                                                 		
+| `DigitizedHeadPointsDescription`                | string  | Free-form description of digitized points.                  |                                                                                                                                                                                                                    			
+| `DigitizedHeadPointsUnits`                      | string  | Unit type. Must be one of: `"m"`, `"mm"`, `"cm"`, `"n/a"`.      |                                                                                                                                                                                                                		
+| `AnatomicalLandmarkRmsDeviation`                | object  | `{"RMS":[],"NAS":[],"LPA":[],"RPA":[]}` — deviation values per landmark  |                                                                                                                                                                                                       		
+| `AnatomicalLandmarkRmsDeviationUnits`           | string  | Unit of RMS deviation values.                                          |                                                                                                                                                                                                     			
+| `AnatomicalLandmarkRmsDeviationDescription`     | string  | Description of how RMS deviation is calculated and for which markers.  |                                                                                                                                                                                                       		
 
 
 ### TUS-specific transducer coordinate metadata fields (*_coordsystem.json)
@@ -222,8 +225,8 @@ Optional QC metric (in mm) representing the root-mean-square deviation of the ul
 This may be computed from optical tracking, neuronavigation logs, or mechanical fixation assessment.
 
 
-| Field                                         | Type    | Description                                                          |                                                                                                                                                                                                           
-| ----------------------------------------------| ------  | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Field | Type | Description |
+|---|---|---|
 | `TransducerCoordinateUnits`					| string  | Units of measurement for transducer coordinates (typically mm).|
 | `TransducerCoordinateSystemDescription`		| string  | Textual description of how the transducer coordinate system was defined and aligned with anatomy.|
 | `TransducerCoordinates`						| object  | Dictionary with spatial coordinates (e.g., X, Y, Z ) and optionally 4×4 affine transformation matrix for transducer orientation.|
@@ -345,7 +348,10 @@ It serves to describe the columns in the tabular file, define units and levels f
 
 **Additional options**
 
-- `CoilSet`, `StimulusSet`, `StimulationSystem`, `NavigationSystem` 
+- `CoilSet`, `ElectrodeSet`, `TransducerSet` — modality-specific device component definitions
+- `StimulusSet` — reusable definitions of stimulation waveforms or stimulus configurations
+- `StimulationSystem` — description of the primary stimulation device and hardware configuration
+- `NavigationSystem` — neuronavigation or targeting system used during stimulation
 
 #### `CoilSet` 
 
@@ -757,7 +763,10 @@ Like other BIDS modalities, this JSON file includes:
 
 **Additional options**
 
-- `ElectrodeSet`, `StimulusSet`, `StimulationSystem`, `NavigationSystem` 
+- `CoilSet`, `ElectrodeSet`, `TransducerSet` — modality-specific device component definitions
+- `StimulusSet` — reusable definitions of stimulation waveforms or stimulus configurations
+- `StimulationSystem` — description of the primary stimulation device and hardware configuration
+- `NavigationSystem` — neuronavigation or targeting system used during stimulation
 
 Additionally, the _nibs.json file introduces a dedicated hardware block called 'ElectrodeSet', which captures detailed physical and electromagnetic parameters of one or more stimulation electrodes used in the session. 
 This structure allows precise modeling, reproducibility, and harmonization of electrode-related effects across studies.
@@ -958,10 +967,271 @@ For continuous TES protocols (e.g., tDCS, tACS), timing is typically described b
 | `timestamp` | string | (Optional) Timestamp in ISO 8601 format. |
 
  
+ 
+## NIBS: Transcranial Ultrasound Stimulation section.
+
+### 1.1 `*_markers.tsv` — Stimulation Site Coordinates (optional sidecar `_markers.json` )
+
+Stores stimulation target coordinates. Supports multiple navigation systems via flexible fields. 
+
+| Field | Type | Description |
+|---|---|---|
+| target_id              | REQUIRED         | Identifier linking this stimulation target to entries in `*_nibs.tsv`. Multiple rows MAY share the same `target_id` when a target is represented by multiple coordinate definitions. |
+| target_index           | OPTIONAL         | Integer index distinguishing multiple rows that share the same `target_id`. In TUS datasets this typically represents alternative or repeated targeting configurations for the same stimulation target. REQUIRED when `target_id` appears in multiple rows. |
+| target_label           | OPTIONAL         | Short human-readable label for the stimulation target (e.g., `M1_left`, `V1`, `hippocampus`). |
+| target_description     | OPTIONAL         | Free-text description of the stimulation target or the rationale for its selection. |
+| target_x               | OPTIONAL         | X coordinate of the stimulation target. Coordinate system defined in `*_coordsystem.json`. |
+| target_y               | OPTIONAL         | Y coordinate of the stimulation target. Coordinate system defined in `*_coordsystem.json`. |
+| target_z               | OPTIONAL         | Z coordinate of the stimulation target. Coordinate system defined in `*_coordsystem.json`. |
+| entry_x                | OPTIONAL         | X coordinate of the ultrasound beam entry point on the scalp or skull surface. |
+| entry_y                | OPTIONAL         | Y coordinate of the ultrasound beam entry point on the scalp or skull surface. |
+| entry_z                | OPTIONAL         | Z coordinate of the ultrasound beam entry point on the scalp or skull surface. |
+| normal_x               | OPTIONAL         | X component of the unit vector normal to the transducer surface. |
+| normal_y               | OPTIONAL         | Y component of the unit vector normal to the transducer surface. |
+| normal_z               | OPTIONAL         | Z component of the unit vector normal to the transducer surface. |
+| beam_x                 | OPTIONAL         | X component of the ultrasound beam direction vector. |
+| beam_y                 | OPTIONAL         | Y component of the ultrasound beam direction vector. |
+| beam_z                 | OPTIONAL         | Z component of the ultrasound beam direction vector. |
+| transducer_x           | OPTIONAL         | X coordinate of the ultrasound transducer center. |
+| transducer_y           | OPTIONAL         | Y coordinate of the ultrasound transducer center. |
+| transducer_z           | OPTIONAL         | Z coordinate of the ultrasound transducer center. |
+| transducer_transform   | OPTIONAL         | Transformation matrix describing the pose of the ultrasound transducer relative to the coordinate system. Typically a 4×4 homogeneous transformation matrix. |
+
+** target_x/y/z: **
+
+- "Coordinates of the acoustic focus — the point where the ultrasound energy is concentrated and stimulation is intended to occur."
+
+** entry_x/y/z: **  
+
+- "Scalp entry point of the ultrasound beam — where it penetrates the skin and skull en route to the target."
+
+** transducer_x/y/z: ** 
+
+- "Coordinates of the ultrasound transducer’s physical reference point — typically its geometric center or coupling interface."
+
+** normal_x/y/z: ** 
+
+- "Unit vector normal to the scalp at the entry point, defining the intended beam axis direction."
+
+** beam_x/y/z: ** 
+
+- "Unit vector defining the direction of the ultrasound beam propagation from the transducer. Used if the beam axis differs from the scalp surface normal vector (normal_x/y/z)."
+
+** transducer_transform: ** 
+
+- "Optional 4×4 affine transformation matrix describing the transducer’s spatial pose (position and orientation) relative to the coordinate system defined in *_coordsystem.json. Used in setups with tracked transducers or navigation systems."
+
+
+### 1.2 `*_nibs.json` — Sidecar JSON 
+
+The `*_nibs.json` file is a required sidecar accompanying the `*_nibs.tsv` file. 
+It serves to describe the columns in the tabular file, define units and levels for categorical variables, and—crucially—provide structured metadata about the stimulation device, task, and context of the experiment.
+
+* Like other BIDS modalities, this JSON file includes:
+
+**Task information**
+
+- `TaskName`, `TaskDescription`, `Instructions`
+ 
+**Institutional context**
+
+- `InstitutionName`, `InstitutionAddress`, `InstitutionalDepartmentName`
+
+**Device metadata**
+
+- `Manufacturer`, `ManufacturersModelName`, `SoftwareVersion`, `DeviceSerialNumber`.
+
+**Additional options**
+
+- `CoilSet`, `ElectrodeSet`, `TransducerSet` — modality-specific device component definitions
+- `StimulusSet` — reusable definitions of stimulation waveforms or stimulus configurations
+- `StimulationSystem` — description of the primary stimulation device and hardware configuration
+- `NavigationSystem` — neuronavigation or targeting system used during stimulation
+
+#### `TransducerSet` 
+
+`TransducerSet` provides a structured, machine-readable description of ultrasound transducers used in the dataset.
+Each transducer is defined as an object with a unique `TransducerID`, referenced from the `transducer_id` column in `*_nibs.tsv`.
+This block is analogous to `CoilSet` (TMS) and `ElectrodeSet` (TES) and captures physical and acoustic properties of the transducer, including its focusing characteristics and coupling interface.
+
+* Each entry in `TransducerSet` is an object with the following fields:
+
+| Field | Type | Description |
+|---|---:|---|
+| `TransducerID` | string | Unique identifier for the transducer, referenced from `transducer_id` in `*_nibs.tsv`. |
+| `TransducerType` | string | Physical configuration of the transducer (e.g., `single-element`, `phased-array`, `planar`, `custom`). |
+| `FocusType` | string | Focus profile produced by the transducer (e.g., `point`, `line`, `volume`, `swept`, `unfocused`). |
+| `CarrierFrequency` | object \| number | Nominal center frequency of the transducer carrier. RECOMMENDED as `{ "Value": <number>, "Units": "Hz", "Description": <string> }`. |
+| `FocalDepth` | object \| number | Distance from the transducer surface to the nominal acoustic focus. RECOMMENDED as `{ "Value": <number>, "Units": "mm", "Description": <string> }`. |
+| `ApertureDiameter` | object \| number | Diameter of the active acoustic aperture. RECOMMENDED as `{ "Value": <number>, "Units": "mm", "Description": <string> }`. |
+| `MaxPeakNegativePressure` | object \| number | Maximum or rated peak negative pressure at the focus under reference conditions (manufacturer specification or calibration). RECOMMENDED as `{ "Value": <number>, "Units": "MPa", "Description": <string> }`. |
+| `MaxMechanicalIndex` | object \| number | Maximum or rated Mechanical Index under reference conditions (dimensionless). RECOMMENDED as `{ "Value": <number>, "Units": "dimensionless", "Description": <string> }`. |
+| `ContactMedium` | string | Coupling medium/interface between transducer and scalp (e.g., `ultrasound gel`, `membrane`, `water bag`, `dry contact`). |
+
+
+**Phased-array extensions (OPTIONAL; use when `TransducerType` is `phased-array`)**
+
+| Field | Type | Description |
+|---|---:|---|
+| `NumberOfElements` | integer | Number of independently driven elements in the array. |
+| `ElementPitch` | object \| number | Center-to-center spacing between adjacent elements. RECOMMENDED as `{ "Value": <number>, "Units": "mm", "Description": <string> }`. |
+| `ArrayGeometry` | string | High-level description of array layout (e.g., `linear`, `2D matrix`, `annular`, `curvilinear`, `custom`). |
+
+#### TransducerSet description:
+
+```
+"TransducerSet": [
+  {
+    "TransducerID": "tx_1",
+    "TransducerType": "single-element",
+    "FocusType": "point",
+    "CarrierFrequency": { "Value": 500000, "Units": "Hz" },
+    "FocalDepth": { "Value": 30, "Units": "mm" },
+    "ApertureDiameter": { "Value": 30, "Units": "mm" },
+    "MaxPeakNegativePressure": { "Value": 1.2, "Units": "MPa" },
+    "MaxMechanicalIndex": { "Value": 0.9, "Units": "dimensionless" },
+    "ContactMedium": "ultrasound gel"
+  },
+  {
+    "TransducerID": "tx_2",
+    "TransducerType": "phased-array",
+    "FocusType": "steerable-point",
+    "CarrierFrequency": { "Value": 650000, "Units": "Hz" },
+    "FocalDepth": { "Value": 40, "Units": "mm" },
+    "ApertureDiameter": { "Value": 60, "Units": "mm" },
+    "MaxPeakNegativePressure": { "Value": 1.5, "Units": "MPa" },
+    "MaxMechanicalIndex": { "Value": 1.1, "Units": "dimensionless" },
+    "ContactMedium": "water bag",
+    "NumberOfElements": 128,
+    "ElementPitch": { "Value": 0.8, "Units": "mm" },
+    "ArrayGeometry": "2D matrix"
+  }
+]
+```
+
+#### `StimulusSet`
+
+`StimulusSet` defines a reusable library of ultrasound stimulus configurations referenced from `stimulus_id` in `*_nibs.tsv`.
+It captures stimulus-level parameters that remain constant across stimulation events, while event-specific timing and intensity parameters (e.g., `base_stimulus_intensity`, `base_pulse_intensity`) are stored in `*_nibs.tsv`.
+
+* Each entry in `StimulusSet` is an object with the following fields:
+
+| Field | Type | Description |
+|---|---:|---|
+| `StimulusID` | string | Unique identifier for the stimulus configuration, referenced from `stimulus_id` in `*_nibs.tsv`. |
+| `StimulusType` | string | Type of TUS stimulation protocol (e.g., `continuous`, `pulsed`, `bursted`). Determines which parameter groups below are applicable. |
+
+
+##### `StimulusType = continuous`
+
+| Field | Type | Description |
+|---|---:|---|
+| `StimulusWaveform` | string | Waveform used for continuous ultrasound stimulation (e.g., `sine`, `square`, `custom`). |
+| `StimulusFrequency` | object | Frequency of the continuous ultrasound stimulus. Structured as `{ "Value": <number>, "Units": <string> }`. |
+
+##### `StimulusType = pulsed` or `bursted`
+
+| Field | Type | Description |
+|---|---:|---|
+| `PulseCount` | integer | Number of ultrasound pulses delivered within one stimulation instance. |
+| `PulseWaveform` | string | Waveform used for individual ultrasound pulses (e.g., `sine`, `square`, `custom`). |
+| `PulseDuration` | object | Duration of a single ultrasound pulse. Structured as `{ "Value": <number>, "Units": <string> }`. |
+| `PulseRepetitionInterval` | object | Time interval between the start of consecutive pulses within a stimulation instance. Structured as `{ "Value": <number>, "Units": <string> }`. The duty cycle can be derived as `PulseDuration / PulseRepetitionInterval`. |
+| `PulseRampShape` | string | Shape of the amplitude ramp applied to the beginning and end of each pulse (e.g., `linear`, `raised-cosine`, `tukey`, `custom`). Optional. |
+| `PulseRiseTime` | object | Duration of the rising edge (amplitude ramp-up) of each pulse. Structured as `{ "Value": <number>, "Units": <string> }`. Optional. |
+| `PulseFallTime` | object | Duration of the falling edge (amplitude ramp-down) of each pulse. Structured as `{ "Value": <number>, "Units": <string> }`. Optional. |
+| `PulseIntensityScalingType` | string | Defines how pulse-specific intensities are derived from the base intensity specified in `*_nibs.tsv` (e.g., `multiplicative`, `additive`, `custom`). |
+| `PulseIntensityScalingVector` | array of number | Multiplicative scaling factors applied to `base_pulse_intensity` for each pulse. The length of the vector MUST match `PulseCount`. For example `[1.0, 0.8, 0.6]`. Optional. |
+| `PulseIntensityScalingReference` | string | Reference point for applying the scaling factors (e.g., `base_pulse_intensity`). Optional. |
+| `PulseIntensityScalingDescription` | string | Free-text description of the scaling rule or pattern applied to pulse intensities. Optional. |
+
+- PulseCount is defined at the stimulus-template level. If the number of pulses varies across events, define separate entries in StimulusSet (with different StimulusID) and reference them from *_nibs.tsv.
+
+- When provided, PulseIntensityScalingVector MUST have length equal to PulseCount for the corresponding StimulusID.
+
+- `PulseRampShape`, `PulseRiseTime`, and `PulseFallTime` describe amplitude shaping within an individual pulse, whereas `PulseIntensityScaling*` parameters describe relative intensity differences between pulses within the same stimulation instance.
+
+##### Amplitude Modulation (optional)
+
+These parameters define amplitude modulation of the ultrasound stimulus envelope (e.g., AM-tFUS protocols).  
+Amplitude modulation scales the instantaneous amplitude of the carrier signal over time according to a modulation function:
+
+`amplitude(t) = base_stimulus_intensity × modulation(t)`
+
+where `base_stimulus_intensity` is defined per event in `*_nibs.tsv`.
+
+| Field | Type | Description |
+|---|---:|---|
+| `ModulationFrequency` | object | Frequency of the amplitude modulation envelope. Structured as `{ "Value": <number>, "Units": <string> }`. Optional. |
+| `ModulationWaveform` | string | Waveform of the amplitude modulation envelope (e.g., `sine`, `square`, `custom`). Optional. |
+| `ModulationDepth` | number | Depth of amplitude modulation expressed as a fraction of the base intensity (e.g., `0.5` means ±50% modulation). Optional. |
+
+##### Phased-array beamforming (optional)
+
+| Field | Type | Description |
+|---|---:|---|
+| `BeamformingMode` | string | Beamforming strategy used when a phased-array transducer is employed (e.g., `none`, `fixed`, `dynamic`). Optional and primarily relevant when the selected transducer in `TransducerSet` has `TransducerType = phased-array`. |
 
 
 
+#### `StimulusSet` description:
 
+
+```
+ "StimulusSet": [
+    {
+      "StimulusID": "stim_01",
+      "StimulusType": "continuous",
+      "StimulusWaveform": "sine",
+      "StimulusFrequency": {
+        "Value": 500,
+        "Units": "kHz"
+      }
+    },
+    {
+      "StimulusID": "stim-02",
+      "StimulusType": "pulsed",
+      "PulseCount": 5,
+      "PulseWaveform": "sine",
+      "PulseDuration": {
+        "Value": 200,
+        "Units": "us"
+      },
+      "PulseRepetitionInterval": {
+        "Value": 1,
+        "Units": "ms"
+      },
+      "PulseRampShape": "raised-cosine",
+      "PulseRiseTime": {
+        "Value": 20,
+        "Units": "us"
+      },
+      "PulseFallTime": {
+        "Value": 20,
+        "Units": "us"
+      },
+      "PulseIntensityScalingType": "multiplicative",
+      "PulseIntensityScalingVector": [1.0, 0.8, 0.8, 0.6, 0.6],
+      "PulseIntensityScalingReference": "base_pulse_intensity",
+      "PulseIntensityScalingDescription": "Gradual reduction of pulse intensity across the pulse train."
+    },
+    {
+      "StimulusID": "stim_03",
+      "StimulusType": "continuous",
+      "StimulusWaveform": "sine",
+      "StimulusFrequency": {
+        "Value": 500,
+        "Units": "kHz"
+      },
+      "ModulationFrequency": {
+        "Value": 10,
+        "Units": "Hz"
+      },
+      "ModulationWaveform": "sine",
+      "ModulationDepth": 0.5
+    }
+  ]
+```
 
 
 
