@@ -124,97 +124,107 @@ In such cases, the stimulated nerve can be described using `target_label`, `targ
 
 #### Linking keys
 
-The NIBS specification uses a set of internal identifiers to link information between the tabular files (`*_nibs.tsv`, `*_markers.tsv`, `*_events.tsv`) and structured metadata objects defined in sidecar JSON files.
+The NIBS specification uses a set of internal identifiers to link information between tabular files (`*_nibs.tsv`, `*_markers.tsv`, `*_events.tsv`) and structured metadata objects defined in accompanying JSON files (e.g., `*_nibs.json`, `*_markers.json`, `*_events.json`).
 
 These identifiers ensure that device definitions, stimulus configurations, and spatial targets can be reused across multiple stimulation events without repeating metadata.
 
 ##### `coil_id` → `CoilID` (`CoilSet` in `*_nibs.json`)
 
 - `coil_id` in `*_nibs.tsv` MUST reference a `CoilID` defined in the `CoilSet` section of `*_nibs.json`.
-
 - `CoilID` values MUST be unique within a given `*_nibs.json`.
-
 - The same `coil_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same coil definition applies.
 
 ##### `electrode_id` → `ElectrodeID` (`ElectrodeSet` in `*_nibs.json`)
 
 - `electrode_id` in `*_nibs.tsv` MUST reference an `ElectrodeID` defined in the `ElectrodeSet` section of `*_nibs.json`.
-
 - `ElectrodeID` values MUST be unique within a given `*_nibs.json`.
+- The same `electrode_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same electrode/contact hardware definition applies.
 
-- The same `electrode_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same electrode configuration applies.
-  
 ##### `transducer_id` → `TransducerID` (`TransducerSet` in `*_nibs.json`)
 
 - `transducer_id` in `*_nibs.tsv` MUST reference a `TransducerID` defined in the `TransducerSet` section of `*_nibs.json`.
-
 - `TransducerID` values MUST be unique within a given `*_nibs.json`.
-
 - The same `transducer_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same transducer definition applies.
-  
+
 ##### `stim_id` → `StimID` (`StimulusSet` in `*_nibs.json`)
 
 - `stim_id` in `*_nibs.tsv` MUST reference a `StimID` defined in the `StimulusSet` section of `*_nibs.json`.
-
 - `StimID` values MUST be unique within a given `*_nibs.json`.
-
-- The same `stim_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same stimulation configuration applies.
+- The same `stim_id` MAY be reused across multiple rows in `*_nibs.tsv` when the same stimulation template applies.
 
 ##### `target_id` → spatial targets (`*_markers.tsv`)
 
-- `target_id` in `*_nibs.tsv` MUST reference a row in `*_markers.tsv`.
+- `target_id` in `*_nibs.tsv` MUST reference a `target_id` value defined in `*_markers.tsv`.
+- `target_id` values MUST be unique within a given `*_markers.tsv` (one row per `target_id`).
 
-- `target_id` values MUST be unique within a given `*_markers.tsv`.
+##### `target_group` (organizational grouping in `*_markers.tsv`)
 
-#### Composite (multi-point) targets in `*_markers.tsv`
+- `target_group` MAY be used in `*_markers.tsv` to logically group multiple `target_id` entries (e.g., montage membership).
+- `target_group` MUST NOT be used for linkage from `*_nibs.tsv` and MUST NOT be used for synchronization across modalities.
+
+##### `event_id` → experimental timeline (`*_events.tsv`)
+
+- `event_id` in `*_nibs.tsv` MUST reference an event in `*_events.tsv` when time-locking/synchronization is required.
+- Multiple rows in `*_nibs.tsv` MAY share the same `event_id` when a single logical event requires multiple rows (e.g., multi-contact TES or segmented configurations).
+
+##### `event_part` → row/segment index within `event_id` (`*_nibs.tsv`)
+
+- `event_part` is OPTIONAL when `event_id` occurs once in `*_nibs.tsv`.
+- When multiple rows share the same `event_id`, `event_part` SHOULD be present.
+- Within the same `event_id`, `event_part` MUST be unique and values SHOULD start at 1 and increment monotonically (1..N).
+
+#### Grouped (multi-point) target constructs in `*_markers.tsv`
 
 In some experiments, stimulation involves multiple spatial points that are conceptually related (e.g., multi-contact TES montages, multi-coil TMS setups, or phased-array TUS protocols with multiple focus locations).
 
-In this specification, `*_markers.tsv` represents **one spatial point/contact per row**. Therefore, multi-point constructs are represented as **multiple rows**, each with its own unique `target_id`. These `target_id` values are then referenced from `*_nibs.tsv` to describe which points/contacts were involved in a given stimulation event.
+In this specification, `*_markers.tsv` represents **one spatial point/contact per row**. Multi-point constructs are therefore represented as **multiple rows**, each with its own unique `target_id`. These `target_id` values are referenced from `*_nibs.tsv` to indicate which points/contacts were involved in a given stimulation event.
+
+`target_group` MAY be used as an optional organizational label to group related `target_id` entries (e.g., montage membership). `target_group` MUST NOT be used for linkage or synchronization; linkage from `*_nibs.tsv` is always performed via `target_id`.
 
 | Field | Description |
 |------|-------------|
-| `target_id` | Identifier linking a single row (a single point/contact) in `*_markers.tsv` to stimulation events recorded in `*_nibs.tsv`. `target_id` values MUST be unique within a given `*_markers.tsv`. |
-| `target_group` | string | (Optional) Group identifier used to logically group multiple `target_id` rows that belong to the same higher-level construct (e.g., a TES montage, an HD set, a multi-coil setup, a multi-focus set). This field is for convenience and organization only and MUST NOT be used for synchronization across modalities. |
+| `target_id` | Identifier of a single row (a single point/contact) in `*_markers.tsv`, referenced from `*_nibs.tsv`. `target_id` values MUST be unique within a given `*_markers.tsv`. |
+| `target_group` | (Optional) Group identifier used to logically group multiple `target_id` rows that belong to the same higher-level construct (e.g., a TES montage, an HD set, a multi-coil setup, a multi-focus set). This field is for convenience and organization only and MUST NOT be used for synchronization across modalities. |
 
 This mechanism enables representation of:
 
 - TES montages involving multiple electrode contacts (each contact has its own `target_id`)
 - TMS stimulation involving multiple coils (each coil placement/point has its own `target_id`)
-- TUS phased-array stimulation involving multiple spatial focus points (each focus location has its own `target_id`)
+- TUS protocols involving multiple focus points (each focus location has its own `target_id`)
 
-When sequential stimulation across multiple points is used (e.g., phased-array TUS beam steering), the order of stimulation across points SHOULD be encoded at the event/stimulus level (e.g., in `StimulusSet`) by referencing an ordered list of `target_id` values.
+When sequential stimulation across multiple points is used (e.g., phased-array TUS beam steering), the order of stimulation across points SHOULD be encoded at the event/stimulus level.
 
-### 5. Synchronizing NIBS Data Across Modalities (`*_events.tsv`)
+### Synchronizing NIBS Data Across Modalities (`*_events.tsv`)
 
-In multimodal experiments (e.g., NIBS combined with EEG, MEG, fMRI, or behavioral recordings), stimulation events are synchronized with other data streams using the shared `*_events.tsv` file.
+In multimodal experiments (e.g., NIBS combined with EEG, MEG, fMRI, or behavioral recordings), stimulation events are synchronized with other data streams using the corresponding BIDS `*_events.tsv` file.
 
 The `*_events.tsv` file represents the primary timeline of experimental events, including stimulus presentations, behavioral responses, and stimulation triggers.
 
-NIBS-specific stimulation parameters are stored in `*_nibs.tsv`.  
+NIBS-specific stimulation parameters are stored in `*_nibs.tsv`.
 Synchronization between these files is achieved through the `event_id` field.
 
 | Field | Description |
 |------|-------------|
-| `event_id` | Identifier linking a row in `*_nibs.tsv` to a corresponding event in `*_events.tsv`. |
+| `event_id` | Identifier linking rows in `*_nibs.tsv` to a corresponding event in `*_events.tsv`. |
 
-Each row in `*_nibs.tsv` typically corresponds to a stimulation event referenced by the same `event_id` in `*_events.tsv`.
+Each logical stimulation event in `*_nibs.tsv` is referenced by `event_id` in `*_events.tsv`.
 
-In some cases, a single experimental event may involve multiple stimulation configurations (e.g., TES with multiple channels or TMS with multiple coils).
-In such cases, multiple rows in `*_nibs.tsv` MAY share the same `event_id`.
+In some cases, a single experimental event may involve multiple stimulation records (e.g., TES with multiple contacts/channels, or segmented configurations).
+In such cases, multiple rows in `*_nibs.tsv` MAY share the same `event_id` and SHOULD be indexed using `event_part`.
 
-The `stim_count` field in `*_nibs.tsv` is intended only for counting repeated stimulation deliveries to the same target and MUST NOT be used for synchronization between modalities.
+The `stimulus_count` field in `*_nibs.tsv` is intended only for counting repeated stimulation deliveries to the same target and MUST NOT be used for synchronization between modalities.
 
 
-### 6. File-linking overview 
+### File-linking overview
 
 The NIBS data structure links stimulation events, device definitions, stimulus configurations, and spatial targets across several files.
 
-The central table `*_nibs.tsv` contains event-level stimulation parameters.
+The central table `*_nibs.tsv` contains event-level stimulation records.
 Identifiers in this table reference reusable definitions stored in `*_nibs.json` and spatial target definitions stored in `*_markers.tsv`.
 
 Synchronization with other modalities is performed through `event_id`, which links entries in `*_nibs.tsv` to `*_events.tsv`.
 When a single logical event requires multiple `*_nibs.tsv` rows, those rows SHOULD share the same `event_id` and be indexed using `event_part`.
+
 
 ```
 									┌───────────────────────────────┐
@@ -235,10 +245,11 @@ When a single logical event requires multiple `*_nibs.tsv` rows, those rows SHOU
 										stim_id → StimID
 												  │
 					┌─────────────────────────────▼───────────────────────────────────────┐
-					│                        *_nibs.tsv                         		  │
-					│  Required:  event_id                                      		  │
+					│                           *_nibs.tsv                                │
+					│  Required:  event_id                                                │
+					│  Optional:  event_part (indexes multi-row events)                   │
 					│  Links:     coil_id\electrode_id\transducer_id, stim_id, target_id  │
-					│  Count:     stimulus_count (NOT for synchronization)      		  │
+					│  Count:     stimulus_count (NOT for synchronization)                │
 					└─────────────┬───────────────────────────────┬───────────────────────┘
 								  │                               │
 							   target_id                        event_id
@@ -246,12 +257,14 @@ When a single logical event requires multiple `*_nibs.tsv` rows, those rows SHOU
 								  ▼                               ▼
 					┌──────────────────────────┐        ┌────────────────────────┐
 					│       *_markers.tsv      │        │       *_events.tsv     │
-					│  		  target_id  	   │        │  onset/duration/...    │
-					│						   │        │  MAY include event_id  │
-					│  		MUST be unique	   │        │  					     │
-					│                		   │        │  MUST NOT include      │
-					└─────────────┬────────────┘        │  target_id             │
-								  │                     └────────────────────────┘
+					│         target_id        │        │  onset/duration/...    │
+					│   target_id MUST be      │        │  (primary timeline)    │
+					│   unique (one row per    │        │  event_id used for     │
+					│   point/contact)         │        │  cross-modality sync   │
+					│   (optional: target_group│        └────────────────────────┘
+					│    for organization)     │
+					└─────────────┬────────────┘
+								  │
 								  ▼
 					┌──────────────────────────┐
 					│    *_coordsystem.json    │
@@ -263,10 +276,12 @@ When a single logical event requires multiple `*_nibs.tsv` rows, those rows SHOU
 Read it like this:
 
 - `*_nibs.tsv` describes what was executed (logical stimulation events), and links to configuration (`*_nibs.json`) and space (`*_markers.tsv`).
+  If one logical event requires multiple rows, those rows share `event_id` and are indexed by `event_part`.
 
 - `*_events.tsv` describes when it happened (time-locking) via `event_id`.
 
-- `*_markers.tsv` + `*_coordsystem.json` describe where it happened; composite targets are represented by multiple marker rows disambiguated by `target_id`.
+- `*_markers.tsv` + `*_coordsystem.json` describe where it happened.
+  Multi-point constructs (e.g., montages) are represented by multiple `target_id` entries (optionally grouped using `target_group`).
 
 
 ## Detailed overview of data structure
