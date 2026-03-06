@@ -35,3 +35,6 @@
 2. `Non-navigated coil placement/orientation` section added in nibs.tsv
 3. `target_name` -> `target_label` + `target_description`
 4. `Stimulation Timing Parameters` + examples (Appendix A)
+5. `target_part` -> `target_index`
+6. `event_part` -> deleted (overloading structure and not solving problems)
+7. TES section
