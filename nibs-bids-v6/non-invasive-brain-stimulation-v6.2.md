@@ -34,7 +34,7 @@ The following files are used to organize stimulation-related data:
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.tsv`
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.json`
 
-  * Contains event-level stimulation records (what was executed), including per-event timing/intensity fields and links to reusable definitions in *_nibs.json and spatial definitions in *_markers.tsv..
+  * Contains event-level stimulation records (what was executed), including per-event timing/intensity fields and links to reusable definitions in *_nibs.json and spatial definitions in *_markers.tsv.
 
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.tsv` 
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.json` 
@@ -97,7 +97,7 @@ Changes in stimulation protocol (e.g., pulse timing or intensity) do not require
 
 Stimulus configuration identifiers reference reusable stimulation protocol definitions stored in the `StimulusSet` section of `*_nibs.json`.
 
-A stimulus configuration represents a predefined set of stimulation parameters (e.g., waveform shape, pulse timing structure, or modulation pattern) that are intended to be reused across multiple events” / “typically invariant across multiple stimulation events.
+A stimulus configuration represents a predefined set of stimulation parameters (e.g., waveform shape, pulse timing structure, or modulation pattern) that are intended to be reused across multiple events.
 
 This mechanism allows complex stimulation protocols to be defined once and referenced by multiple rows in `*_nibs.tsv`, avoiding repetition of protocol parameters and improving dataset readability.
 
@@ -816,7 +816,7 @@ Stores stimulation target coordinates. Supports multiple navigation systems via 
 
 | Field | Type | Description |
 |---|---|---|
-| `target_id` | string | Identifier of a TES montage (stimulation-level target). A single electrode/contact position (one row per contact) |
+| `target_id` | string | Identifier of a single electrode/contact position (one row per contact). |
 | `target_group` | string | (Optional) Group identifier used to logically group multiple `target_id` rows that belong to the same higher-level construct (e.g., a TES montage, an HD set, a multi-coil setup, a multi-focus set). This field is for convenience and organization only and MUST NOT be used for synchronization across modalities. |
 | `target_label` | string | (Optional) Short human-readable label for the stimulation target. Intended for standardized target naming when available (e.g., 10–20 position labels such as `C3`, `F3`, `Cz`, or common anatomical/site labels such as `M1_hand`, `DLPFC`). Interpretation is in the coordinate context defined by `*_coordsystem.json`. |
 | `target_description` | string | (Optional) Free-form description of the montage/target rationale (e.g., anatomical rationale, selection notes). |
@@ -1045,7 +1045,7 @@ When `event_part` is present, the pair (`event_id`, `event_part`) MUST be unique
 
 | Field | Type | Description |
 |---|---:|---|
-| `event_id` | integer | Identifier of a logical stimulation event. Primary linkage key to `*_events.tsv`. Multiple rows MAY share the same `event_id` to encode per-contact parameters. |
+| `event_id` | string | Identifier of a logical stimulation event. Primary linkage key to `*_events.tsv`. Multiple rows MAY share the same `event_id` to encode per-contact parameters. |
 | `event_part` | integer | (Optional) Index of a row/segment within a logical stimulation event (`event_id`) when multiple rows are required to represent one event (e.g., multi-contact TES, multi-component stimulation, or segmented configurations). Values SHOULD start at 1 and increment monotonically (1..N) within each `event_id`. When present, `event_part` MUST be unique within the same `event_id`. |
 | `event_name` | string | (Optional) Human-readable event/protocol label. Intended for readability; MUST NOT be used for machine linkage. |
 
@@ -1218,7 +1218,7 @@ This block is analogous to `CoilSet` (TMS) and `ElectrodeSet` (TES) and captures
 | `ApertureDiameter` | object \| number | Diameter of the active acoustic aperture. RECOMMENDED as `{ "Value": <number>, "Units": "mm", "Description": <string> }`. |
 | `MaxPeakNegativePressure` | object \| number | Maximum or rated peak negative pressure at the focus under reference conditions (manufacturer specification or calibration). RECOMMENDED as `{ "Value": <number>, "Units": "MPa", "Description": <string> }`. |
 | `MaxMechanicalIndex` | object \| number | Maximum or rated Mechanical Index under reference conditions (dimensionless). RECOMMENDED as `{ "Value": <number>, "Units": "dimensionless", "Description": <string> }`. |
-| `ContactMedium` | string | Coupling medium/interface between transducer and scalp (e.g., `ultrasound gel`, `membrane`, `water bag`, `dry contact`). |
+| `TransducerContactMedium` | string | Coupling medium/interface between transducer and scalp (e.g., `ultrasound gel`, `membrane`, `water bag`, `dry contact`). |
 
 
 **Phased-array extensions (OPTIONAL; use when `TransducerType` is `phased-array`)**
@@ -1242,7 +1242,7 @@ This block is analogous to `CoilSet` (TMS) and `ElectrodeSet` (TES) and captures
     "ApertureDiameter": { "Value": 30, "Units": "mm" },
     "MaxPeakNegativePressure": { "Value": 1.2, "Units": "MPa" },
     "MaxMechanicalIndex": { "Value": 0.9, "Units": "dimensionless" },
-    "ContactMedium": "ultrasound gel"
+    "TransducerContactMedium": "ultrasound gel"
   },
   {
     "TransducerID": "tx_2",
@@ -1253,7 +1253,7 @@ This block is analogous to `CoilSet` (TMS) and `ElectrodeSet` (TES) and captures
     "ApertureDiameter": { "Value": 60, "Units": "mm" },
     "MaxPeakNegativePressure": { "Value": 1.5, "Units": "MPa" },
     "MaxMechanicalIndex": { "Value": 1.1, "Units": "dimensionless" },
-    "ContactMedium": "water bag",
+    "TransducerContactMedium": "water bag",
     "NumberOfElements": 128,
     "ElementPitch": { "Value": 0.8, "Units": "mm" },
     "ArrayGeometry": "2D matrix"
@@ -1322,17 +1322,26 @@ where `base_stimulus_intensity` is defined per event in `*_nibs.tsv`.
 
 ##### Phased-array beamforming (optional)
 
+These parameters describe beamforming and beam steering when a phased-array transducer is used. They are typically applicable when `TransducerType = phased-array` in `TransducerSet`.
+
+Beam steering and multi-focus stimulation are represented at the event level using multiple rows in `*_nibs.tsv` that share the same `event_id` and are indexed using `event_part`. Each row links to a single focus location via `target_id` (one row in `*_markers.tsv` per focus point).
+
+`FocusSequence` defines the order in which these event parts (focus points) are stimulated within a single logical stimulation event.
+
 | Field | Type | Description |
 |---|---:|---|
 | `BeamformingMode` | string | Beamforming strategy used when a phased-array transducer is employed (e.g., `none`, `fixed`, `dynamic`). Optional and primarily relevant when the selected transducer in `TransducerSet` has `TransducerType = phased-array`. |
-| `FocusTrajectory` | string | Spatial trajectory followed by the acoustic focus during the stimulation instance (e.g., `static`, `linear`, `circular`, `raster`, `custom`). |
-| `FocusUpdateRate` | object | Rate at which the acoustic focus position is updated during stimulation when beam steering is used. Structured as `{ "Value": <number>, "Units": <string> }`. |
-| `FocusSequence` | array | Defines the ordered sequence of target_id values (as defined in `*_markers.tsv`) to be stimulated sequentially. |
+| `FocusTrajectory` | string | Spatial trajectory followed by the acoustic focus during the stimulation instance (e.g., `static`, `sequence`, `linear`, `circular`, `raster`, `custom`). Optional. |
+| `FocusUpdateRate` | object | Rate at which the acoustic focus position is updated during stimulation when beam steering is used. Structured as `{ "Value": <number>, "Units": <string> }`. Optional. |
+| `FocusSequence` | array[integer] | (Optional) Ordered sequence of focus positions defined by `event_part` values within a single logical event (`event_id`). Values MUST reference existing `event_part` indices for the corresponding `event_id` in `*_nibs.tsv`. Values MAY repeat. When `FocusSequence` is present, the corresponding logical event SHOULD include multiple `*_nibs.tsv` rows sharing the same `event_id` and indexed by `event_part`. |
 
-- If FocusSequence is not provided, the stimulation target is assumed to correspond to the target_id specified in *_nibs.tsv.
+**Notes**
 
-- `Focus*` parameters are typically relevant only when `BeamformingMode` = dynamic.
+- If `FocusSequence` is not provided and multiple focus points are represented for a given `event_id`, the default stimulation order is assumed to follow ascending `event_part` values (1..N) for a single pass.
 
+- `FocusSequence` MUST NOT reference `target_id` directly. The mapping from `event_part` to spatial locations is defined by the `target_id` values in the corresponding `*_nibs.tsv` rows.
+
+- If different events require different steering orders, separate `StimulusSet` entries (different `StimID`) SHOULD be used to represent those distinct sequences.
 
 #### `StimulusSet` description:
 
@@ -1960,20 +1969,14 @@ target_05	...				...		...		...
       "ElectrodeID": "elec_01",
       "ElectrodeRole": "anode",
       "ElectrodeShape": "circular",
-      "ElectrodeArea": {
-        "Value": 3.14,
-        "Units": "cm^2"
-      },
+      "ElectrodeSize": { "Value": 35, "Units": "cm2" },
       "ElectrodeContactMedium": "gel"
     },
     {
       "ElectrodeID": "elec_02",
       "ElectrodeRole": "return",
       "ElectrodeShape": "circular",
-      "ElectrodeArea": {
-        "Value": 3.14,
-        "Units": "cm^2"
-      },
+      "ElectrodeSize": { "Value": 35, "Units": "cm2" },
       "ElectrodeContactMedium": "gel"
     }
   ]

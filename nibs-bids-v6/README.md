@@ -34,7 +34,7 @@ The following files are used to organize stimulation-related data:
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.tsv`
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_nibs.json`
 
-  * Contains event-level stimulation records (what was executed), including per-event timing/intensity fields and links to reusable definitions in *_nibs.json and spatial definitions in *_markers.tsv..
+  * Contains event-level stimulation records (what was executed), including per-event timing/intensity fields and links to reusable definitions in *_nibs.json and spatial definitions in *_markers.tsv.
 
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.tsv` 
 - `sub-<label>_task-<label>[_stimsys-<label>][_acq-<label>][_run-<index>]_markers.json` 
