@@ -2020,3 +2020,341 @@ event_01	3			elec_02			stim_01	-0.25					900					target_03
 event_01	4			elec_02			stim_01	-0.25					900					target_04
 event_01	5			elec_02			stim_01	-0.25					900					target_05
 ```
+
+
+### TUS section
+
+#### Example 1 — Continuous TUS (single focus, no steering)
+
+* Device layer (*_nibs.json → TransducerSet)
+
+```
+{
+  "TransducerSet": [
+    {
+      "TransducerID": "tx_01",
+      "TransducerType": "single-element",
+      "FocusType": "point",
+      "CarrierFrequency": {
+        "Value": 500000,
+        "Units": "Hz"
+      },
+      "FocalDepth": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "ApertureDiameter": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "MaxPeakNegativePressure": {
+        "Value": 1.2,
+        "Units": "MPa"
+      },
+      "MaxMechanicalIndex": {
+        "Value": 0.9,
+        "Units": "dimensionless"
+      },
+      "TransducerContactMedium": "ultrasound gel"
+    }
+  ]
+} 
+```
+
+* Stimulus layer (*_nibs.json → StimulusSet)
+
+```
+{
+  "StimulusSet": [
+    {
+      "StimID": "stim_01",
+      "StimulusType": "continuous",
+      "StimulusWaveform": "sine",
+      "StimulusFrequency": {
+        "Value": 500,
+        "Units": "kHz"
+      }
+    }
+  ]
+}
+```
+
+* Spatial layer (*_markers.tsv) — one row per focus point
+
+```
+target_id	target_label	target_x	target_y	target_z	entry_x	entry_y	entry_z
+target_01	...				...			...			...			...		...		...
+```	
+
+* Event layer (*_nibs.tsv)
+
+```
+event_id	event_part	transducer_id	stim_id	target_id	base_stimulus_intensity	stimulation_duration
+event_01	1			tx_01			stim_01	target_01	...						...
+```
+
+
+#### Example 2 — Pulsed TUS (single focus)
+
+* Device layer (*_nibs.json → TransducerSet)
+
+```
+{
+  "TransducerSet": [
+    {
+      "TransducerID": "tx_01",
+      "TransducerType": "single-element",
+      "FocusType": "point",
+      "CarrierFrequency": {
+        "Value": 500000,
+        "Units": "Hz"
+      },
+      "FocalDepth": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "ApertureDiameter": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "MaxPeakNegativePressure": {
+        "Value": 1.2,
+        "Units": "MPa"
+      },
+      "MaxMechanicalIndex": {
+        "Value": 0.9,
+        "Units": "dimensionless"
+      },
+      "TransducerContactMedium": "ultrasound gel"
+    }
+  ]
+}
+```
+
+* Stimulus layer (*_nibs.json → StimulusSet)
+
+```
+{
+  "StimulusSet": [
+    {
+      "StimID": "stim_02",
+      "StimulusType": "pulsed",
+      "PulseCount": 5,
+      "PulseWaveform": "sine",
+      "PulseDuration": {
+        "Value": 200,
+        "Units": "us"
+      },
+      "PulseRepetitionInterval": {
+        "Value": 1,
+        "Units": "ms"
+      }
+    }
+  ]
+}
+```
+
+* Spatial layer (*_markers.tsv) — one row per focus point
+
+```
+target_id	target_label	target_x	target_y	target_z	entry_x	entry_y	entry_z
+target_01	...				...			...			...			...		...		...
+```
+
+* Event layer (*_nibs.tsv)
+
+```
+event_id	event_part	transducer_id	stim_id	target_id	base_pulse_intensity
+event_02	1			tx_01			stim_02	target_01	...
+```
+
+#### Example 3 — Amplitude-modulated continuous TUS (AM-tFUS)
+
+* Device layer (*_nibs.json → TransducerSet)
+
+```
+{
+  "TransducerSet": [
+    {
+      "TransducerID": "tx_01",
+      "TransducerType": "single-element",
+      "FocusType": "point",
+      "CarrierFrequency": {
+        "Value": 500000,
+        "Units": "Hz"
+      },
+      "FocalDepth": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "ApertureDiameter": {
+        "Value": 30,
+        "Units": "mm"
+      },
+      "MaxPeakNegativePressure": {
+        "Value": 1.2,
+        "Units": "MPa"
+      },
+      "MaxMechanicalIndex": {
+        "Value": 0.9,
+        "Units": "dimensionless"
+      },
+      "TransducerContactMedium": "ultrasound gel"
+    }
+  ]
+}
+```
+
+* Stimulus layer (*_nibs.json → StimulusSet)
+
+```
+{
+  "StimulusSet": [
+    {
+      "StimID": "stim_03",
+      "StimulusType": "continuous",
+      "StimulusWaveform": "sine",
+      "StimulusFrequency": {
+        "Value": 500,
+        "Units": "kHz"
+      },
+      "ModulationFrequency": {
+        "Value": 10,
+        "Units": "Hz"
+      },
+      "ModulationWaveform": "sine",
+      "ModulationDepth": 0.5
+    }
+  ]
+}
+```
+
+* Spatial layer (*_markers.tsv) — one row per focus point
+
+```
+target_id	target_label	target_x	target_y	target_z	entry_x	entry_y	entry_z
+target_01	...				...			...			...			...		...		...
+```
+
+* Event layer (*_nibs.tsv)
+
+```
+event_id	event_part	transducer_id	stim_id	target_id	base_stimulus_intensity	stimulation_duration
+event_03	1			tx_01			stim_03	target_01	...						...
+```
+
+* Notes
+
+- Amplitude modulation is defined at the stimulus-template level using ModulationFrequency, ModulationWaveform, and ModulationDepth.
+
+- base_stimulus_intensity in *_nibs.tsv represents the base intensity that is modulated according to the modulation parameters in StimulusSet.
+
+
+#### Example 4 — Phased-array TUS with dynamic beam steering (multi-focus, FocusSequence + event_part)
+
+* Device layer (*_nibs.json → TransducerSet)
+
+```
+{
+  "TransducerSet": [
+    {
+      "TransducerID": "tx_02",
+      "TransducerType": "phased-array",
+      "FocusType": "steerable-point",
+      "CarrierFrequency": {
+        "Value": 650000,
+        "Units": "Hz"
+      },
+      "FocalDepth": {
+        "Value": 40,
+        "Units": "mm"
+      },
+      "ApertureDiameter": {
+        "Value": 60,
+        "Units": "mm"
+      },
+      "MaxPeakNegativePressure": {
+        "Value": 1.5,
+        "Units": "MPa"
+      },
+      "MaxMechanicalIndex": {
+        "Value": 1.1,
+        "Units": "dimensionless"
+      },
+      "TransducerContactMedium": "water bag",
+      "NumberOfElements": 128,
+      "ElementPitch": {
+        "Value": 0.8,
+        "Units": "mm"
+      },
+      "ArrayGeometry": "2D matrix"
+    }
+  ]
+}
+```
+
+* Stimulus layer (*_nibs.json → StimulusSet) 
+
+```
+{
+  "StimulusSet": [
+    {
+      "StimID": "stim_04",
+      "StimulusType": "pulsed",
+      "PulseCount": 5,
+      "PulseWaveform": "sine",
+      "PulseDuration": {
+        "Value": 200,
+        "Units": "us"
+      },
+      "PulseRepetitionInterval": {
+        "Value": 1,
+        "Units": "ms"
+      },
+      "BeamformingMode": "dynamic",
+      "FocusTrajectory": "sequence",
+      "FocusUpdateRate": {
+        "Value": 10,
+        "Units": "Hz"
+      },
+      "FocusSequence": [1, 2, 3, 2]
+    }
+  ]
+}
+```
+
+* Spatial layer (*_markers.tsv) — one row per focus point (optionally grouped)
+
+```
+target_id	target_group	target_label	target_x	target_y	target_z	entry_x	entry_y	entry_z
+target_01	targetgrp_01	...				...			...			...			...		...		...
+target_02	targetgrp_01	...				...			...			...			...		...		...
+target_03	targetgrp_01	...				...			...			...			...		...		...
+```
+
+* Event layer (*_nibs.tsv) — one logical event, multiple rows indexed by event_part
+
+```
+event_id	event_part	transducer_id	stim_id	target_id	base_pulse_intensity
+event_04	1			tx_02			stim_04	target_01	...
+event_04	2			tx_02			stim_04	target_02	...
+event_04	3			tx_02			stim_04	target_03	...
+```
+
+* Notes
+
+- Multi-focus steering within one logical stimulation event is represented by multiple *_nibs.tsv rows sharing the same event_id, indexed by event_part.
+
+- FocusSequence encodes the stimulation order by referencing event_part values (not target_id).
+
+- The mapping from event_part to spatial focus locations is defined by the target_id values in the corresponding *_nibs.tsv rows.
+
+
+
+
+
+
+
+
+
+
