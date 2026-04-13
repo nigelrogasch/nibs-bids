@@ -1,0 +1,14 @@
+{
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "Single and paired pulses for SICI protocol.",
+    "Levels": {
+      "single": "Single pulse test stimulus",
+      "paired": "Paired pulse test stimulus; ISI = 2ms, conditioning pulse intensity = 80% AMT"
+    }
+  },
+  "event_index": {
+    "LongName": "Index of events",
+    "Description": "Event number for linking with markers.tsv"
+  }
+}
