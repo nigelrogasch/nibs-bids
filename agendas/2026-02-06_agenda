@@ -1,0 +1,31 @@
+# Agenda
+
+## Scheduled date
+22-04-2026
+
+## Chair
+Giacomo Bertazolli
+
+## Attendees
+Giacomo Bertazolli, Oleg Shevtsov, Milana Makarova, Nigel Rogasch
+
+## Welcome and objectives
+* Decision on naming convention for stimulation timing hierarchy
+
+## Review of previous actions
+* Examples of stimulation timing hierarchy as currently proposed
+
+## Key discussion items
+* [#2414](https://github.com/bids-standard/bids-specification/issues/2414), Naming convention for stimulation timing hierarchy
+* [#2413](https://github.com/bids-standard/bids-specification/issues/2413), Unified vs split framework
+* [#2418](https://github.com/bids-standard/bids-specification/issues/2418), iEEG / single-unit / LFP interoperability
+* [#2417](https://github.com/bids-standard/bids-specification/issues/2418). Closed-loop and brain-state-dependent stimulation
+
+## Other open issues (if time allows)
+* Remaining open issues: #2387, #2389, #2384, #2383, and #2382
+
+## Action items
+
+## Other business
+
+## Next meeting
