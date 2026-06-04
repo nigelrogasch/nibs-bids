@@ -1,0 +1,9 @@
+{
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "Single pulse TMS",
+    "Levels": {
+      "spTMS": "Single pulse"
+    }
+  }
+}

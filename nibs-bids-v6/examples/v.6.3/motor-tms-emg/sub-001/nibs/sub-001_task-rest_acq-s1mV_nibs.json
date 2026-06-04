@@ -1,0 +1,44 @@
+{
+  "NIBSDescription": "Single pulse TMS to evoke MEP of 1 mV.",
+  "ConcurrentModalities": [
+    "emg"
+  ],
+  "IntendedFor": "bids::sub-001/emg/sub-001_task-rest_acq-s1mV_events.tsv",
+  "StimulatorSet": {
+    "StimulatorID": "Magstim",
+    "Manufacturer": "Magstim",
+    "ManufacturerModelName": "BiStim^2",
+    "ManufacturerSerialNumber": "3234-00"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "Coil_1",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    },
+    {
+      "ElementID": "Coil_2",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    }
+  ],
+  "stimulus_shape": {
+    "LongName": "Shape of stimulus",
+    "Description": "Description of the stimulus shape",
+    "Levels": {
+      "Monophasic": "Monophasic pulse shape as per stimulator setting"
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulation intensity",
+    "Description": "TMS pulse intensity",
+    "Units": "% Maximum Stimulator Output"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Time during which a contiguous non-zero current is applied through the coil",
+    "Units": "Microseconds"
+  }
+}

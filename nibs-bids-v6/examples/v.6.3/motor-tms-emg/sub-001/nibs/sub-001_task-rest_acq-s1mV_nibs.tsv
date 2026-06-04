@@ -1,0 +1,2 @@
+event_id	nibs_type	stimulator_id	element_id	stimulus_shape	stimulus_intensity	stimulus_duration
+spTMS	TMS	Magstim	Coil_1	Monophasic	50	200

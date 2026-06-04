@@ -1,0 +1,9 @@
+{
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "NIBS stimulation event",
+    "Levels": {
+      "tacs": "Transcranial alternating current stimulation"
+    }
+  }
+}

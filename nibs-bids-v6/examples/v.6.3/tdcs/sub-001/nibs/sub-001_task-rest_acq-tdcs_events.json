@@ -1,0 +1,9 @@
+{
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "NIBS stimulation event",
+    "Levels": {
+      "tdcs": "Transcranial direct current stimulation"
+    }
+  }
+}

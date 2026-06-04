@@ -1,0 +1,71 @@
+{
+  "NIBSDescription": "Intermittent theta burst stimulation.",
+  "ConcurrentModalities": [
+    "none"
+  ],
+  "StimulatorSet": {
+    "StimulatorID": "Magstim",
+    "Manufacturer": "Magstim",
+    "ManufacturerModelName": "Rapid",
+    "ManufacturerSerialNumber": "3234-00"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "Coil_1",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    },
+    {
+      "ElementID": "Coil_2",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    }
+  ],
+  "stimulus_shape": {
+    "LongName": "Shape of stimulus",
+    "Description": "Description of the stimulus shape",
+    "Levels": {
+      "Biphasic": "Biphasic pulse shape as per stimulator setting"
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulation intensity",
+    "Description": "TMS pulse intensity",
+    "Units": "% Maximum Stimulator Output"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Time during which a contiguous non-zero current is applied through the coil",
+    "Units": "Microseconds"
+  },
+  "pattern1_frequency": {
+    "LongName": "Frequency of interval between stimuli in pattern1 (burst)",
+    "Description": "Frequency of interval from the start of the first stimulus to the start of the proceeding stimulus in pattern1 (burst)",
+    "Units": "Hz"
+  },
+  "pattern1_count": {
+    "LongName": "Number of stimuli in repeating pattern (burst)",
+    "Description": "Total number stimuli in repeating pattern (burst)"
+  },
+  "pattern2_frequency": {
+    "LongName": "Frequency of interval between stimuli in pattern2 (train)",
+    "Description": "Frequency of interval from the start of the first stimulus in pattern1 block to the start of the first stimulus in subsequent pattern1 block (train)",
+    "Units": "Hz"
+  },
+  "pattern2_duration": {
+    "LongName": "Duration of pattern1 repeats (train)",
+    "Description": "Duration of pattern1 repeats including stimulus duration and interval duration (train)",
+    "Units": "s"
+  },
+  "pattern3_count": {
+    "LongName": "Number of repeats of pattern2 (sequence)",
+    "Description": "Total number of times pattern 2 repeats (sequence)"
+  },
+  "pattern3_duration": {
+    "LongName": "Duration of pattern2 repeats (sequence)",
+    "Description": "Duration of pattern2 repeats including patten2 duration and interval duration (sequence)",
+    "Units": "s"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "NIBSDescription": "Single and paired pulse (SICI) protocol.",
+  "ConcurrentModalities": [
+    "emg"
+  ],
+  "IntendedFor": "bids::sub-001/emg/sub-001_task-rest_acq-SICI_events.tsv",
+  "StimulatorSet": {
+    "StimulatorID": "Magstim",
+    "Manufacturer": "Magstim",
+    "ManufacturerModelName": "BiStim^2",
+    "ManufacturerSerialNumber": "3234-00"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "Coil_1",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    },
+    {
+      "ElementID": "Coil_2",
+      "ElementType": "coil",
+      "ModelName": "D70",
+      "SerialNumber": "4150-00"
+    }
+  ],
+  "stimulus_shape": {
+    "LongName": "Shape of stimulus",
+    "Description": "Description of the stimulus shape",
+    "Levels": {
+      "Monophasic": "Monophasic pulse shape as per stimulator setting"
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulation intensity",
+    "Description": "Stimulator intensity for single or multiple pulses (if separated by a delimiter). Note that if seperated, number of values MUST equal patter1_count.",
+    "Units": "% Maximum Stimulator Output"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Time during which a contiguous non-zero current is applied through the coil",
+    "Units": "Microseconds"
+  },
+  "pattern1_count": {
+    "LongName": "Number of stimuli in repeating pattern",
+    "Description": "Total number stimuli in repeating pattern"
+  },
+  "pattern1_interval": {
+    "LongName": "Interval between stimuli in pattern1",
+    "Description": "Interval from the start of the first stimulus to the start of the proceeding stimulus",
+    "Units": "Milliseconds"
+  },
+  "pattern1_intensity": {
+    "LongName": "Changing stimulation intensity for multiple pulses",
+    "Description": "Stimulator intensity for multiple pulses with changing intensity  (separated by a delimiter). Note that if seperated, number of values MUST equal patter1_count.",
+    "Units": "% Maximum Stimulator Output",
+    "Delimiter": "|"
+  }
+}

@@ -1,0 +1,2 @@
+event_id	nibs_type	stimulator_id	element_id	stimulus_shape	stimulus_intensity	stimulus_duration
+tdcs	tES	Soterix	elec1|elec2	Rectangle	1|-1	10

@@ -1,0 +1,61 @@
+{
+  "NIBSDescription": "Transcranial Direct Current Stimulation.",
+  "ConcurrentModalities": [
+    "none"
+  ],
+  "StimulatorSet": {
+    "StimulatorID": "Soterix",
+    "Manufacturer": "Soterix",
+    "ManufacturerModelName": "1x1 tDCS",
+    "ManufacturerSerialNumber": "1300A"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "elec_1",
+      "ElementType": "electrode",
+      "ModelName": "EASYpads",
+      "SerialNumber": "123A",
+      "Shape": "rectangle",
+      "Dimensions": [
+        "50",
+        "70"
+      ],
+      "Thickness": "20",
+      "Material": "sponge"
+    },
+    {
+      "ElementID": "elec_2",
+      "ElementType": "electrode",
+      "ModelName": "EASYpads",
+      "SerialNumber": "123A",
+      "Shape": "rectangle",
+      "Dimensions": [
+        "50",
+        "70"
+      ],
+      "Thickness": "20",
+      "Material": "sponge"
+    }
+  ],
+  "stimulus_shape": {
+    "LongName": "Shape of stimulus",
+    "Description": "Description of the stimulus shape",
+    "Levels": {
+      "Rectangle": {
+        "RampUp": "30",
+        "RampDown": "30"
+      }
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulation intensity",
+    "Description": "Stimulation current at each electrode separated by a delimiter. Total current MUST equal 0.",
+    "Units": "mA",
+    "Delimeter": "|"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Time during which a contiguous non-zero current is applied through the element",
+    "Units": "mins"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "Single pulse TMS",
+    "Levels": {
+      "spTMS": "Single pulse",
+      "SICI": "SICI with 2 ms ISI"
+    }
+  }
+}
