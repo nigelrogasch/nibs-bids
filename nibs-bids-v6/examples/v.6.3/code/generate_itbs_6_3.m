@@ -28,7 +28,7 @@ end
 data = struct();
 
 % List of field
-data.Name = 'Example dataset: motor TMS-EMG experiment';
+data.Name = 'Example dataset: intermittent theta burst stimulation';
 data.BIDSVersion = '1.11.0';
 data.DatasetType = 'raw';
 data.Licence = 'CC0';
@@ -191,7 +191,7 @@ S.pattern1_count = {'3'};
 S.pattern2_frequency = {'5'};
 S.pattern2_duration = {'2'};
 S.pattern3_count = {'20'};
-S.pattern3_duration = {'10'};
+S.pattern3_duration = {'200'};
 
 % Write table
 T = struct2table(S);

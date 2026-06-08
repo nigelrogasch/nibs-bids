@@ -37,6 +37,9 @@
       "Material": "sponge"
     }
   ],
+  "element_id": {
+    "Delimiter": "|"
+  },
   "stimulus_shape": {
     "LongName": "Shape of stimulus",
     "Description": "Description of the stimulus shape",
@@ -50,7 +53,7 @@
     "LongName": "Stimulation intensity",
     "Description": "Stimulation current at each electrode separated by a delimiter. Total current MUST equal 0.",
     "Units": "mA",
-    "Delimeter": "|"
+    "Delimiter": "|"
   },
   "stimulus_duration": {
     "LongName": "Stimulus duration",

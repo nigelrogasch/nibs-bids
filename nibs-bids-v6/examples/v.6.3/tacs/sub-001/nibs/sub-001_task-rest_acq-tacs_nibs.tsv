@@ -1,2 +1,2 @@
 event_id	nibs_type	stimulator_id	element_id	stimulus_shape	stimulus_intensity	stimulus_duration
-tacs	tES	Soterix	elec1|elec2	Sinusoid	1|-1	10
+tacs	tES	Soterix	elec_1|elec_2	Sinusoid	1|-1	10

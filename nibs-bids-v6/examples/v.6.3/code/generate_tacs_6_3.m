@@ -182,7 +182,7 @@ S = [];
 S.event_id = {'tacs'};
 S.nibs_type = {'tES'};
 S.stimulator_id = {'Soterix'};
-S.element_id = {'elec1|elec2'};
+S.element_id = {'elec_1|elec_2'};
 S.stimulus_shape = {'Sinusoid'};
 S.stimulus_intensity = {'1|-1'};
 S.stimulus_duration = {'10'};
@@ -224,6 +224,8 @@ coil2.Thickness = '20';
 coil2.Material = 'sponge';
 data.ElementSet = [coil1,coil2];
 
+data.element_id.Delimiter = '|';
+
 data.stimulus_shape.LongName = 'Shape of stimulus';
 data.stimulus_shape.Description = 'Description of the stimulus shape';
 data.stimulus_shape.Levels.Sinusoid.Frequency = '10';
@@ -231,7 +233,7 @@ data.stimulus_shape.Levels.Sinusoid.Frequency = '10';
 data.stimulus_intensity.LongName = 'Stimulation intensity';
 data.stimulus_intensity.Description = 'Stimulation current at each electrode separated by a delimiter. Total current MUST equal 0.';
 data.stimulus_intensity.Units = 'mA';
-data.stimulus_intensity.Delimeter = '|';
+data.stimulus_intensity.Delimiter = '|';
 
 data.stimulus_duration.LongName = 'Stimulus duration';
 data.stimulus_duration.Description = 'Time during which a contiguous non-zero current is applied through the element';

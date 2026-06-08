@@ -115,7 +115,7 @@ writejson(filename, jsonData);
 
 % List of files
 fileNames = {'sub-001_task-rest_acq-s1mV_emg.mat';...
-    'sub-001_task-rest_acq-sici_emg.mat'};
+    'sub-001_task-rest_acq-SICI_emg.mat'};
 
 % List of acquisiton times
 ac_times = {'1877-06-15T13:00:00';...
