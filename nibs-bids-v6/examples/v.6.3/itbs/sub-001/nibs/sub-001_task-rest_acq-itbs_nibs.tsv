@@ -1,2 +1,2 @@
 event_id	nibs_type	stimulator_id	element_id	stimulus_shape	stimulus_intensity	stimulus_duration	pattern1_frequency	pattern1_count	pattern2_frequency	pattern2_duration	pattern3_count	pattern3_duration
-itbs	TMS	Magstim	Coil_1	Biphasic	50	200	50	3	5	2	20	200
+itbs	TMS	Magstim	Coil_1	Biphasic	50	200	50	3	5	2	20	10
