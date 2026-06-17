@@ -34,9 +34,32 @@ v6.3 resolves the two open framework issues ([#2413](https://github.com/bids-sta
 | Modality in filename | `stimsys-<label>` entity | Dropped; modality is the **`nibs_type`** column in `*_nibs.tsv` |
 | Device hardware | `CoilSet` / `ElectrodeSet` / `TransducerSet` | Unified **`ElementSet`** (`ElementType`: coil/electrode/transducer) + **`StimulatorSet`** (the waveform generator) |
 | Device id columns | `coil_id` / `electrode_id` / `transducer_id` | `stimulator_id` + `element_id` |
-| Multi-element events | Multiple rows indexed by `event_part` | A single row using the **`|` delimiter** in `element_id`, `stimulus_intensity`, `target_id` |
+| Multi-element events | Multiple rows indexed by `event_part` | A single row using the **`|` delimiter** in `element_id`, `stimulus_intensity`, and `position_id` (in `*_events.tsv`) |
 | Numeric typing | many `integer` fields | **`number`** (decimals allowed: 0.5 ms, 1.5 mA, 0.1 Hz) |
 | Dose | Applied vs received discussed | Stores **applied** dose only; received/in-tissue E-field is left to modelling (e.g. SimNIBS) |
+
+### Revisions agreed 2026-06-16
+
+The following refinements were agreed after the initial v6.3 draft and are applied throughout this
+document:
+
+- **Intensity.** `stimulus_intensity` is retained as the delivered amplitude. Two columns record how it
+  was set: `intensity_reference` (a closed vocabulary: `rMT`, `aMT`, `1mV`, `e-field`, `absolute`) and
+  `intensity_scaling` (a number, or `absolute`). The earlier `threshold_*` fields are removed, and
+  `threshold_intensity` is dropped as derivable.
+- **`IntensitySet`.** The reference *value* (e.g. an rMT of 50 %MSO) moves out of the table into a JSON
+  `IntensitySet` block (renamed from the earlier `ThresholdSet`), one entry per reference, since it is
+  constant within a file.
+- **Positions.** `target_id` is renamed `position_id` and moves into `*_events.tsv` alongside `event_id`:
+  `event_id` references `*_nibs.tsv`, `position_id` references `*_markers.tsv`. The spatial columns are
+  renamed `target_*` / `coil_*` → `position_*`.
+- **Shape parameters in the table.** Shape-specific parameters (e.g. `first_inflection`,
+  `ramp_up` / `ramp_down`, `frequency`, `starting_phase`) are `*_nibs.tsv` columns rather than nested in
+  JSON `Levels`; `Levels` returns to plain value→description strings.
+- **Offline stimulation.** When stimulation is not concurrent with a recording, `*_events.tsv` is placed
+  in `nibs/` and the `*_nibs.tsv` is listed in `scans.tsv` between the surrounding recordings.
+- **Compound elements.** A multi-coil / multi-electrode element may be given as a single compound
+  `element_id` expanded in `ElementSet`, or as a `|`-delimited list of element ids.
 
 ---
 
@@ -61,6 +84,8 @@ sub-<label>/
         └── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_events.json
 ```
 
+`*_events.tsv` is placed in `nibs/` when the stimulation is standalone or offline; when NIBS is
+concurrent with a recording, the timeline lives with that recording instead (see "Timeline").
 Optional files: `*_headshape.<ext>` and `*_photo.<ext>` (see "Optional files").
 
 ---
@@ -70,10 +95,10 @@ Optional files: `*_headshape.<ext>` and `*_photo.<ext>` (see "Optional files").
 | File | Role |
 |---|---|
 | `*_nibs.tsv` | Central table. **One row per unique stimulation parameter set** ("event type"). Holds the actual parameter values. |
-| `*_nibs.json` | Sidecar. Column descriptions/units/levels **and** device metadata (`StimulatorSet`, `ElementSet`, `NavigationSystem`). |
-| `*_markers.tsv` (+ `.json`) | Spatial targets (one point/contact per row). |
+| `*_nibs.json` | Sidecar. Column descriptions/units/levels **and** structured metadata (`StimulatorSet`, `ElementSet`, `IntensitySet`, `NavigationSystem`). |
+| `*_markers.tsv` (+ `.json`) | Spatial positions (one point/contact per row), referenced by `position_id` from `*_events.tsv`. |
 | `*_coordsystem.json` | Coordinate system, fiducials, landmarks. |
-| `*_events.tsv` (+ `.json`) | Primary timeline (`onset`, `duration`, `event_id`) for synchronization. |
+| `*_events.tsv` (+ `.json`) | Primary timeline (`onset`, `duration`, `event_id`, `position_id`) for synchronization. |
 
 The TSV and JSON files play different roles. The `*_nibs.tsv` table carries the values that can change from one protocol to the next, while the `*_nibs.json` sidecar carries the things that are fixed or descriptive, such as what each column means, the unit of every numeric column, and the full description of the devices. Units are always stated in the sidecar and are never assumed from the numbers in the table.
 
@@ -82,25 +107,27 @@ Linking identifiers connect the files.
 - `event_id` connects a row of `*_nibs.tsv` to one or more onsets in `*_events.tsv`. A parameter
   set is defined once in `*_nibs.tsv` and can be referenced many times in `*_events.tsv`.
   `event_id` MUST be unique within a `*_nibs.tsv` file.
+- `position_id` connects a row of `*_events.tsv` to one or more rows of `*_markers.tsv` (spatial
+  location). May be `|`-delimited, one position per element, in the same order as `element_id`.
 - `element_id` connects to `ElementSet.ElementID` in `*_nibs.json`. Multiple simultaneous elements
-  (e.g. tES electrodes, multi-coil) are listed in one cell separated by `|`.
+  (e.g. tES electrodes, multi-coil) are listed in one cell separated by `|`, or given as one
+  compound element.
 - `stimulator_id` connects to `StimulatorSet.StimulatorID` in `*_nibs.json`.
-- `target_id` connects to a row in `*_markers.tsv` (spatial location). May be delimited with `|`
-  to give one target per element, in the same order as `element_id`.
+- `intensity_reference` connects to `IntensitySet.IntensityID` in `*_nibs.json`.
 
 **Delimiter rule.** Whenever `|` is used in a column, the delimiter MUST be declared for that column
 in `*_nibs.json`, e.g. `{"element_id": {"Delimiter": "|"}}`.
 
-**Synchronization** across modalities (EEG, MEG, fMRI, EMG, behaviour) is performed **only** via
-`event_id` and the shared `*_events.tsv` timeline. When NIBS is concurrent with another recorded
-modality, the timeline may live with that modality's `*_events.tsv`; `*_nibs.json` then points to it
-with `IntendedFor`.
+**Synchronization** across modalities (EEG, MEG, fMRI, EMG, behaviour) is performed via `event_id`
+(and, for location, `position_id`) and the shared `*_events.tsv` timeline. When NIBS is concurrent
+with another recorded modality, the timeline lives with that modality's `*_events.tsv`; `*_nibs.json`
+then points to it with `IntendedFor`. When NIBS is offline, the timeline lives in `nibs/` (see "Timeline").
 
 ### How `*_events.tsv` and `*_nibs.tsv` relate
 
 `*_nibs.tsv` is a catalogue of stimulation protocols. Each row defines one complete protocol and is named by its `event_id`, which is unique within the file. `*_events.tsv` is the timeline of what happened during the session, and it refers back to those protocols by `event_id`. A given `event_id` therefore appears once in `*_nibs.tsv`, as a single row for a single protocol, and usually many times in `*_events.tsv`, once for every time that protocol was delivered, each with its own `onset`.
 
-To read the data, take an `event_id` from the `*_events.tsv` timeline and look up its single matching row in `*_nibs.tsv` to recover the full set of parameters for that protocol.
+`*_markers.tsv` is, in the same way, a catalogue of positions, one per row, named by `position_id`. `*_events.tsv` refers to positions by `position_id` exactly as it refers to protocols by `event_id`. To read the data, take a row of `*_events.tsv` and follow its `event_id` to the parameters in `*_nibs.tsv` and its `position_id` to the location(s) in `*_markers.tsv`.
 
 ---
 
@@ -118,22 +145,24 @@ One row holds a complete protocol, however long or repetitive it is. Rather than
 | Field | Type | Description |
 |---|---|---|
 | `event_id` | string | Identifier of a stimulation event type with unique parameters. May describe a single stimulus or repeating/nested stimuli. Used for linkage to `*_events.tsv`. MUST be unique within the file. |
-| `nibs_type` | string | Stimulation modality: `TMS` \| `tES` \| `TUS` \| `PNS`. (PNS uses whichever physical technology applies; the stimulated nerve is described via `target_*` in `*_markers.tsv`.) |
+| `nibs_type` | string | Stimulation modality: `TMS` \| `tES` \| `TUS` \| `PNS`. (PNS uses whichever physical technology applies; the stimulated nerve is described via `position_*` in `*_markers.tsv`.) |
 | `stimulator_id` | string | Label of the device that generates the stimulus waveform. Links to `StimulatorSet.StimulatorID` in `*_nibs.json`. |
-| `element_id` | string | Label of the element that delivers stimulation (coil/electrode/transducer). Links to `ElementSet.ElementID`. Multiple elements separated by `\|` (e.g. `elec_1\|elec_2`); declare the delimiter in `*_nibs.json`. |
-| `target_id` | string | Spatial target(s) for this event. Links to `target_id` in `*_markers.tsv`. May be delimited with `\|`, one per element, in the same order as `element_id`. |
+| `element_id` | string | Label of the element that delivers stimulation (coil/electrode/transducer). Links to `ElementSet.ElementID`. Multiple elements separated by `\|` (e.g. `elec_1\|elec_2`), or a single compound element; declare the delimiter in `*_nibs.json`. |
+
+The spatial target is no longer a `*_nibs.tsv` column; it is given as `position_id` in `*_events.tsv`
+(see "Timeline"), so the same protocol delivered at different positions does not need a new row.
 
 ### Stimulus fields (the base unit)
 
 | Field | Type | Description |
 |---|---|---|
-| `stimulus_shape` | string | Shape of the base stimulus, taken from the closed vocabulary in the "Stimulus shape vocabulary" table below. Shape-specific parameters are stored in `*_nibs.json` under `Levels`. |
-| `stimulus_intensity` | number | Amplitude of the base stimulus. Units are modality-dependent and declared in `*_nibs.json` (e.g. `% Maximum Stimulator Output` for TMS, `mA` for TES). Where multiple elements are given in `element_id`, one value per element separated by `\|` (e.g. `1\|-1`). For `tES`, the delimited values MUST sum to 0. Set to `n/a` when per-stimulus intensities are instead given in `pattern1_intensity` (see "Changing intensity"). |
+| `stimulus_shape` | string | Shape of the base stimulus, taken from the closed vocabulary in the "Stimulus shape vocabulary" table below. Shape-specific parameters are given as their own `*_nibs.tsv` columns. |
+| `stimulus_intensity` | number | Delivered amplitude of the base stimulus. Units are modality-dependent and declared in `*_nibs.json` (e.g. `% Maximum Stimulator Output` for TMS, `mA` for TES). Where multiple elements are given in `element_id`, one value per element separated by `\|` (e.g. `1\|-1`). For `tES`, the delimited values MUST sum to 0. Set to `n/a` when per-stimulus intensities are instead given in `pattern1_intensity` (see "Changing intensity"). How the amplitude was chosen is recorded in `intensity_reference` / `intensity_scaling`. |
 | `stimulus_duration` | number | Duration of the base stimulus (time during which contiguous non-zero current/energy is delivered). Units declared in `*_nibs.json`. |
 
 ### Stimulus shape vocabulary
 
-`stimulus_shape` uses a closed vocabulary, a fixed set of allowed values rather than free text. The allowed values, and the modality each applies to, are listed below. `Custom` is available for any waveform not covered and requires a free-text `Description`.
+`stimulus_shape` uses a closed vocabulary, a fixed set of allowed values rather than free text. The allowed values, and the modality each applies to, are listed below. `Custom` is available for any waveform not covered and requires a free-text description.
 
 | `nibs_type` | Allowed `stimulus_shape` |
 |---|---|
@@ -142,23 +171,22 @@ One row holds a complete protocol, however long or repetitive it is. Rather than
 | TUS | `Sinusoid` |
 | any | `Custom` |
 
-Each shape carries its own parameters in `*_nibs.json` under `stimulus_shape.Levels`.
+Each shape's parameters are given as their own `*_nibs.tsv` columns. `Levels` in the sidecar holds only the value→description text for `stimulus_shape`, following the normal BIDS convention.
 
-| Shape | Parameters under `Levels` |
+| Shape | Parameter columns in `*_nibs.tsv` |
 |---|---|
-| `Monophasic`, `Biphasic`, `Halfsine` | `FirstInflection` (`rising` or `descending`), the direction of the first deflection of the induced current. This corresponds to the normal or reverse current-direction setting on the stimulator. |
-| `Rectangle` | `RampUp` and `RampDown` (s), the durations of the linear ramps at the start and end of the block. |
-| `Sinusoid` | `Frequency` (Hz for tACS, carrier frequency for TUS), `StartingPhase` (degrees), and an optional `Offset` that adds a constant (DC) component. |
-| `Noise` | `NoiseType` (`white`, `pink` or other), `FrequencyLow` and `FrequencyHigh` (Hz) bounding the randomized band, and an optional `Distribution` (for example `gaussian`). |
-| `Custom` | `Description` (free text), for any waveform not listed above. |
+| `Monophasic`, `Biphasic`, `Halfsine` | `first_inflection` (`rising` or `descending`), the direction of the first deflection of the induced current. This corresponds to the normal or reverse current-direction setting on the stimulator. |
+| `Rectangle` | `ramp_up` and `ramp_down` (s), the durations of the linear ramps at the start and end of the block. |
+| `Sinusoid` | `frequency` (Hz for tACS, carrier frequency for TUS), `starting_phase` (degrees), and an optional `offset` that adds a constant (DC) component. |
+| `Noise` | `noise_type` (`white`, `pink` or other), `frequency_low` and `frequency_high` (Hz) bounding the randomized band, and an optional `distribution` (for example `gaussian`). |
+| `Custom` | `stimulus_description` (free text), for any waveform not listed above. |
 
-Example for a 10 Hz tACS sinusoid:
+A 10 Hz tACS sinusoid is therefore one `*_nibs.tsv` row carrying `stimulus_shape = Sinusoid`,
+`frequency = 10`, `starting_phase = 0`.
 
-```json
-"stimulus_shape": { "Levels": { "Sinusoid": { "Frequency": 10, "StartingPhase": 0 } } }
-```
-
-`FirstInflection` and `StartingPhase` normally sit in the sidecar. If either varies between protocols in a dataset, move it into `*_nibs.tsv` as its own column. For anti-phase or phase-shifted tACS, `StartingPhase` may be a `|`-delimited vector aligned with `element_id`.
+Shape-parameter columns are only needed for the shapes a dataset actually uses, so the table can stay
+narrow. For anti-phase or phase-shifted tACS, `starting_phase` may be a `|`-delimited vector aligned
+with `element_id`.
 
 The vocabulary is kept closed partly so that these terms can map onto HED (Hierarchical Event Descriptors), the controlled annotation system used in BIDS (see the HED appendix in the BIDS specification and issue #2384). Because full NIBS protocols are too variable to standardize directly, the aim is to align only the basic building blocks, such as the stimulus waveform and similar low-level terms, so they can be tagged consistently and searched across datasets, possibly through a small partnered HED library schema.
 
@@ -190,31 +218,38 @@ For each layer `<index>`:
 
 ### Changing intensity across repeats vs across elements
 
-Two distinct uses of a delimited intensity vector:
+A delimited intensity vector is used in two distinct ways:
 
 1. **Across elements at the same instant.** `stimulus_intensity = 1|-1` gives one value per `element_id`
    (the spatial split between, e.g., anode/cathode). For `tES` the values MUST sum to 0.
-2. **Across repeats over time.** when the intensity differs between successive stimuli within a
+2. **Across repeats over time.** When the intensity differs between successive stimuli within a
    layer, set `stimulus_intensity = n/a` and give the vector in `pattern1_intensity` (length =
    `pattern1_count`). The canonical case is paired-pulse TMS (e.g. SICI: conditioning then test).
 
-### Dosing and threshold fields (carried from v6.2)
+A pair of elements that fire **sequentially** rather than simultaneously (e.g. the two coils of a
+double-coil ccPAS pair, separated by a few milliseconds) is case 2, not case 1: it is modelled as a
+`pattern1` of two stimuli at the intra-pair interval, with the two element intensities in
+`pattern1_intensity` and the element order given by the compound `element_id` (see `ElementSet`).
 
-These OPTIONAL fields support threshold-based dosing. They apply per row and are typed `number`
-unless noted.
+### Intensity reference and scaling
+
+`stimulus_intensity` (or `pattern<index>_intensity`) holds the amplitude actually delivered. Two
+OPTIONAL columns record how that amplitude was chosen; both may be `|`-delimited and are aligned to the
+intensity values they describe.
 
 | Field | Type | Description |
 |---|---|---|
-| `threshold_type` | string | Reference endpoint for dosing (e.g. `resting_motor`, `active_motor`, `phosphene`, `sensation`, `pain`, custom). |
-| `threshold_reference_intensity` | number | Device-output value corresponding to the threshold (e.g. %MSO for TMS, mA/V for TES). |
-| `threshold_intensity` | number | Stimulation intensity expressed relative to the threshold (e.g. 110 = 110% of threshold). Expressed in the same scale as the base intensity used in the row. |
-| `threshold_criterion` | string | Criterion defining the threshold (e.g. "1 mV MEP", "visible twitch", "perceptible phosphene"). |
-| `threshold_algorithm` | string | Estimation procedure (e.g. "5/10", "PEST", staircase, custom). |
-| `threshold_measurement_method` | string | Modality used to assess the response (e.g. EMG MEP, visual report, behavioural). |
+| `intensity_reference` | string | Anchor used to set the intensity. Closed vocabulary: `rMT`, `aMT`, `1mV`, `e-field`, `absolute`. Links to `IntensitySet.IntensityID` in `*_nibs.json`. `absolute` denotes a directly specified value (no reference). |
+| `intensity_scaling` | number \| string | Multiplier applied to the reference value (e.g. `0.8` = 80% of the reference), or `absolute` for a directly specified value. |
 
-If a `pattern<index>_intensity` vector is given relative to threshold, `threshold_intensity` SHOULD be
-omitted to avoid double-specification. When both a base intensity and a threshold-relative intensity
-are present they MUST be numerically consistent with `threshold_reference_intensity`.
+The reference's measured value (e.g. an rMT of 50 %MSO) is not stored per row; it is given once in the
+`IntensitySet` block of `*_nibs.json`. The delivered amplitude therefore equals
+`IntensitySet.Value × intensity_scaling`, except where `intensity_scaling = absolute`.
+
+When different pulses or elements use different references, `intensity_reference` and `intensity_scaling`
+are `|`-delimited and aligned to the intensity vector. Example (paired-pulse SICI, conditioning dosed by
+rMT, test dosed to a 1 mV target): `pattern1_intensity = 35|58`, `intensity_reference = rMT|1mV`,
+`intensity_scaling = 0.7|1`.
 
 ### Derived / measured fields (carried from v6.2)
 
@@ -224,7 +259,7 @@ Reported or computed by the device/navigation system; not experimenter-set. All 
 
 | Field | Type | Description |
 |---|---|---|
-| `stimulus_count` | number | Counter of deliveries of the same parameter set to the same target within the file. Counting only, and it MUST NOT be used for synchronization. |
+| `stimulus_count` | number | Counter of deliveries of the same parameter set to the same position within the file. Counting only, and it MUST NOT be used for synchronization. |
 | `stimulus_validation` | string | Whether delivery/positioning was verified (`verified`, `observed`, `not_verified`, `unknown`). |
 | `subject_feedback` | string | Participant-reported perception/discomfort. |
 | `status` / `status_description` | string | Data-quality flags for the row/channel. |
@@ -238,7 +273,7 @@ Reported or computed by the device/navigation system; not experimenter-set. All 
 | `electric_field_target` / `electric_field_max` | number | E-field at the target / peak, as reported or modelled (not a tissue-current measurement). |
 | `electric_field_units` | string | Units for the above (recommended `V/m`). |
 | `electric_field_model_name` / `electric_field_model_version` | string | Source model/system for the E-field values. |
-| `motor_response` | number | Procedure-level motor-response summary (e.g. for threshold setting); not an EMG waveform. |
+| `motor_response` | number | Procedure-level motor-response summary (e.g. for reference-intensity setting); not an EMG waveform. |
 | `latency` | number | Device/procedure-reported delay between stimulus and detected response. |
 | `response_channel_name` / `_type` / `_reference` / `_status` / `_status_description` | string | Description of the channel used to derive the response. |
 
@@ -265,14 +300,14 @@ Reported or computed by the device/navigation system; not experimenter-set. All 
 ## `*_nibs.json` (sidecar)
 
 A standard BIDS JSON sidecar that (a) describes each `*_nibs.tsv` column (`LongName`, `Description`,
-`Units`, `Levels`, `Delimiter`), and (b) carries structured device and context metadata. Numeric
-columns SHOULD be documented as `number`.
+`Units`, `Levels`, `Delimiter`), and (b) carries structured device, intensity and context metadata.
+Numeric columns SHOULD be documented as `number`.
 
 Top-level descriptive fields:
 
 - `NIBSDescription`, a free-text summary of the protocol.
 - `ConcurrentModalities`, an array of concurrently recorded modalities (e.g. `["eeg"]`, `["emg"]`, `["none"]`).
-- `IntendedFor`, a BIDS URI to the `*_events.tsv` (or recording) the stimulation is time-locked to.
+- `IntendedFor`, a BIDS URI (or array of URIs) to the `*_events.tsv` (or recording) the stimulation is time-locked to.
 - Task/institution/device context: `TaskName`, `TaskDescription`, `Instructions`,
   `InstitutionName`, `InstitutionAddress`, `InstitutionalDepartmentName`.
 
@@ -299,7 +334,7 @@ Common fields:
 | Field | Type | Description |
 |---|---|---|
 | `ElementID` | string | Unique id, referenced from `element_id`. |
-| `ElementType` | string | `coil` \| `electrode` \| `transducer`. |
+| `ElementType` | string | `coil` \| `electrode` \| `transducer` \| compound (e.g. `coil_pair`). |
 | `ModelName` | string | Model name/number. |
 | `SerialNumber` | string | Serial number. |
 
@@ -316,6 +351,30 @@ Common fields:
 `MaxMechanicalIndex`, `TransducerContactMedium`; and for phased arrays `NumberOfElements`,
 `ElementPitch`, `ArrayGeometry`. Object-valued fields use `{Value, Units, Description}`.
 
+**Compound elements.** Two or more physical elements that act together (e.g. the two coils of a
+double-coil ccPAS montage) MAY be given as a single compound `element_id` with a compound `ElementType`
+(such as `coil_pair`) and a nested array of sub-elements; the sub-element order maps to the pulse order
+in `pattern1` and to the order of `position_id`. Equivalently, the elements MAY be listed as a
+`|`-delimited `element_id` (e.g. `coil_1|coil_2`) with one `ElementSet` entry each.
+
+### `IntensitySet`
+
+Describes each intensity reference named in `intensity_reference` (renamed from the earlier
+`ThresholdSet`). One entry per reference.
+
+| Field | Type | Description |
+|---|---|---|
+| `IntensityID` | string | Unique id, referenced from `intensity_reference`. |
+| `Value` | number | Measured value of the reference (e.g. the rMT). |
+| `Units` | string | Units of `Value` (e.g. `% Maximum Stimulator Output`, `mA`). |
+| `Type` | string | Reference endpoint, e.g. `resting_motor`, `active_motor`, `phosphene`, `sensation`, `pain`. |
+| `Criterion` | string | Criterion defining the reference (e.g. "1 mV MEP", "visible twitch", "perceptible phosphene"). |
+| `Algorithm` | string | Estimation procedure (e.g. "5/10", "PEST", staircase, custom). |
+| `MeasurementMethod` | string | Modality used to assess the response (e.g. EMG MEP, visual report, behavioural). |
+
+`absolute` is a reserved `intensity_reference` value for directly specified intensities and needs no
+`IntensitySet` entry.
+
 ### `NavigationSystem`
 
 (Optional; RECOMMENDED when navigation/tracking/robotic positioning is used.)
@@ -331,95 +390,17 @@ Common fields:
 
 ---
 
-## `*_markers.tsv` (spatial targets, carried from v6.2)
+## `*_markers.tsv` (spatial positions, carried from v6.2)
 
-One spatial point/contact **per row**, identified by `target_id` and referenced from `*_nibs.tsv`.
-Multi-point constructs (HD-tES montages, multi-coil, multi-focus TUS) are represented as multiple
-rows; the corresponding `*_nibs.tsv` row references them via a `|`-delimited `target_id`, ordered to
-match `element_id`. `target_group` MAY group related rows for organization only (never for linkage or
-synchronization). Coordinate frame/units are defined in `*_coordsystem.json`. Numeric fields typed
-`number`.
-
-| Field | Type | Description |
-|---|---|---|
-| `target_id` | string | Identifier of a single point/contact (one row). MUST be unique within the file. |
-| `target_group` | string | (Optional) Organizational grouping label. MUST NOT be used for linkage/sync. |
-| `target_label` | string | (Optional) Standardized label (e.g. 10–20 `C3`, `F3`; site labels `M1_hand`, `DLPFC`). |
-| `target_description` | string | (Optional) Free-text rationale/landmark description. |
-| `target_x` / `target_y` / `target_z` | number | Target point (TMS cortical target; TUS acoustic focus). |
-| `entry_x` / `entry_y` / `entry_z` | number | Entry point (TES scalp electrode position; TUS beam entry). |
-| `peeling_depth` | number | (Optional) Depth from cortical surface / entry to target. |
-| `coil_x` / `coil_y` / `coil_z` | number | (TMS) Coil origin location. |
-| `normal_x` / `normal_y` / `normal_z` | number | Coil/transducer normal vector. |
-| `direction_x` / `direction_y` / `direction_z` | number | (TMS) Coil direction vector. |
-| `beam_x` / `beam_y` / `beam_z` | number | (TUS) Beam-propagation direction vector. |
-| `transducer_x` / `transducer_y` / `transducer_z` | number | (TUS) Transducer centre. |
-| `coil_transform` / `transducer_transform` | array[number] | (Optional) 4×4 affine pose matrix. |
-| `electric_field_max_x` / `_y` / `_z` | number | (Optional) Location of maximum E-field. |
-
-Field ordering follows function: identification (`target_id`), position (`target_*`, `entry_*`,
-`peeling_depth`, `coil_*`/`transducer_*`), orientation/pose (`normal_*`, `direction_*`, `beam_*`,
-`*_transform`), then optional E-field location. Basic datasets may include only `target_*`/`entry_*`;
-advanced datasets add full pose and field modelling.
-
-A `*_markers.json` sidecar MAY describe these columns (units, descriptions).
-
----
-
-## `*_coordsystem.json` (coordinate metadata, carried from v6.2)
-
-Specifies the coordinate system, units, fiducials and anatomical landmarks in which target/marker
-positions are expressed. REQUIRED for navigated TMS/TES/TUS datasets. Key fields:
-`NIBSCoordinateSystem`, `NIBSCoordinateUnits`, `NIBSCoordinateSystemDescription`, `IntendedFor`
-(path to the anatomical reference), `FiducialsCoordinates`/`FiducialsCoordinateSystem`/`…Units`,
-`AnatomicalLandmarkCoordinates`/`…System`/`…Units`/`…Description`, `HeadMeasurements`,
-`DigitizedHeadPoints`(+`Number`/`Units`/`Description`), and `AnatomicalLandmarkRmsDeviation`.
-TUS datasets MAY add transducer-pose fields: `TransducerCoordinates`/`…Units`/`…Description`,
-`TransducerCoordinatesDescription`, and `TransducerRmsDeviation`(+`Units`/`Description`).
-(Definitions unchanged from v6.2.)
-
----
-
-## `*_events.tsv` / `*_events.json` (timeline)
-
-The primary experimental timeline used for synchronization across modalities.
+One spatial point/contact **per row**, identified by `position_id` and referenced from `position_id`
+in `*_events.tsv`. Multi-point constructs (HD-tES montages, multi-coil, multi-focus TUS) are
+represented as multiple rows; the corresponding `*_events.tsv` row references them via a `|`-delimited
+`position_id`, ordered to match `element_id`. `position_group` MAY group related rows for organization
+only (never for linkage or synchronization). Coordinate frame/units are defined in `*_coordsystem.json`.
+Numeric fields typed `number`.
 
 | Field | Type | Description |
 |---|---|---|
-| `onset` | number | Onset of the event (s). |
-| `duration` | number | Duration of the event (s); `n/a` if not applicable. May be derived from the `*_nibs.tsv` pattern fields. |
-| `event_id` | string | References the matching `event_id` in `*_nibs.tsv`. |
-
-A standalone NIBS session keeps `*_events.tsv` in `nibs/`. When NIBS is concurrent with another
-recorded modality (e.g. EMG), the timeline lives with that modality's `*_events.tsv`, and
-`*_nibs.json` references it via `IntendedFor`. `event_id` is the sole cross-modality linkage key.
-
----
-
-## Optional files
-
-- `*_headshape.<ext>`, digitized head points (e.g. `sub-01_..._acq-HEAD_headshape.pos`), supplementing
-  the `DigitizedHeadPoints*` fields in `*_coordsystem.json`.
-- `*_photo.<ext>` (`.jpg`/`.png`/`.tif`), photos of landmarks/fiducials; crop/blur to remove
-  identifying features before sharing. `acq-<label>` distinguishes multiple photos.
-
----
-
-## Appendix B. Migration notes (v6.2 to v6.3)
-
-- Remove the `stimsys-<label>` filename entity; add the `nibs_type` column.
-- Replace `coil_id`/`electrode_id`/`transducer_id` with `stimulator_id` + `element_id`; fold
-  `CoilSet`/`ElectrodeSet`/`TransducerSet` into one `ElementSet` (`ElementType`).
-- Replace per-pulse/`StimulusSet` parameters and the `pulse`/`train`/`repeat` timing with the base
-  `stimulus_*` fields plus `pattern<index>_*` layers.
-- Replace multi-row `event_part` events with single rows using `|`-delimited `element_id` /
-  `stimulus_intensity` / `target_id`.
-- Type numeric fields as `number` (not `integer`); declare units per column in `*_nibs.json`.
-- Spatial (`*_markers.tsv`, `*_coordsystem.json`) and dosing/threshold/derived fields are retained;
-  only their linkage keys change (`target_id`; `|` delimiters).
-
----
-
-## References
-
-Peterchev AV, Wagner TA, Miranda PC, Nitsche MA, Paulus W, Lisanby SH, Pascual-Leone A, Bikson M. Fundamentals of transcranial electric and magnetic stimulation dose: definition, selection, and reporting practices. Brain Stimulation. 2012;5(4):435-453. doi:10.1016/j.brs.2011.10.001.
+| `position_id` | string | Identifier of a single point/contact (one row). MUST be unique within the file. |
+| `position_group` | string | (Optional) Organizational grouping label. MUST NOT be used for linkage/sync. |
+| `position_label` | string | (Optional) Standardi
