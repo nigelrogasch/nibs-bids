@@ -1,0 +1,37 @@
+{
+  "NIBSDescription": "Cortico-cortical paired associative stimulation (ccPAS): PMv pulse then M1 pulse 8 ms later, 100 pairs at 0.2 Hz (~500 s). Delivered offline.",
+  "ConcurrentModalities": ["none"],
+  "StimulatorSet": { "StimulatorID": "MagVenture", "Manufacturer": "MagVenture", "ManufacturerModelName": "MagPro X100", "ManufacturerSerialNumber": "X100-0001" },
+  "ElementSet": [
+    {
+      "ElementID": "double_coil",
+      "ElementType": "coil_pair",
+      "Description": "Two figure-of-eight coils on independent channels. Sub-coil order maps to pulse order in pattern1 and to position_id order: pulse 1 -> Coils[0] (PMv), pulse 2 -> Coils[1] (M1).",
+      "Coils": [
+        { "CoilID": "Coil_1", "ModelName": "Cool-B65", "CoilShape": "figure-of-eight", "SerialNumber": "B65-A" },
+        { "CoilID": "Coil_2", "ModelName": "Cool-B65", "CoilShape": "figure-of-eight", "SerialNumber": "B65-B" }
+      ]
+    }
+  ],
+  "IntensitySet": [
+    { "IntensityID": "rMT", "Value": 50, "Units": "% Maximum Stimulator Output", "Type": "resting_motor",
+      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials", "Algorithm": "relative-frequency (Rossini-Rothwell)", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" },
+    { "IntensityID": "1mV", "Value": 58, "Units": "% Maximum Stimulator Output", "Type": "target_MEP",
+      "Criterion": "stimulator output evoking a ~1 mV peak-to-peak MEP", "Algorithm": "manual titration", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" }
+  ],
+  "event_id": { "LongName": "Stimulation event type", "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to event_id in *_events.tsv. MUST be unique within this file." },
+  "nibs_type": { "LongName": "Stimulation modality", "Description": "Non-invasive brain stimulation modality.", "Levels": { "TMS": "Transcranial magnetic stimulation" } },
+  "stimulator_id": { "LongName": "Stimulator identifier", "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID." },
+  "element_id": { "LongName": "Element identifier", "Description": "Element delivering stimulation. Links to ElementSet.ElementID. Here a compound coil_pair (double_coil)." },
+  "stimulus_shape": { "LongName": "Stimulus shape", "Description": "Waveform shape of the base stimulus.", "Levels": { "Biphasic": "Biphasic pulse as per stimulator setting" } },
+  "first_inflection": { "LongName": "First current inflection", "Description": "Direction of the first deflection of the induced current.", "Levels": { "rising": "Normal current direction", "descending": "Reverse current direction" } },
+  "stimulus_intensity": { "LongName": "Stimulus intensity", "Description": "Delivered amplitude of the base stimulus. n/a here; per-pulse values are in pattern1_intensity.", "Units": "% Maximum Stimulator Output" },
+  "stimulus_duration": { "LongName": "Stimulus duration", "Description": "Pulse width (contiguous non-zero current through the coil).", "Units": "microseconds" },
+  "pattern1_count": { "LongName": "Pulses per pair", "Description": "Number of base stimuli in one pattern1 unit (the pair)." },
+  "pattern1_interval": { "LongName": "Intra-pair interval", "Description": "Onset-to-onset interval between the two pulses of a pair (PMv then M1).", "Units": "milliseconds" },
+  "pattern1_intensity": { "LongName": "Per-pulse intensity", "Description": "Delivered amplitude of each pulse in the pair, in coil order (PMv, M1). Number of values equals pattern1_count.", "Units": "% Maximum Stimulator Output", "Delimiter": "|" },
+  "pattern2_count": { "LongName": "Pairs in protocol", "Description": "Number of pattern1 units (pairs) in the full protocol." },
+  "pattern2_interval": { "LongName": "Inter-pair interval", "Description": "Onset-to-onset interval between pairs (0.2 Hz).", "Units": "milliseconds" },
+  "intensity_reference": { "LongName": "Intensity reference", "Description": "Anchor used to set each pulse intensity, in coil order (PMv, M1). Links to IntensitySet.IntensityID. Closed vocabulary (rMT, aMT, 1mV, e-field, absolute).", "Delimiter": "|" },
+  "intensity_scaling": { "LongName": "Intensity scaling", "Description": "Multiplier applied to the reference value, or 'absolute'. Aligned to intensity_reference.", "Delimiter": "|" }
+}

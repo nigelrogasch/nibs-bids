@@ -1,0 +1,5 @@
+{
+  "NIBSCoordinateSystem": "MNI152NLin2009cAsym",
+  "NIBSCoordinateUnits": "mm",
+  "NIBSCoordinateSystemDescription": "Standard MNI template space; position_x/y/z in *_markers.tsv are given in this space."
+}

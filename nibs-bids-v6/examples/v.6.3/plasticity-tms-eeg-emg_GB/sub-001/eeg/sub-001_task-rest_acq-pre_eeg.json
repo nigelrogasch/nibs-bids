@@ -1,0 +1,14 @@
+{
+  "TaskName": "rest",
+  "TaskDescription": "Single-pulse TMS to left M1 during eyes-open rest; TMS-evoked EEG potentials (TEPs) recorded.",
+  "Manufacturer": "Brain Products",
+  "ManufacturerModelName": "actiCHamp Plus",
+  "EEGReference": "FCz",
+  "EEGGround": "AFz",
+  "SamplingFrequency": 5000,
+  "PowerLineFrequency": 50,
+  "EEGChannelCount": 63,
+  "SoftwareFilters": "n/a",
+  "RecordingType": "continuous",
+  "CapManufacturer": "EasyCap"
+}

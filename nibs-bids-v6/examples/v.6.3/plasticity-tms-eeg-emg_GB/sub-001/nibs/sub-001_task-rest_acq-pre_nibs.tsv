@@ -1,0 +1,2 @@
+event_id	nibs_type	stimulator_id	element_id	stimulus_shape	first_inflection	stimulus_intensity	stimulus_duration	intensity_reference	intensity_scaling
+spTMS	TMS	MagVenture	Coil_1	Biphasic	rising	60	200	rMT	1.2

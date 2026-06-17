@@ -1,0 +1,6 @@
+{
+  "onset": { "LongName": "Event onset", "Description": "Onset of the stimulation event relative to the recording.", "Units": "second" },
+  "duration": { "LongName": "Event duration", "Description": "Duration of the event; n/a for an instantaneous pulse.", "Units": "second" },
+  "event_id": { "LongName": "Stimulation type", "Description": "References event_id in the corresponding nibs/*_nibs.tsv.", "Levels": { "spTMS": "Single-pulse TMS (test pulse)" } },
+  "position_id": { "LongName": "Stimulation position", "Description": "References position_id in the corresponding nibs/*_markers.tsv.", "Levels": { "M1_L": "Left M1 hand hotspot" } }
+}

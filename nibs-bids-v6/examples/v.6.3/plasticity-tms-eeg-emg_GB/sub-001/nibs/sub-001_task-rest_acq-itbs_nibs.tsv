@@ -1,0 +1,2 @@
+event_id	nibs_type	stimulator_id	element_id	stimulus_shape	first_inflection	stimulus_intensity	stimulus_duration	pattern1_count	pattern1_interval	pattern2_count	pattern2_interval	pattern3_count	pattern3_interval	intensity_reference	intensity_scaling
+iTBS	TMS	MagVenture	Coil_1	Biphasic	rising	32	200	3	20	10	200	20	10000	aMT	0.8

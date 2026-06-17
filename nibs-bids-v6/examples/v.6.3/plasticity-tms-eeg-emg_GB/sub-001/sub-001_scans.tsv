@@ -1,0 +1,6 @@
+filename	acq_time
+eeg/sub-001_task-rest_acq-pre_eeg.set	1877-06-15T13:00:00
+emg/sub-001_task-rest_acq-pre_emg.mat	1877-06-15T13:00:00
+nibs/sub-001_task-rest_acq-itbs_nibs.tsv	1877-06-15T13:20:00
+eeg/sub-001_task-rest_acq-post_eeg.set	1877-06-15T13:40:00
+emg/sub-001_task-rest_acq-post_emg.mat	1877-06-15T13:40:00

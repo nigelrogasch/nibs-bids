@@ -1,0 +1,5 @@
+{
+  "position_id": { "LongName": "Position identifier", "Description": "Identifier of a single stimulation position (one row). Referenced from position_id in *_events.tsv. MUST be unique within this file." },
+  "position_label": { "LongName": "Position label", "Description": "Standardized site label (e.g. 10-20 location or anatomical site)." },
+  "position_description": { "LongName": "Position description", "Description": "Free-text description of the position / how it was located." }
+}

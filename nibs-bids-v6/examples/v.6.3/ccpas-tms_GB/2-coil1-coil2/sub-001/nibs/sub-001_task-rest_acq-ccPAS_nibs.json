@@ -1,0 +1,28 @@
+{
+  "NIBSDescription": "ccPAS: PMv pulse (Coil_1) then M1 pulse (Coil_2) 8 ms later, 100 pairs at 0.2 Hz. The two coils are listed as a |-delimited element_id, aligned to the two pulses of pattern1.",
+  "ConcurrentModalities": ["none"],
+  "StimulatorSet": { "StimulatorID": "MagVenture", "Manufacturer": "MagVenture", "ManufacturerModelName": "MagPro X100", "ManufacturerSerialNumber": "X100-0001" },
+  "ElementSet": [
+    { "ElementID": "Coil_1", "ElementType": "coil", "ModelName": "Cool-B65", "CoilShape": "figure-of-eight", "SerialNumber": "B65-A", "Description": "Coil over left ventral premotor cortex (PMv); fires first (pattern1 pulse 1)." },
+    { "ElementID": "Coil_2", "ElementType": "coil", "ModelName": "Cool-B65", "CoilShape": "figure-of-eight", "SerialNumber": "B65-B", "Description": "Coil over left M1; fires 8 ms later (pattern1 pulse 2)." }
+  ],
+  "IntensitySet": [
+    { "IntensityID": "rMT", "Value": 50, "Units": "% Maximum Stimulator Output", "Type": "resting_motor", "Criterion": "MEP >= 50 uV in >=5 of 10 trials", "Algorithm": "relative-frequency (Rossini-Rothwell)", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" },
+    { "IntensityID": "1mV", "Value": 58, "Units": "% Maximum Stimulator Output", "Type": "target_MEP", "Criterion": "output evoking a ~1 mV MEP", "Algorithm": "manual titration", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" }
+  ],
+  "event_id": { "LongName": "Stimulation event type", "Description": "Identifier of a stimulation event type. Linked to event_id in *_events.tsv. MUST be unique within this file." },
+  "nibs_type": { "LongName": "Stimulation modality", "Description": "Non-invasive brain stimulation modality.", "Levels": { "TMS": "Transcranial magnetic stimulation" } },
+  "stimulator_id": { "LongName": "Stimulator identifier", "Description": "Links to StimulatorSet.StimulatorID." },
+  "element_id": { "LongName": "Element identifier(s)", "Description": "The two coils, in pattern1 pulse order. Links to ElementSet.ElementID.", "Delimiter": "|" },
+  "stimulus_shape": { "LongName": "Stimulus shape", "Description": "Waveform shape of the base stimulus.", "Levels": { "Biphasic": "Biphasic pulse as per stimulator setting" } },
+  "first_inflection": { "LongName": "First current inflection", "Description": "Direction of the first induced-current deflection.", "Levels": { "rising": "Normal current direction", "descending": "Reverse current direction" } },
+  "stimulus_intensity": { "LongName": "Stimulus intensity", "Description": "n/a here; per-pulse values are in pattern1_intensity.", "Units": "% Maximum Stimulator Output" },
+  "stimulus_duration": { "LongName": "Stimulus duration", "Description": "Pulse width.", "Units": "microseconds" },
+  "pattern1_count": { "LongName": "Pulses per pair", "Description": "Number of base stimuli in one pattern1 unit (the pair)." },
+  "pattern1_interval": { "LongName": "Intra-pair interval", "Description": "Onset-to-onset interval between the two pulses (Coil_1 then Coil_2).", "Units": "milliseconds" },
+  "pattern1_intensity": { "LongName": "Per-pulse intensity", "Description": "Amplitude of each pulse, in element order (Coil_1, Coil_2). Length equals pattern1_count.", "Units": "% Maximum Stimulator Output", "Delimiter": "|" },
+  "pattern2_count": { "LongName": "Pairs in protocol", "Description": "Number of pattern1 units (pairs)." },
+  "pattern2_interval": { "LongName": "Inter-pair interval", "Description": "Onset-to-onset interval between pairs (0.2 Hz).", "Units": "milliseconds" },
+  "intensity_reference": { "LongName": "Intensity reference", "Description": "Anchor per pulse, in element order. Links to IntensitySet.IntensityID.", "Delimiter": "|" },
+  "intensity_scaling": { "LongName": "Intensity scaling", "Description": "Multiplier on the reference, or 'absolute'. Aligned to intensity_reference.", "Delimiter": "|" }
+}

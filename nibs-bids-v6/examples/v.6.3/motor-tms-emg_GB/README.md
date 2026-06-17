@@ -1,65 +1,83 @@
+# Notes — 2026-06-16 (meeting with Nigel)
 
-NOTES 20260616
+Decisions from the 2026-06-16 meeting and subsequent clarification. These replace the earlier
+`ThresholdSet` / `threshold_*` fields. The general structure is considered settled; the ccPAS
+double-coil case is treated as an edge case and is not a prerequisite for the general model.
 
-- in the tsv: intensity_reference with rMT|1mV|e-fild and intensity_scaling 0.8|1|absolute which could be 80% rMT | 100% 1mV | absolute efield (no scaling no method)
-- remove rMT from tsv, in the json we will have "value: XX" describing rMT
-- ThresholdSet: change to IntensitySet
-- what we can do now:
-  describe the temporal aspect of the stimulation (derived with nibs.tsv)
-  describe the spatial aspect (markers.tsv)
-- nail down double coil (ccPAS cortical, temporal and spatial)
+## Intensity fields
+- `stimulus_intensity` is retained as the delivered amplitude. `intensity_reference` and
+  `intensity_scaling` record how that amplitude was set.
+- `intensity_reference` (TSV): closed vocabulary, e.g. `rMT`, `aMT`, `1mV`, `e-field`, `absolute`.
+- `intensity_scaling` (TSV): a number (e.g. `0.8`) or `absolute` (value given directly, no scaling).
+- Both may be `|`-delimited and are aligned position-by-position, e.g.
+  `intensity_reference = rMT|1mV|e-field` with `intensity_scaling = 0.8|1|absolute`.
+- The reference value is not stored in the TSV. It is given in the JSON `IntensitySet` entry as
+  `Value` (e.g. rMT = 50 %MSO), since it is constant within a file.
+- `absolute` may appear as an `intensity_reference` value as well as an `intensity_scaling` value.
+- When intensity varies between pulses, the per-pulse values are in `pattern1_intensity` and
+  `stimulus_intensity` is `n/a` (unchanged from SICI).
 
-- postions: instead of target_id we will have position_id (more appropriate, not describing a target). We describe it in the events.tsv in the exact same way we use for event_id.
-- even for experiments in which technically there is no event, like beh + TMS + beh, the events.tsv will live in the nibs folder. scans.tsv will have beh.tsv, nibs.tsv (this indientify an offline stimulation), beh.tsv
-- idea: tool describing pulse sequence could laso describe the higher oreder of "events" i.e., acq sequence, recording sequence (scans.tsv), session sequence (session.tsv) ...
-  
+## IntensitySet (JSON)
+- `ThresholdSet` is renamed `IntensitySet`. Each entry: `IntensityID`, `Value`, `Units`, and method
+  fields (`Type`, `Criterion`, `Algorithm`, `MeasurementMethod`). Referenced by `intensity_reference`.
 
+## Temporal and spatial description
+- Temporal structure is given by `nibs.tsv` (`stimulus_*`, `pattern<n>_*`).
+- Spatial structure is given by `markers.tsv`.
+
+## Positions
+- `target_id` is renamed `position_id`.
+- `position_id` is placed in `events.tsv` alongside `event_id`: `event_id` references `nibs.tsv`,
+  `position_id` references `markers.tsv`.
+- `position_id` may be `|`-delimited, one position per element.
+- Spatial columns in `markers.tsv` are renamed `target_*` / `coil_*` -> `position_*`.
+
+## Offline / behavioural experiments
+- When stimulation is not concurrent with a recording (e.g. beh, TMS, beh), `events.tsv` is placed in
+  `nibs/`. `scans.tsv` lists `beh.tsv`, `nibs.tsv`, `beh.tsv`; the `nibs.tsv` entry denotes an offline
+  stimulation block.
+
+## ccPAS (double coil)
+- Modelled as SICI: one `nibs.tsv` row, `pattern1` of 2 pulses at the intra-pair interval, the two coil
+  intensities in `pattern1_intensity`, `stimulus_intensity = n/a`.
+- `element_id = double_coil`, expanded in the JSON `ElementSet`; `coil_1|coil_2` is an equivalent form.
+- `events.tsv` carries one trigger per pair.
+- `position_id` references two positions (one per coil), `|`-delimited.
+
+## Tool (future)
+- A description of a pulse sequence could be extended to higher-order sequences: acquisition order,
+  recording order (`scans.tsv`), session order (`sessions.tsv`).
+
+Status: applied to the `_GB` examples on 2026-06-16.
+
+---
 
 > [!IMPORTANT]
-> ## Notes — reading intensities and the `|` delimiter
+> ## Delimiter `|` — meaning by column
 >
-> The `|` (pipe) delimiter is used in several columns, and **its meaning depends on which column it is in**:
->
-> - **Across repeats, over time** → `pattern1_intensity` (and any `pattern<n>_*` vector).
->   The values are successive stimuli in the pattern, in order, and the number of values
->   MUST equal `pattern1_count`.
->   **When the intensity changes between pulses, set `stimulus_intensity = n/a` and put the
->   per-pulse values in `pattern1_intensity`.** This is the paired-pulse SICI case:
->   `35|50` = conditioning pulse at 35, then test pulse at 50.
->
-> - **Across elements, in space (same instant)** → `stimulus_intensity` (and `element_id`, `target_id`).
->   Here `|` would mean several elements (electrodes/coils) firing simultaneously — one value per
->   element, in the same order as `element_id` (for tES the values MUST sum to 0).
->   **This is NOT used in this example**, because single-coil TMS delivers through one element.
->
-> **In one line:** a `|` in `pattern1_intensity` means *different pulses in time*; a `|` in
-> `stimulus_intensity` means *different elements in space*. Never put a time-varying vector in
-> `stimulus_intensity`.
->
-> Any column that uses `|` MUST declare its delimiter in the `*_nibs.json` sidecar.
+> - `pattern<n>_intensity`: successive stimuli over time (in order); the number of values equals
+>   `pattern<n>_count`. When intensity changes between pulses, `stimulus_intensity = n/a` and the
+>   per-pulse values go here. SICI: `35|58` = conditioning then test. Two coils fired sequentially
+>   (e.g. ccPAS) are also a time vector and go here, not in `stimulus_intensity`.
+> - `stimulus_intensity`, `element_id`, `position_id`: multiple elements at the same instant (e.g.
+>   simultaneous tES electrodes; for tES the values sum to 0). `stimulus_intensity` is always the
+>   delivered amplitude; `intensity_reference` / `intensity_scaling` describe how it was set.
+> - Any column using `|` declares its delimiter in the `*_nibs.json` sidecar.
 
 # Example data set: motor TMS-EMG (SICI) — GB working copy
 
-This data set is a working copy (`_GB`) of the `motor-tms-emg` example, formatted using the
-proposed **NIBS-BIDS v6.3** structure with the v6.3 working decisions applied:
-all stimulus parameters live in `*_nibs.tsv`, and threshold methods are described via a
-`ThresholdSet` block in `*_nibs.json`.
+Working copy (`_GB`) of the `motor-tms-emg` example in the proposed NIBS-BIDS v6.3 structure with the
+2026-06-16 decisions applied: stimulus parameters in `*_nibs.tsv`, intensity references described in an
+`IntensitySet` block in `*_nibs.json`, and positions in `*_markers.tsv` referenced from `*_events.tsv`.
 
 ## Experiment details
-TMS-EMG data from a single individual. One protocol acquisition is provided: **SICI**
-(short-interval intracortical inhibition), which interleaves single test pulses (`spTMS`) and
-paired conditioning–test pulses (`SICI`, 2 ms inter-stimulus interval). TMS is delivered over
-left primary motor cortex; EMG is recorded from the right first dorsal interosseous muscle.
-Intensities are set relative to the resting motor threshold (RMT = 45 % maximum stimulator output).
+TMS-EMG data from a single individual. One acquisition: SICI (short-interval intracortical inhibition),
+interleaving single test pulses (`spTMS`) and paired conditioning-test pulses (`SICI`, 2 ms ISI). TMS over
+left primary motor cortex; EMG from the right first dorsal interosseous. Resting motor threshold
+rMT = 50 %MSO; the test pulse intensity (`1mV`) = 58 %MSO. Conditioning pulse = 70% rMT (35 %MSO).
 
-## What this example demonstrates
-- The base stimulus described entirely in `*_nibs.tsv` (shape, first inflection, intensity, duration).
-- Repetition described parametrically with `pattern1_*` (the paired pulse) instead of extra rows.
-- Per-pulse intensity via the `|` delimiter in `pattern1_intensity` (see Notes above).
-- Threshold values in `*_nibs.tsv` (`threshold_id`, `threshold_reference_intensity`) with the method
-  described once in `ThresholdSet` in `*_nibs.json`.
-- Concurrent EMG: the timeline lives in `emg/*_events.tsv`, linked from `*_nibs.json` via `IntendedFor`.
-
-## Notes on files
-The EMG data file (`*_emg.mat`) is an empty placeholder, included for demonstration only, and does
-not correspond to a defined BIDS data type.
+## Files
+- `nibs/*_nibs.tsv` / `.json`: stimulation parameters and `IntensitySet`.
+- `nibs/*_markers.tsv` / `.json`: stimulation position(s).
+- `emg/*_events.tsv` / `.json`: timeline (`event_id` -> `nibs.tsv`, `position_id` -> `markers.tsv`).
+- `emg/*_emg.mat`: empty placeholder, demonstration only.
