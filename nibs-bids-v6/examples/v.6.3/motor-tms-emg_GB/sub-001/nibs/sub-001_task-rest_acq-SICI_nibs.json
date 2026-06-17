@@ -1,94 +1,33 @@
 {
-  "NIBSDescription": "Single- and paired-pulse (SICI) TMS over left primary motor cortex with concurrent EMG from the right first dorsal interosseous muscle. Intensities are set relative to the resting motor threshold (RMT).",
+  "NIBSDescription": "Single- and paired-pulse (SICI) TMS over left M1 with concurrent EMG from the right first dorsal interosseous. Conditioning pulse dosed at 70% rMT; test pulse dosed to evoke a ~1 mV MEP.",
   "ConcurrentModalities": ["emg"],
   "IntendedFor": "bids::sub-001/emg/sub-001_task-rest_acq-SICI_events.tsv",
-
   "StimulatorSet": {
     "StimulatorID": "Magstim",
     "Manufacturer": "Magstim",
     "ManufacturerModelName": "BiStim^2",
     "ManufacturerSerialNumber": "3234-00"
   },
-
   "ElementSet": [
-    {
-      "ElementID": "Coil_1",
-      "ElementType": "coil",
-      "ModelName": "D70",
-      "SerialNumber": "4150-00",
-      "CoilShape": "figure-of-eight"
-    }
+    { "ElementID": "Coil_1", "ElementType": "coil", "ModelName": "D70", "SerialNumber": "4150-00", "CoilShape": "figure-of-eight" }
   ],
-
-  "ThresholdSet": [
-    {
-      "ThresholdID": "RMT",
-      "ThresholdType": "resting_motor",
-      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials",
-      "Algorithm": "relative-frequency (Rossini-Rothwell)",
-      "MeasurementMethod": "EMG MEP from right first dorsal interosseous"
-    }
+  "IntensitySet": [
+    { "IntensityID": "rMT", "Value": 50, "Units": "% Maximum Stimulator Output", "Type": "resting_motor",
+      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials", "Algorithm": "relative-frequency (Rossini-Rothwell)", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" },
+    { "IntensityID": "1mV", "Value": 58, "Units": "% Maximum Stimulator Output", "Type": "target_MEP",
+      "Criterion": "stimulator output evoking a ~1 mV peak-to-peak MEP", "Algorithm": "manual titration", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" }
   ],
-
-  "event_id": {
-    "LongName": "Stimulation event type",
-    "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to event_id in *_events.tsv. MUST be unique within this file."
-  },
-  "nibs_type": {
-    "LongName": "Stimulation modality",
-    "Description": "Non-invasive brain stimulation modality.",
-    "Levels": { "TMS": "Transcranial magnetic stimulation" }
-  },
-  "stimulator_id": {
-    "LongName": "Stimulator identifier",
-    "Description": "Device that generates the stimulus waveform. Links to StimulatorSet.StimulatorID."
-  },
-  "element_id": {
-    "LongName": "Element identifier",
-    "Description": "Element that delivers the stimulation. Links to ElementSet.ElementID."
-  },
-  "stimulus_shape": {
-    "LongName": "Stimulus shape",
-    "Description": "Waveform shape of the base stimulus.",
-    "Levels": { "Monophasic": "Monophasic pulse as per stimulator setting" }
-  },
-  "first_inflection": {
-    "LongName": "First current inflection",
-    "Description": "Direction of the first deflection of the induced current; corresponds to the normal/reverse current-direction setting on the stimulator.",
-    "Levels": { "rising": "Normal current direction", "descending": "Reverse current direction" }
-  },
-  "stimulus_intensity": {
-    "LongName": "Stimulus intensity",
-    "Description": "Amplitude of the base stimulus. Set to n/a when intensity varies between pulses; per-pulse values are then given in pattern1_intensity.",
-    "Units": "% Maximum Stimulator Output"
-  },
-  "stimulus_duration": {
-    "LongName": "Stimulus duration",
-    "Description": "Time during which a contiguous non-zero current is applied through the coil (pulse width).",
-    "Units": "microseconds"
-  },
-  "pattern1_count": {
-    "LongName": "Number of stimuli in pattern1",
-    "Description": "Number of base stimuli in one pattern1 unit."
-  },
-  "pattern1_interval": {
-    "LongName": "Interval between stimuli in pattern1",
-    "Description": "Onset-to-onset interval between consecutive base stimuli.",
-    "Units": "milliseconds"
-  },
-  "pattern1_intensity": {
-    "LongName": "Per-pulse intensity in pattern1",
-    "Description": "Intensity of each successive stimulus in pattern1 when it changes between pulses (across repeats, over time). Number of values MUST equal pattern1_count. Used only when stimulus_intensity is n/a.",
-    "Units": "% Maximum Stimulator Output",
-    "Delimiter": "|"
-  },
-  "threshold_id": {
-    "LongName": "Threshold identifier",
-    "Description": "Thresholding method used to set the intensity for this event. Links to ThresholdSet.ThresholdID."
-  },
-  "threshold_reference_intensity": {
-    "LongName": "Threshold reference intensity",
-    "Description": "Device output corresponding to the threshold named in threshold_id (e.g. the RMT value), allowing intensities to be expressed relative to threshold.",
-    "Units": "% Maximum Stimulator Output"
-  }
+  "event_id": { "LongName": "Stimulation event type", "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to event_id in *_events.tsv. MUST be unique within this file." },
+  "nibs_type": { "LongName": "Stimulation modality", "Description": "Non-invasive brain stimulation modality.", "Levels": { "TMS": "Transcranial magnetic stimulation" } },
+  "stimulator_id": { "LongName": "Stimulator identifier", "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID." },
+  "element_id": { "LongName": "Element identifier", "Description": "Element delivering stimulation. Links to ElementSet.ElementID." },
+  "stimulus_shape": { "LongName": "Stimulus shape", "Description": "Waveform shape of the base stimulus.", "Levels": { "Monophasic": "Monophasic pulse as per stimulator setting" } },
+  "first_inflection": { "LongName": "First current inflection", "Description": "Direction of the first deflection of the induced current.", "Levels": { "rising": "Normal current direction", "descending": "Reverse current direction" } },
+  "stimulus_intensity": { "LongName": "Stimulus intensity", "Description": "Delivered amplitude of the base stimulus. n/a when intensity varies between pulses (values then in pattern1_intensity).", "Units": "% Maximum Stimulator Output" },
+  "stimulus_duration": { "LongName": "Stimulus duration", "Description": "Pulse width (contiguous non-zero current through the coil).", "Units": "microseconds" },
+  "pattern1_count": { "LongName": "Stimuli in pattern1", "Description": "Number of base stimuli in one pattern1 unit." },
+  "pattern1_interval": { "LongName": "Interval in pattern1", "Description": "Onset-to-onset interval between consecutive base stimuli.", "Units": "milliseconds" },
+  "pattern1_intensity": { "LongName": "Per-pulse intensity", "Description": "Delivered amplitude of each successive stimulus in pattern1. Number of values equals pattern1_count.", "Units": "% Maximum Stimulator Output", "Delimiter": "|" },
+  "intensity_reference": { "LongName": "Intensity reference", "Description": "Anchor used to set the intensity. Links to IntensitySet.IntensityID. Closed vocabulary (rMT, aMT, 1mV, e-field, absolute). Aligned to pattern1_intensity when delimited.", "Delimiter": "|" },
+  "intensity_scaling": { "LongName": "Intensity scaling", "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value. Aligned to intensity_reference.", "Delimiter": "|" }
 }

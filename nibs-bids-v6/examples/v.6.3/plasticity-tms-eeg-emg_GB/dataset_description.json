@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset: M1 plasticity, concurrent TMS-EEG-EMG with iTBS - GB working copy",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "License": "CC0",
+  "Authors": ["GB working copy"]
+}

@@ -1,0 +1,14 @@
+{
+  "TaskName": "rest",
+  "TaskDescription": "EMG from right first dorsal interosseous at rest during single-pulse TMS to left M1 (MEP).",
+  "Manufacturer": "Brain Products",
+  "ManufacturerModelName": "BrainAmp ExG",
+  "EMGPlacementScheme": "bipolar",
+  "EMGPlacementSchemeDescription": "Bipolar montage over the muscle belly of the right first dorsal interosseous (belly-tendon).",
+  "EMGChannelCount": 1,
+  "EMGReference": "tendon of right first dorsal interosseous",
+  "EMGGround": "right ulnar styloid",
+  "SamplingFrequency": 5000,
+  "PowerLineFrequency": 50,
+  "SoftwareFilters": "n/a"
+}

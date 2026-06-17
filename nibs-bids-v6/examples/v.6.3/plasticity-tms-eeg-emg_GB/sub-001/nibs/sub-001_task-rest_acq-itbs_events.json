@@ -1,0 +1,6 @@
+{
+  "onset": { "LongName": "Event onset", "Description": "Onset of the iTBS protocol.", "Units": "second" },
+  "duration": { "LongName": "Event duration", "Description": "Total duration of the iTBS protocol (~192 s; derivable from the pattern fields in *_nibs.tsv).", "Units": "second" },
+  "event_id": { "LongName": "Stimulation type", "Description": "References event_id in *_nibs.tsv.", "Levels": { "iTBS": "Intermittent theta-burst stimulation, 600 pulses" } },
+  "position_id": { "LongName": "Stimulation position", "Description": "References position_id in *_markers.tsv.", "Levels": { "M1_L": "Left M1 hand hotspot" } }
+}

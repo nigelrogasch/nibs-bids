@@ -1,0 +1,6 @@
+{
+  "onset": { "LongName": "Event onset", "Description": "Onset of the ccPAS protocol.", "Units": "second" },
+  "duration": { "LongName": "Event duration", "Description": "Total duration (~500 s; derivable from pattern fields).", "Units": "second" },
+  "event_id": { "LongName": "Stimulation type", "Description": "References event_id in *_nibs.tsv.", "Levels": { "ccPAS": "Cortico-cortical paired associative stimulation (PMv -> M1, 8 ms ISI)" } },
+  "position_id": { "LongName": "Stimulation position(s)", "Description": "References position_id in *_markers.tsv, one per coil in element order (Coil_1=PMv, Coil_2=M1).", "Delimiter": "|", "Levels": { "PMv_L": "Left ventral premotor cortex", "M1_L": "Left primary motor cortex (FDI)" } }
+}
