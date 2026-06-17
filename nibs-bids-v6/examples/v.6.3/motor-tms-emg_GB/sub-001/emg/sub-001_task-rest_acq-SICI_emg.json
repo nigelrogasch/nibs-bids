@@ -1,0 +1,15 @@
+{
+  "TaskName": "EMG during TMS.",
+  "TaskDescription": "EMG recorded from right first dorsal interosseus muscle while participants hand was at rest during TMS.",
+  "Manufacturer": "SickEMG products",
+  "ManufacturerModelName": "Cool^2",
+  "ManufacturerSerialNumber": "3234-00",
+  "EMGPlacementScheme": "Other",
+  "EMGPlacementSchemeDescription": "Single electrode placed over the muscle belly of the right first dorsal interosseus muscle.",
+  "EMGChannelCount": 1,
+  "EMGReference": "Single electrode placed on carpal joint",
+  "EMGGround": "Wrist strap",
+  "SamplingFrequency": 2000,
+  "PowerLineFrequency": 50,
+  "SoftwareFilters": "n/a"
+}

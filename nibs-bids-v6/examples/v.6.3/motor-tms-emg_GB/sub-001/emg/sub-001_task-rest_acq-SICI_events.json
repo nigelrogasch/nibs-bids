@@ -1,0 +1,20 @@
+{
+  "onset": {
+    "LongName": "Event onset",
+    "Description": "Onset of the stimulation event.",
+    "Units": "second"
+  },
+  "duration": {
+    "LongName": "Event duration",
+    "Description": "Duration of the event; n/a if not applicable (may be derived from *_nibs.tsv pattern fields).",
+    "Units": "second"
+  },
+  "event_id": {
+    "LongName": "Stimulation type",
+    "Description": "Identifier of the stimulation protocol delivered; matches event_id in *_nibs.tsv.",
+    "Levels": {
+      "spTMS": "Single-pulse TMS (test pulse alone)",
+      "SICI": "Paired-pulse TMS for short-interval intracortical inhibition (conditioning then test, 2 ms ISI)"
+    }
+  }
+}

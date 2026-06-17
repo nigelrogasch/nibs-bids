@@ -1,0 +1,7 @@
+{
+  "Name": "Example dataset: motor TMS-EMG (SICI) - GB working copy",
+  "BIDSVersion": "1.11.0",
+  "DatasetType": "raw",
+  "License": "CC0",
+  "Authors": ["GB working copy, based on an example by Nigel Rogasch"]
+}
