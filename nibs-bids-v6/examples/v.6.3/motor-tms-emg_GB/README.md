@@ -1,3 +1,20 @@
+
+NOTES 20260616
+
+- in the tsv: intensity_reference with rMT|1mV|e-fild and intensity_scaling 0.8|1|absolute which could be 80% rMT | 100% 1mV | absolute efield (no scaling no method)
+- remove rMT from tsv, in the json we will have "value: XX" describing rMT
+- ThresholdSet: change to IntensitySet
+- what we can do now:
+  describe the temporal aspect of the stimulation (derived with nibs.tsv)
+  describe the spatial aspect (markers.tsv)
+- nail down double coil (ccPAS cortical, temporal and spatial)
+
+- postions: instead of target_id we will have position_id (more appropriate, not describing a target). We describe it in the events.tsv in the exact same way we use for event_id.
+- even for experiments in which technically there is no event, like beh + TMS + beh, the events.tsv will live in the nibs folder. scans.tsv will have beh.tsv, nibs.tsv (this indientify an offline stimulation), beh.tsv
+- idea: tool describing pulse sequence could laso describe the higher oreder of "events" i.e., acq sequence, recording sequence (scans.tsv), session sequence (session.tsv) ...
+  
+
+
 > [!IMPORTANT]
 > ## Notes — reading intensities and the `|` delimiter
 >
