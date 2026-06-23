@@ -202,7 +202,7 @@ value-to-description text for `stimulus_shape`, following the usual BIDS convent
 
 | Shape | Parameter columns in `*_nibs.tsv` |
 |---|---|
-| `Monophasic`, `Biphasic`, `Halfsine` | `first_inflection` (`rising` or `descending`), the direction of the first deflection of the induced current, which corresponds to the normal or reverse current-direction setting on the stimulator; and `current_direction` (`cl`, `co`, `cl-co`, `co-cl`), defined below. |
+| `Monophasic`, `Biphasic`, `Halfsine` | `first_inflection` (`rising` or `descending`), the direction of the first deflection of the induced current, which corresponds to the normal or reverse current-direction setting on the stimulator; and `current_direction` (`cl`, `co`, `cl-co`, `co-cl`, `other`), defined below. |
 | `Rectangle` | `ramp_up` and `ramp_down` (s), the durations of the linear ramps at the start and end of the block. |
 | `Sinusoid` | `frequency` (Hz for tACS, carrier frequency for TUS), `starting_phase` (degrees), and an optional `offset` adding a constant component. |
 | `Noise` | `noise_type` (`white`, `pink`, or other), `frequency_low` and `frequency_high` (Hz) bounding the randomized band, and an optional `distribution` (for example `gaussian`). |
@@ -227,9 +227,12 @@ each wing using the codes below.
 | `co` | circular | single winding, current counterclockwise |
 | `cl-co` | figure-of-eight | left wing clockwise, right wing counterclockwise |
 | `co-cl` | figure-of-eight | left wing counterclockwise, right wing clockwise |
+| `other` | any other geometry | current flow not captured by the codes above, described in free text in `*_nibs.json` |
 
 When a row drives more than one coil, `current_direction` is `|`-delimited and aligned to
-`nibs_element_id`, one code per coil.
+`nibs_element_id`, one code per coil. For a coil that is neither circular nor figure-of-eight, use
+`other` and describe the actual current flow in the `current_direction` entry of `*_nibs.json`, under
+`Levels.other`.
 
 These vocabularies (`nibs_type`, `stimulus_shape`, `first_inflection`, `current_direction`,
 `intensity_reference`) are deliberately finite. A small, fixed set of terms can be compiled into a

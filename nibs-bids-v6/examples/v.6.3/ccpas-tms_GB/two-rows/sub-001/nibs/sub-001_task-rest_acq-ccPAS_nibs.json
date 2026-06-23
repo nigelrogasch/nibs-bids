@@ -109,7 +109,8 @@
       "cl": "Circular coil, single winding, current clockwise",
       "co": "Circular coil, single winding, current counterclockwise",
       "cl-co": "Figure-of-eight coil, left wing clockwise, right wing counterclockwise",
-      "co-cl": "Figure-of-eight coil, left wing counterclockwise, right wing clockwise"
+      "co-cl": "Figure-of-eight coil, left wing counterclockwise, right wing clockwise",
+      "other": "Coil geometry not covered by cl/co/cl-co/co-cl; the actual current flow is described in this text"
     }
   },
   "stimulus_intensity": {
