@@ -1,20 +1,109 @@
 {
   "NIBSDescription": "Anodal tDCS, anode over left M1 (C3) and cathode over right supraorbital (Fp2), 2 mA for 20 min with 10 s ramps. Delivered offline between two resting-state fMRI runs.",
-  "ConcurrentModalities": ["none"],
-  "StimulatorSet": { "StimulatorID": "neuroConn", "Manufacturer": "neuroCare", "ManufacturerModelName": "DC-Stimulator Plus", "ManufacturerSerialNumber": "DC-0001" },
-  "ElementSet": [
-    { "ElementID": "anode", "ElementType": "electrode", "ElectrodeRole": "anode", "Shape": "rectangular", "ElectrodeSize": { "Value": [5, 7], "Units": "cm" }, "Material": "conductive rubber", "ElectrodeContactMedium": "saline" },
-    { "ElementID": "cathode", "ElementType": "electrode", "ElectrodeRole": "cathode", "Shape": "rectangular", "ElectrodeSize": { "Value": [5, 7], "Units": "cm" }, "Material": "conductive rubber", "ElectrodeContactMedium": "saline" }
+  "ConcurrentModalities": [
+    "none"
   ],
-  "event_id": { "LongName": "Stimulation event type", "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to event_id in *_events.tsv. MUST be unique within this file." },
-  "nibs_type": { "LongName": "Stimulation modality", "Description": "Non-invasive brain stimulation modality.", "Levels": { "tES": "Transcranial electrical stimulation" } },
-  "stimulator_id": { "LongName": "Stimulator identifier", "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID." },
-  "element_id": { "LongName": "Element identifier(s)", "Description": "Elements delivering stimulation, in order. Links to ElementSet.ElementID. Multiple simultaneous electrodes are delimited.", "Delimiter": "|" },
-  "stimulus_shape": { "LongName": "Stimulus shape", "Description": "Waveform shape of the base stimulus.", "Levels": { "Rectangle": "Constant-current block with linear ramps" } },
-  "stimulus_intensity": { "LongName": "Stimulus intensity", "Description": "Delivered current per element, in the same order as element_id. For tES the values sum to 0.", "Units": "mA", "Delimiter": "|" },
-  "stimulus_duration": { "LongName": "Stimulus duration", "Description": "Duration of the constant-current block (excluding nothing; ramps are part of it).", "Units": "second" },
-  "ramp_up": { "LongName": "Ramp up", "Description": "Duration of the linear current ramp at the start of the block.", "Units": "second" },
-  "ramp_down": { "LongName": "Ramp down", "Description": "Duration of the linear current ramp at the end of the block.", "Units": "second" },
-  "intensity_reference": { "LongName": "Intensity reference", "Description": "Anchor used to set the intensity. 'absolute' means the value is specified directly (no method). Closed vocabulary (rMT, aMT, 1mV, e-field, absolute)." },
-  "intensity_scaling": { "LongName": "Intensity scaling", "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value." }
+  "StimulatorSet": {
+    "StimulatorID": "neuroConn",
+    "Manufacturer": "neuroCare",
+    "ManufacturerModelName": "DC-Stimulator Plus",
+    "ManufacturerSerialNumber": "DC-0001",
+    "SoftwareVersion": "n/a"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "anode",
+      "ElementType": "electrode",
+      "ElectrodeRole": "anode",
+      "Shape": "rectangular",
+      "ElectrodeSize": {
+        "Value": [
+          5,
+          7
+        ],
+        "Units": "cm"
+      },
+      "Material": "conductive rubber",
+      "ElectrodeContactMedium": "saline",
+      "ElectrodePreparation": "Skin cleaned with alcohol; saline-soaked sponge electrodes."
+    },
+    {
+      "ElementID": "cathode",
+      "ElementType": "electrode",
+      "ElectrodeRole": "cathode",
+      "Shape": "rectangular",
+      "ElectrodeSize": {
+        "Value": [
+          5,
+          7
+        ],
+        "Units": "cm"
+      },
+      "Material": "conductive rubber",
+      "ElectrodeContactMedium": "saline",
+      "ElectrodePreparation": "Skin cleaned with alcohol; saline-soaked sponge electrodes."
+    }
+  ],
+  "nibs_event_id": {
+    "LongName": "Stimulation event type",
+    "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to nibs_event_id in *_events.tsv. MUST be unique within this file."
+  },
+  "nibs_type": {
+    "LongName": "Stimulation modality",
+    "Description": "Non-invasive brain stimulation modality.",
+    "Levels": {
+      "tES": "Transcranial electrical stimulation"
+    }
+  },
+  "stimulator_id": {
+    "LongName": "Stimulator identifier",
+    "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID."
+  },
+  "nibs_element_id": {
+    "LongName": "Element identifier(s)",
+    "Description": "Elements delivering stimulation, in order. Links to ElementSet.ElementID. Multiple simultaneous electrodes are delimited.",
+    "Delimiter": "|"
+  },
+  "stimulus_shape": {
+    "LongName": "Stimulus shape",
+    "Description": "Waveform shape of the base stimulus.",
+    "Levels": {
+      "Rectangle": "Constant-current block with linear ramps"
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulus intensity",
+    "Description": "Delivered current per element, in the same order as nibs_element_id. For tES the values sum to 0.",
+    "Units": "mA",
+    "Delimiter": "|"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Duration of the constant-current block (excluding nothing; ramps are part of it).",
+    "Units": "second"
+  },
+  "ramp_up": {
+    "LongName": "Ramp up",
+    "Description": "Duration of the linear current ramp at the start of the block.",
+    "Units": "second"
+  },
+  "ramp_down": {
+    "LongName": "Ramp down",
+    "Description": "Duration of the linear current ramp at the end of the block.",
+    "Units": "second"
+  },
+  "intensity_reference": {
+    "LongName": "Intensity reference",
+    "Description": "Anchor used to set the intensity. 'absolute' means the value is specified directly (no method). Closed vocabulary (rMT, aMT, 1mV, e-field, absolute)."
+  },
+  "intensity_scaling": {
+    "LongName": "Intensity scaling",
+    "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value."
+  },
+  "contact_impedance": {
+    "LongName": "Contact impedance",
+    "Description": "Device-reported contact impedance per electrode, in the same order as nibs_element_id.",
+    "Units": "kOhm",
+    "Delimiter": "|"
+  }
 }

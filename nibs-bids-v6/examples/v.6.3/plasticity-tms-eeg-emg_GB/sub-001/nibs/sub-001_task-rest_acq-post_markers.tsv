@@ -1,2 +1,2 @@
-position_id	position_label	position_description
-M1_L	C3	Left primary motor cortex hand hotspot (near 10-20 site C3); optimal site for right FDI MEPs
+nibs_position_id	nibs_element_id	position_label	position_description
+M1_L	Coil_1	C3	Left primary motor cortex hand hotspot (near 10-20 site C3); optimal site for right FDI MEPs

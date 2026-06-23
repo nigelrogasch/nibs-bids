@@ -1,0 +1,6 @@
+{
+  "onset": { "LongName": "Event onset", "Description": "Onset of each coil's pulse train. The M1 train starts 8 ms (0.008 s) after the PMv train, giving the intra-pair interval.", "Units": "second" },
+  "duration": { "LongName": "Event duration", "Description": "Total duration of each train (~500 s).", "Units": "second" },
+  "nibs_event_id": { "LongName": "Stimulation type", "Description": "References nibs_event_id in *_nibs.tsv.", "Levels": { "ccPAS_PMv": "PMv pulse train (Coil_1)", "ccPAS_M1": "M1 pulse train (Coil_2)" } },
+  "nibs_position_id": { "LongName": "Stimulation position", "Description": "References nibs_position_id in *_markers.tsv.", "Levels": { "PMv_L": "Left ventral premotor cortex", "M1_L": "Left primary motor cortex (FDI)" } }
+}

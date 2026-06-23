@@ -1,16 +1,17 @@
-# ccPAS double-coil — three encodings of the same experiment
+# ccPAS double-coil — two encodings, by triggering
 
 The same cortico-cortical paired associative stimulation protocol (a PMv pulse, then an M1 pulse 8 ms
-later; 100 pairs at 0.2 Hz), written three ways. They differ only in how the two coils appear in
-`*_nibs.tsv`:
+later; 100 pairs at 0.2 Hz), written two ways. Which one to use depends on how the pulses were triggered:
 
-- **1-double_coil/** — `element_id = double_coil`: one row; one compound element expanded in
-  `ElementSet` as a `coil_pair` of two sub-coils. Most compact; needs a compound element type.
-- **2-coil1-coil2/** — `element_id = Coil_1|Coil_2`: one row; two ordinary elements delimited with `|`,
-  aligned to the two pulses of `pattern1`. Reuses the delimiter; no new element type.
-- **3-two-rows/** — two rows, one per coil (`ccPAS_PMv`, `ccPAS_M1`): each coil is an ordinary
-  single-coil event; the 8 ms pairing is the onset offset between the two rows in `*_events.tsv`.
-  Most explicit and delimiter-free; the pair structure moves from `nibs.tsv` into the timeline.
+- **coil1-coil2/** — one trigger (on the conditioning pulse). One `nibs.tsv` row with
+  `nibs_element_id = Coil_1|Coil_2`; the 8 ms to the test pulse is encoded by `pattern1`. The timeline
+  has a single onset per pair.
+- **two-rows/** — a trigger on both pulses. Two `nibs.tsv` rows (one per coil), no `pattern`; the 8 ms
+  intra-pair interval is the onset offset between the two rows in `*_events.tsv` (PMv at 0 s, M1 at
+  0.008 s).
 
-Intensities (PMv 90% rMT = 45 %MSO; M1 1 mV = 58 %MSO) and positions (PMv_L, M1_L) are identical in
-all three.
+The earlier `double_coil` compound-element encoding was dropped: with a single compound
+`nibs_element_id`, it is not clear what the `|`-separated intensities refer to.
+
+Intensities (PMv 90% rMT = 45 %MSO; M1 1 mV = 58 %MSO) and positions (PMv_L = Coil_1, M1_L = Coil_2)
+are identical in both.

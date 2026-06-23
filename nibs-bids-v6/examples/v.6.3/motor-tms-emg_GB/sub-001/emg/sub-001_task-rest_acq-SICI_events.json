@@ -1,6 +1,6 @@
 {
   "onset": { "LongName": "Event onset", "Description": "Onset of the stimulation event.", "Units": "second" },
   "duration": { "LongName": "Event duration", "Description": "Duration of the event; n/a for an instantaneous pulse.", "Units": "second" },
-  "event_id": { "LongName": "Stimulation type", "Description": "References event_id in nibs/*_nibs.tsv.", "Levels": { "spTMS": "Single-pulse TMS (test pulse)", "SICI": "Paired-pulse TMS (conditioning then test, 2 ms ISI)" } },
-  "position_id": { "LongName": "Stimulation position", "Description": "References position_id in nibs/*_markers.tsv.", "Levels": { "M1_L": "Left M1 hand hotspot" } }
+  "nibs_event_id": { "LongName": "Stimulation type", "Description": "References nibs_event_id in nibs/*_nibs.tsv.", "Levels": { "spTMS": "Single-pulse TMS (test pulse)", "SICI": "Paired-pulse TMS (conditioning then test, 2 ms ISI)" } },
+  "nibs_position_id": { "LongName": "Stimulation position", "Description": "References nibs_position_id in nibs/*_markers.tsv.", "Levels": { "M1_L": "Left M1 hand hotspot" } }
 }

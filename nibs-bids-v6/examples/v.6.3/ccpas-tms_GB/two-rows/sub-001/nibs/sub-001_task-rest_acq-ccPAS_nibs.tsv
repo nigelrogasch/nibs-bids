@@ -1,0 +1,3 @@
+nibs_event_id	nibs_type	stimulator_id	nibs_element_id	stimulus_shape	first_inflection	current_direction	stimulus_intensity	stimulus_duration	pattern1_count	pattern1_interval	intensity_reference	intensity_scaling
+ccPAS_PMv	TMS	MagVenture	Coil_1	Biphasic	rising	co-cl	45	200	100	5000	rMT	0.9
+ccPAS_M1	TMS	MagVenture	Coil_2	Biphasic	rising	co-cl	58	200	100	5000	1mV	1

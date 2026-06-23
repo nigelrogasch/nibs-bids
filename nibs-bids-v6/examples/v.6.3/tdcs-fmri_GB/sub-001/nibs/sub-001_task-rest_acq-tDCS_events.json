@@ -1,6 +1,6 @@
 {
   "onset": { "LongName": "Event onset", "Description": "Onset of the tDCS block.", "Units": "second" },
   "duration": { "LongName": "Event duration", "Description": "Duration of the tDCS block.", "Units": "second" },
-  "event_id": { "LongName": "Stimulation type", "Description": "References event_id in *_nibs.tsv.", "Levels": { "tDCS": "Anodal transcranial direct current stimulation, 2 mA, 20 min" } },
-  "position_id": { "LongName": "Stimulation position(s)", "Description": "References position_id in *_markers.tsv, one per electrode in the same order as element_id (anode, cathode).", "Delimiter": "|", "Levels": { "C3": "Anode site (left M1)", "Fp2": "Cathode site (right supraorbital)" } }
+  "nibs_event_id": { "LongName": "Stimulation type", "Description": "References nibs_event_id in *_nibs.tsv.", "Levels": { "tDCS": "Anodal transcranial direct current stimulation, 2 mA, 20 min" } },
+  "nibs_position_id": { "LongName": "Stimulation position(s)", "Description": "References nibs_position_id in *_markers.tsv, one per electrode in the same order as nibs_element_id (anode, cathode).", "Delimiter": "|", "Levels": { "C3": "Anode site (left M1)", "Fp2": "Cathode site (right supraorbital)" } }
 }

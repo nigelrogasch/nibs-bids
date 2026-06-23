@@ -1,24 +1,106 @@
 {
   "NIBSDescription": "Single-pulse TMS to left M1 with concurrent EEG (TEP) and EMG (MEP) during the pre assessment. Test intensity dosed at 120% rMT.",
-  "ConcurrentModalities": ["eeg", "emg"],
+  "ConcurrentModalities": [
+    "eeg",
+    "emg"
+  ],
   "IntendedFor": [
     "bids::sub-001/eeg/sub-001_task-rest_acq-pre_events.tsv",
     "bids::sub-001/emg/sub-001_task-rest_acq-pre_events.tsv"
   ],
-  "StimulatorSet": { "StimulatorID": "MagVenture", "Manufacturer": "MagVenture", "ManufacturerModelName": "MagPro X100", "ManufacturerSerialNumber": "X100-0001" },
-  "ElementSet": [ { "ElementID": "Coil_1", "ElementType": "coil", "ModelName": "Cool-B65", "SerialNumber": "B65-0001", "CoilShape": "figure-of-eight" } ],
-  "IntensitySet": [
-    { "IntensityID": "rMT", "Value": 50, "Units": "% Maximum Stimulator Output", "Type": "resting_motor",
-      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials", "Algorithm": "relative-frequency (Rossini-Rothwell)", "MeasurementMethod": "EMG MEP from right first dorsal interosseous" }
+  "StimulatorSet": {
+    "StimulatorID": "MagVenture",
+    "Manufacturer": "MagVenture",
+    "ManufacturerModelName": "MagPro X100",
+    "ManufacturerSerialNumber": "X100-0001",
+    "SoftwareVersion": "n/a"
+  },
+  "ElementSet": [
+    {
+      "ElementID": "Coil_1",
+      "ElementType": "coil",
+      "ModelName": "Cool-B65",
+      "SerialNumber": "B65-0001",
+      "CoilShape": "figure-of-eight",
+      "CoilCooling": "liquid",
+      "CoilDiameter": {
+        "Value": 75,
+        "Units": "mm",
+        "Description": "figure-of-eight wing diameter"
+      }
+    }
   ],
-  "event_id": { "LongName": "Stimulation event type", "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to event_id in *_events.tsv. MUST be unique within this file." },
-  "nibs_type": { "LongName": "Stimulation modality", "Description": "Non-invasive brain stimulation modality.", "Levels": { "TMS": "Transcranial magnetic stimulation" } },
-  "stimulator_id": { "LongName": "Stimulator identifier", "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID." },
-  "element_id": { "LongName": "Element identifier", "Description": "Element delivering stimulation. Links to ElementSet.ElementID." },
-  "stimulus_shape": { "LongName": "Stimulus shape", "Description": "Waveform shape of the base stimulus.", "Levels": { "Biphasic": "Biphasic pulse as per stimulator setting" } },
-  "first_inflection": { "LongName": "First current inflection", "Description": "Direction of the first deflection of the induced current.", "Levels": { "rising": "Normal current direction", "descending": "Reverse current direction" } },
-  "stimulus_intensity": { "LongName": "Stimulus intensity", "Description": "Delivered amplitude of the base stimulus.", "Units": "% Maximum Stimulator Output" },
-  "stimulus_duration": { "LongName": "Stimulus duration", "Description": "Pulse width (contiguous non-zero current through the coil).", "Units": "microseconds" },
-  "intensity_reference": { "LongName": "Intensity reference", "Description": "Anchor used to set the intensity. Links to IntensitySet.IntensityID. Closed vocabulary (rMT, aMT, 1mV, e-field, absolute)." },
-  "intensity_scaling": { "LongName": "Intensity scaling", "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value." }
+  "IntensitySet": [
+    {
+      "IntensityID": "rMT",
+      "Value": 50,
+      "Units": "% Maximum Stimulator Output",
+      "Type": "resting_motor",
+      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials",
+      "Algorithm": "relative-frequency (Rossini-Rothwell)",
+      "MeasurementMethod": "EMG MEP from right first dorsal interosseous"
+    }
+  ],
+  "nibs_event_id": {
+    "LongName": "Stimulation event type",
+    "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to nibs_event_id in *_events.tsv. MUST be unique within this file."
+  },
+  "nibs_type": {
+    "LongName": "Stimulation modality",
+    "Description": "Non-invasive brain stimulation modality.",
+    "Levels": {
+      "TMS": "Transcranial magnetic stimulation"
+    }
+  },
+  "stimulator_id": {
+    "LongName": "Stimulator identifier",
+    "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID."
+  },
+  "nibs_element_id": {
+    "LongName": "Element identifier",
+    "Description": "Element delivering stimulation. Links to ElementSet.ElementID."
+  },
+  "stimulus_shape": {
+    "LongName": "Stimulus shape",
+    "Description": "Waveform shape of the base stimulus.",
+    "Levels": {
+      "Biphasic": "Biphasic pulse as per stimulator setting"
+    }
+  },
+  "first_inflection": {
+    "LongName": "First current inflection",
+    "Description": "Direction of the first deflection of the induced current.",
+    "Levels": {
+      "rising": "Normal current direction",
+      "descending": "Reverse current direction"
+    }
+  },
+  "current_direction": {
+    "LongName": "Coil current direction",
+    "Description": "Direction of current flow in the coil winding, read with the coil in the calibration-block orientation (stimulating face away from the viewer, top face toward the viewer, handle or leading edge pointing away). cl and co apply to circular coils; cl-co and co-cl apply to figure-of-eight coils and name the left wing then the right wing.",
+    "Levels": {
+      "cl": "Circular coil, single winding, current clockwise",
+      "co": "Circular coil, single winding, current counterclockwise",
+      "cl-co": "Figure-of-eight coil, left wing clockwise, right wing counterclockwise",
+      "co-cl": "Figure-of-eight coil, left wing counterclockwise, right wing clockwise"
+    }
+  },
+  "stimulus_intensity": {
+    "LongName": "Stimulus intensity",
+    "Description": "Delivered amplitude of the base stimulus.",
+    "Units": "% Maximum Stimulator Output"
+  },
+  "stimulus_duration": {
+    "LongName": "Stimulus duration",
+    "Description": "Pulse width (contiguous non-zero current through the coil).",
+    "Units": "microseconds"
+  },
+  "intensity_reference": {
+    "LongName": "Intensity reference",
+    "Description": "Anchor used to set the intensity. Links to IntensitySet.IntensityID. Closed vocabulary (rMT, aMT, 1mV, e-field, absolute)."
+  },
+  "intensity_scaling": {
+    "LongName": "Intensity scaling",
+    "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value."
+  }
 }
