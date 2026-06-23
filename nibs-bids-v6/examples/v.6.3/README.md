@@ -1,3 +1,12 @@
+2026 06 22
+- add nibs_ as prefix in columns like event_id position_id and all others to make sure it is clear that those refer to nibs
+- for the paired pulse protocols (like ccPAS), depnding if you have a trigger for both conditioning and test pulse or only for the conditioning pulse, you could use example 2 (coil_1|coil_2) or example 3 (two rows). when using two rows there is not pattern since timing between pulses is encoded in the events.tsv. Example n1 (double_coil) would not work cos it is not clear what the intensities (diveded by the |) refer to. 
+- if we have an experiment that delivers 10 pulses at 5 specific ISI (excitation inhibition curve), we will have 5 rows in the nibs.tsv
+- marker.tsv should also containing the coil_id
+- issue on rmt and amt can be close after this is approved
+- current direction issue: in the nib.tsv (cos you can change it between stimulations) we need to add terminology regardin current flow in the coil. name of the column coould be "current direction". the indication will be "looking at the coil from the top (meaning looking at the face of the the coil that is opposite to the one used to deliver stimulation (the top of the coil cos the bottom is facing down as it is the part that would give the stimulation), when the coil leading edge is pointing away from you, describe if the current is flowing clockwise or counterclowise in the left and right wings (or in the only wing if circular coul). Maybe another way to give people a system of reference could be "postion the coil as you will put in on the calibration block". 
+- 
+
 # NIBS-BIDS proposal v6.3
 
 > This is a draft. It merges the v6.2 specification with the decisions taken for v6.3 and supersedes
