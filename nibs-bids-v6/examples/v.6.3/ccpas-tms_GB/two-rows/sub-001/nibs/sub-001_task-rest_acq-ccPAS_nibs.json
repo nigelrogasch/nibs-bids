@@ -1,12 +1,7 @@
 {
-  "NIBSDescription": "Single-pulse TMS to left M1 with concurrent EEG (TEP) and EMG (MEP) during the post assessment. Test intensity dosed at 120% rMT.",
+  "NIBSDescription": "ccPAS recorded as two single-coil event types: ccPAS_PMv (Coil_1) and ccPAS_M1 (Coil_2), each repeated 100 times at 0.2 Hz. The 8 ms intra-pair interval is the onset offset between the two rows in *_events.tsv.",
   "ConcurrentModalities": [
-    "eeg",
-    "emg"
-  ],
-  "IntendedFor": [
-    "bids::sub-001/eeg/sub-001_task-rest_acq-post_events.tsv",
-    "bids::sub-001/emg/sub-001_task-rest_acq-post_events.tsv"
+    "none"
   ],
   "StimulatorSet": {
     "StimulatorID": "MagVenture",
@@ -20,8 +15,23 @@
       "ElementID": "Coil_1",
       "ElementType": "coil",
       "ModelName": "Cool-B65",
-      "SerialNumber": "B65-0001",
       "CoilShape": "figure-of-eight",
+      "SerialNumber": "B65-A",
+      "Description": "Coil over left ventral premotor cortex (PMv).",
+      "CoilCooling": "liquid",
+      "CoilDiameter": {
+        "Value": 75,
+        "Units": "mm",
+        "Description": "figure-of-eight wing diameter"
+      }
+    },
+    {
+      "ElementID": "Coil_2",
+      "ElementType": "coil",
+      "ModelName": "Cool-B65",
+      "CoilShape": "figure-of-eight",
+      "SerialNumber": "B65-B",
+      "Description": "Coil over left M1.",
       "CoilCooling": "liquid",
       "CoilDiameter": {
         "Value": 75,
@@ -36,14 +46,31 @@
       "Value": 50,
       "Units": "% Maximum Stimulator Output",
       "Type": "resting_motor",
-      "Criterion": "MEP amplitude >= 50 uV in at least 5 of 10 consecutive trials",
+      "Criterion": "MEP >= 50 uV in >=5 of 10 trials",
       "Algorithm": "relative-frequency (Rossini-Rothwell)",
+      "MeasurementMethod": "EMG MEP from right first dorsal interosseous"
+    },
+    {
+      "IntensityID": "1mV",
+      "Value": 58,
+      "Units": "% Maximum Stimulator Output",
+      "Type": "target_MEP",
+      "Criterion": "output evoking a ~1 mV MEP",
+      "Algorithm": "manual titration",
       "MeasurementMethod": "EMG MEP from right first dorsal interosseous"
     }
   ],
+  "NavigationSystem": {
+    "Navigation": true,
+    "NavigationHardwareType": "optical_tracking",
+    "NavigationModelName": "Localite TMS Navigator",
+    "NavigationSoftwareVersion": "3.0.48",
+    "NavigationHardwareSerialNumber": "LOC-0001",
+    "NavigationNotes": "Frameless stereotaxy; coils tracked optically and co-registered to the individual MRI."
+  },
   "nibs_event_id": {
     "LongName": "Stimulation event type",
-    "Description": "Identifier of a stimulation event type with a unique parameter set. Linked to nibs_event_id in *_events.tsv. MUST be unique within this file."
+    "Description": "Identifier of a stimulation event type (one per coil). Linked to nibs_event_id in *_events.tsv. MUST be unique within this file."
   },
   "nibs_type": {
     "LongName": "Stimulation modality",
@@ -54,11 +81,11 @@
   },
   "stimulator_id": {
     "LongName": "Stimulator identifier",
-    "Description": "Device generating the waveform. Links to StimulatorSet.StimulatorID."
+    "Description": "Links to StimulatorSet.StimulatorID."
   },
   "nibs_element_id": {
     "LongName": "Element identifier",
-    "Description": "Element delivering stimulation. Links to ElementSet.ElementID."
+    "Description": "Single coil for this row. Links to ElementSet.ElementID."
   },
   "stimulus_shape": {
     "LongName": "Stimulus shape",
@@ -69,7 +96,7 @@
   },
   "first_inflection": {
     "LongName": "First current inflection",
-    "Description": "Direction of the first deflection of the induced current.",
+    "Description": "Direction of the first induced-current deflection.",
     "Levels": {
       "rising": "Normal current direction",
       "descending": "Reverse current direction"
@@ -87,20 +114,29 @@
   },
   "stimulus_intensity": {
     "LongName": "Stimulus intensity",
-    "Description": "Delivered amplitude of the base stimulus.",
+    "Description": "Delivered amplitude of this coil's pulse.",
     "Units": "% Maximum Stimulator Output"
   },
   "stimulus_duration": {
     "LongName": "Stimulus duration",
-    "Description": "Pulse width (contiguous non-zero current through the coil).",
+    "Description": "Pulse width.",
     "Units": "microseconds"
+  },
+  "pattern1_count": {
+    "LongName": "Repeats",
+    "Description": "Number of times this coil's pulse is delivered (one per pair)."
+  },
+  "pattern1_interval": {
+    "LongName": "Inter-pair interval",
+    "Description": "Onset-to-onset interval between repeats (0.2 Hz).",
+    "Units": "milliseconds"
   },
   "intensity_reference": {
     "LongName": "Intensity reference",
-    "Description": "Anchor used to set the intensity. Links to IntensitySet.IntensityID. Closed vocabulary (rMT, aMT, 1mV, e-field, absolute)."
+    "Description": "Anchor used to set the intensity. Links to IntensitySet.IntensityID."
   },
   "intensity_scaling": {
     "LongName": "Intensity scaling",
-    "Description": "Multiplier applied to the reference value, or 'absolute' for a directly specified value."
+    "Description": "Multiplier on the reference value, or 'absolute'."
   }
 }

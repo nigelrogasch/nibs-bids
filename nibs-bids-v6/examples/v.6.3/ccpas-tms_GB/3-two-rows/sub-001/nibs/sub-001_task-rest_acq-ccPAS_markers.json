@@ -1,8 +1,0 @@
-{
-  "position_id": { "LongName": "Position identifier", "Description": "Identifier of a single stimulation position (one row). Referenced from position_id in *_events.tsv. MUST be unique within this file." },
-  "position_label": { "LongName": "Position label", "Description": "Standardized site label." },
-  "position_description": { "LongName": "Position description", "Description": "Free-text description of the position / role in the protocol." },
-  "position_x": { "LongName": "Position x", "Description": "x coordinate of the stimulation site in the coordinate system declared in *_coordsystem.json.", "Units": "mm" },
-  "position_y": { "LongName": "Position y", "Description": "y coordinate of the stimulation site.", "Units": "mm" },
-  "position_z": { "LongName": "Position z", "Description": "z coordinate of the stimulation site.", "Units": "mm" }
-}

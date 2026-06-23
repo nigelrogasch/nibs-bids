@@ -1,5 +1,18 @@
 {
-  "position_id": { "LongName": "Position identifier", "Description": "Identifier of a single electrode position (one row). Referenced from position_id in *_events.tsv. MUST be unique within this file." },
-  "position_label": { "LongName": "Position label", "Description": "Standardized site label (10-20 location)." },
-  "position_description": { "LongName": "Position description", "Description": "Free-text description of the electrode position and role." }
+  "nibs_position_id": {
+    "LongName": "Position identifier",
+    "Description": "Identifier of a single electrode position (one row). Referenced from nibs_position_id in *_events.tsv. MUST be unique within this file."
+  },
+  "nibs_element_id": {
+    "LongName": "Element identifier",
+    "Description": "Element (coil/electrode) located at this position. Links to nibs_element_id in *_nibs.tsv (same key that links *_events.tsv to *_nibs.tsv)."
+  },
+  "position_label": {
+    "LongName": "Position label",
+    "Description": "Standardized site label (10-20 location)."
+  },
+  "position_description": {
+    "LongName": "Position description",
+    "Description": "Free-text description of the electrode position and role."
+  }
 }

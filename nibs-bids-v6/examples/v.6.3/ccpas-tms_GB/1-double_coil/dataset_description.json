@@ -1,7 +1,0 @@
-{
-  "Name": "Example dataset: ccPAS double-coil TMS - GB working copy",
-  "BIDSVersion": "1.11.0",
-  "DatasetType": "raw",
-  "License": "CC0",
-  "Authors": ["GB working copy"]
-}

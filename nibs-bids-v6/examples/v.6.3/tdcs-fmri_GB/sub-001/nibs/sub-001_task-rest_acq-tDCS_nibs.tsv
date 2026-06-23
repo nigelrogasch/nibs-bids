@@ -1,2 +1,2 @@
-event_id	nibs_type	stimulator_id	element_id	stimulus_shape	stimulus_intensity	stimulus_duration	ramp_up	ramp_down	intensity_reference	intensity_scaling
-tDCS	tES	neuroConn	anode|cathode	Rectangle	2|-2	1200	10	10	absolute	absolute
+nibs_event_id	nibs_type	stimulator_id	nibs_element_id	stimulus_shape	stimulus_intensity	stimulus_duration	ramp_up	ramp_down	intensity_reference	intensity_scaling	contact_impedance
+tDCS	tES	neuroConn	anode|cathode	Rectangle	2|-2	1200	10	10	absolute	absolute	5|5.2

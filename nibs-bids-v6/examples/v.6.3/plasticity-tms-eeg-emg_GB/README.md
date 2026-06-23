@@ -15,7 +15,7 @@
 > iTBS is 80% aMT (`aMT`, `0.8`). Each reference is described once in `IntensitySet` in the matching
 > `*_nibs.json` (`IntensityID`, `Value`, method fields).
 >
-> **Linkage.** `events.tsv` carries `event_id` (-> `nibs.tsv`) and `position_id` (-> `markers.tsv`).
+> **Linkage.** `events.tsv` carries `nibs_event_id` (-> `nibs.tsv`) and `nibs_position_id` (-> `markers.tsv`).
 > Assessment events are concurrent and live in `eeg/` and `emg/` (linked from `nibs.json` via
 > `IntendedFor`); iTBS is standalone and its events live in `nibs/`.
 
@@ -35,6 +35,6 @@ rMT = 50 %MSO (assessment, 120% -> 60 %MSO); aMT = 40 %MSO (iTBS, 80% -> 32 %MSO
 ## Files
 - `nibs/*_nibs.tsv` / `.json`: stimulation parameters and `IntensitySet`.
 - `nibs/*_markers.tsv` / `.json`: stimulation position(s).
-- `eeg/`, `emg/`: concurrent recordings and their `*_events.tsv` (`event_id`, `position_id`).
+- `eeg/`, `emg/`: concurrent recordings and their `*_events.tsv` (`nibs_event_id`, `nibs_position_id`).
 - `nibs/*_events.tsv`: standalone iTBS timeline.
 - `*_eeg.set`, `*_emg.mat`: empty placeholders, demonstration only.

@@ -1,4 +1,4 @@
-onset	duration	event_id	position_id
+onset	duration	nibs_event_id	nibs_position_id
 0	n/a	spTMS	M1_L
 4.8	n/a	spTMS	M1_L
 9.9	n/a	spTMS	M1_L
