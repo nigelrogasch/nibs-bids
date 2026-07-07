@@ -3,8 +3,9 @@ notes 20260706
 - make tables only for TSV stuff. definition not in a table. (basically like in any other BIDS specification)
 - move event file description further up (as it links with others, so might be logically better to have it up).
 - postion: first describe the position of the element (we are describing primarly the postion of the coil/trnsudcer on the head), and furhter down descrive optionally the cpostion of the target (which is not the primary focus here).
-- postion: how to reconstruct the postion matrix (4 x 4 , with row and cols that are 0s 3 x3 ) from this specificaion and vice versa? make sure that is clear. look at one of the eralier versions we had that transformation matrix ?
-- postion: collapse coil/transducer/electrod center to element centre? 
+- postion: how to reconstruct the postion matrix (4 x 4 , with row and cols that are 0s 3 x3 ) from this specificaion and vice versa? make sure that is clear. look at one of the eralier versions we had that transformation matrix ? we have to resolve this https://simnibs.github.io/simnibs/build/html/documentation/sim_struct/position.html . 3 rows, coodinate for the 3 coil (element) axis. the center of the element is the last column 
+- postion: collapse coil/transducer/electrod center to element centre.
+- postion: we need to be able to describ postion with "less" tecnical ways like: for TMS using elec postions or head measurament made with tape ruler (nasion, inion, etc.. ), but maybe we alredy ahve a text description? 
 
 
 # NIBS-BIDS proposal v6.3
