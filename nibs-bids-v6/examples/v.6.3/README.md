@@ -1,7 +1,10 @@
 notes 20260706
 - make clearer the distinction between temporal info in nibs.tsv and spatial info in marker.tsv (double check)
 - make tables only for TSV stuff. definition not in a table. (basically like in any other BIDS specification)
-- move event file description further up (as it links with others, so might be logically better to have it up). 
+- move event file description further up (as it links with others, so might be logically better to have it up).
+- postion: first describe the position of the element (we are describing primarly the postion of the coil/trnsudcer on the head), and furhter down descrive optionally the cpostion of the target (which is not the primary focus here).
+- postion: how to reconstruct the postion matrix (4 x 4 , with row and cols that are 0s 3 x3 ) from this specificaion and vice versa? make sure that is clear. look at one of the eralier versions we had that transformation matrix ?
+- postion: collapse coil/transducer/electrod center to element centre? 
 
 
 # NIBS-BIDS proposal v6.3
