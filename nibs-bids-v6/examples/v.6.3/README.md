@@ -1,3 +1,9 @@
+notes 20260706
+- make clearer the distinction between temporal info in nibs.tsv and spatial info in marker.tsv (double check)
+- make tables only for TSV stuff. definition not in a table. (basically like in any other BIDS specification)
+- move event file description further up (as it links with others, so might be logically better to have it up). 
+
+
 # NIBS-BIDS proposal v6.3
 
 This document describes a structure for organizing **non-invasive brain stimulation (NIBS)**
