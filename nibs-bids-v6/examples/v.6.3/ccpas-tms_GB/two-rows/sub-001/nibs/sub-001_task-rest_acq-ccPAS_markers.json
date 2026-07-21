@@ -1,33 +1,84 @@
 {
   "nibs_position_id": {
     "LongName": "Position identifier",
-    "Description": "Identifier of a single stimulation position (one row). Referenced from nibs_position_id in *_events.tsv. MUST be unique within this file."
+    "Description": "Identifier of one element placement (one row). Referenced from nibs_position_id in *_events.tsv. MUST be unique within this file."
   },
   "nibs_element_id": {
     "LongName": "Element identifier",
-    "Description": "Element (coil/electrode) located at this position. Links to nibs_element_id in *_nibs.tsv (same key that links *_events.tsv to *_nibs.tsv)."
+    "Description": "Element placed at this position. Links to nibs_element_id in *_nibs.tsv."
   },
   "position_label": {
     "LongName": "Position label",
-    "Description": "Standardized site label."
+    "Description": "Standardized label for the placement."
   },
   "position_description": {
     "LongName": "Position description",
-    "Description": "Free-text description of the position / role in the protocol."
+    "Description": "Free-text description of the placement and how it was located."
   },
-  "position_x": {
-    "LongName": "Position x",
-    "Description": "x coordinate of the stimulation site in the coordinate system declared in *_coordsystem.json.",
+  "element_centre_x": {
+    "LongName": "Element centre x",
+    "Description": "x component of the centre of the element.",
     "Units": "mm"
   },
-  "position_y": {
-    "LongName": "Position y",
-    "Description": "y coordinate of the stimulation site.",
+  "element_centre_y": {
+    "LongName": "Element centre y",
+    "Description": "y component of the centre of the element.",
     "Units": "mm"
   },
-  "position_z": {
-    "LongName": "Position z",
-    "Description": "z coordinate of the stimulation site.",
+  "element_centre_z": {
+    "LongName": "Element centre z",
+    "Description": "z component of the centre of the element.",
+    "Units": "mm"
+  },
+  "element_xdir_x": {
+    "LongName": "Element xdir x",
+    "Description": "x component of the element x axis. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_xdir_y": {
+    "LongName": "Element xdir y",
+    "Description": "y component of the element x axis. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_xdir_z": {
+    "LongName": "Element xdir z",
+    "Description": "z component of the element x axis. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_ydir_x": {
+    "LongName": "Element ydir x",
+    "Description": "x component of the element y axis, running along the handle. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_ydir_y": {
+    "LongName": "Element ydir y",
+    "Description": "y component of the element y axis, running along the handle. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_ydir_z": {
+    "LongName": "Element ydir z",
+    "Description": "z component of the element y axis, running along the handle. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_zdir_x": {
+    "LongName": "Element zdir x",
+    "Description": "x component of the element z axis, pointing from the element into the head. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_zdir_y": {
+    "LongName": "Element zdir y",
+    "Description": "y component of the element z axis, pointing from the element into the head. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "element_zdir_z": {
+    "LongName": "Element zdir z",
+    "Description": "z component of the element z axis, pointing from the element into the head. Unit vector; the three axes are mutually orthogonal and right-handed (xdir = ydir x zdir)."
+  },
+  "target_x": {
+    "LongName": "Target x",
+    "Description": "x coordinate of the intended cortical target. Optional and secondary to the element placement.",
+    "Units": "mm"
+  },
+  "target_y": {
+    "LongName": "Target y",
+    "Description": "y coordinate of the intended cortical target. Optional and secondary to the element placement.",
+    "Units": "mm"
+  },
+  "target_z": {
+    "LongName": "Target z",
+    "Description": "z coordinate of the intended cortical target. Optional and secondary to the element placement.",
     "Units": "mm"
   }
 }
