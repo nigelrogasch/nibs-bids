@@ -1,3 +1,3 @@
-nibs_position_id	nibs_element_id	position_label	position_description	position_x	position_y	position_z
-PMv_L	Coil_1	left PMv	Left ventral premotor cortex (conditioning site)	-52	8	28
-M1_L	Coil_2	left M1 (FDI)	Left primary motor cortex, FDI hotspot (test site)	-37	-21	58
+nibs_position_id	nibs_element_id	position_label	position_description	element_centre_x	element_centre_y	element_centre_z	element_xdir_x	element_xdir_y	element_xdir_z	element_ydir_x	element_ydir_y	element_ydir_z	element_zdir_x	element_zdir_y	element_zdir_z	target_x	target_y	target_z
+PMv_L	Coil_1	left PMv	Left ventral premotor cortex (conditioning site)	-65.0875	15.0471	30.0135	0.1521	0.0	0.9884	-0.4643	-0.8828	0.0714	0.8725	-0.4698	-0.1342	-52.0	8.0	28.0
+M1_L	Coil_2	left M1 (FDI)	Left primary motor cortex, FDI hotspot (test site)	-47.4624	-21.2828	68.7452	0.7165	0.0	0.6976	0.0132	-0.9998	-0.0135	0.6975	0.0189	-0.7163	-37.0	-21.0	58.0
