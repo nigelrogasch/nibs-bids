@@ -56,6 +56,9 @@ A row of `*_events.tsv` ties the two together by naming a temporal parameter set
 | Linkage keys | Plain identifiers | Cross-file keys prefixed with `nibs_` (`nibs_event_id`, `nibs_position_id`, `nibs_element_id`) |
 | Numeric typing | Many `integer` fields | `number` (decimals allowed) |
 | Received dose | Discussed alongside applied dose | Stores the applied dose; the in-tissue field is left to modelling |
+| Peripheral nerve stimulation | Not treated as a separate modality; described through TMS, TES, or TUS | `PNS` is a `nibs_type` value, with the underlying technology and the stimulated nerve described in `*_markers.tsv` |
+| Response fields | `motor_response`, `latency`, and `response_channel_*` columns in `*_nibs.tsv` | Removed; the evoked response and its channels belong to the recording modality and are linked through `nibs_event_id` |
+| Position without coordinates | Implicit | Explicitly supported through `position_label`, tape `HeadMeasurements`, and `position_description`, with the `element_*` columns set to `n/a` |
 | Modality interoperability | Implicit | Stated explicitly for any concurrent or related recording modality, including iEEG, single-unit, and LFP |
 
 ---

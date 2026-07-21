@@ -1,5 +1,5 @@
 {
   "NIBSCoordinateSystem": "MNI152NLin2009cAsym",
   "NIBSCoordinateUnits": "mm",
-  "NIBSCoordinateSystemDescription": "Stimulation targets were defined with frameless neuronavigation and are reported in standard MNI152NLin2009cAsym space. position_x/y/z give the cortical target of each coil in this space."
+  "NIBSCoordinateSystemDescription": "Element placements and targets were defined with frameless neuronavigation and are reported in standard MNI152NLin2009cAsym space. element_centre_x/y/z give the centre of each coil on the head, the element_xdir/ydir/zdir columns give its axes, and target_x/y/z give the intended cortical target."
 }
